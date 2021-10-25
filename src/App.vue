@@ -1,9 +1,12 @@
-<script setup lang="ts">
-import "./index.css";
-</script>
 
 <template>
-<!-- Stuff goes here -->
-<div class="text-vampireStateBuilding"> Test </div>
+  <router-view />
 </template>
 
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "App",
+});
+</script>

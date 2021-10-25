@@ -4,6 +4,6 @@ import "./index.css";
 
 <template>
 <!-- Stuff goes here -->
-<div> Test </div>
+<div class="text-vampireStateBuilding"> Test </div>
 </template>
 

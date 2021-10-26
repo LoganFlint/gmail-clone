@@ -7,8 +7,14 @@
         <Button class="mr-4" label="Newer" @click="nextEmail" />
         <Button class="mr-4" label="Older" @click="prevEmail" />
       </div>
-      <div class="text-2xl font-bold">Subject: {{ state.email.subject }}</div>
-      <div>from {{ state.email.from }}</div>
+      <div class="text-2xl font-bold pr-16 pb-3">
+        Subject:{{ state.email.subject }}
+      </div>
+      <div class="text-lg">
+        From <span class="italic">{{ state.email.from }}</span> on
+        <span>{{ state.email.sentAt }}</span>
+      </div>
+      <div class="pt-10 pr-32">{{ state.email.body }}</div>
     </div>
   </Modal>
 </template>
@@ -53,21 +59,13 @@ export default defineComponent({
       emit("close");
     }
 
-    // function onKeyDown() {
-    //   console.log("key down");
-    //   // const val = (event.target as KeyboardEvent.value)
-    //   //   if(event.key == "scape") {
-    //   emit("close");
-    //   //   }
-    // }
-
     watch(
       () => props.emailId,
       () => {
         console.log(props.emailId);
-         getEmailById(props.emailId).then((res) => {
-           state.email = res
-         })
+        getEmailById(props.emailId).then((res) => {
+          state.email = res;
+        });
       }
     );
 
@@ -77,8 +75,7 @@ export default defineComponent({
       nextEmail,
       prevEmail,
       closeModal,
-      // onKeyDown,
-      state
+      state,
     };
   },
 });

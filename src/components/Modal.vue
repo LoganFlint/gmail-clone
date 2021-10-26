@@ -41,7 +41,7 @@ export default defineComponent({
     blur: Boolean,
   },
   emits: ["close"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     function handleMouseDrag(event: MouseEvent) {
       if (event.button == 0) {
         emit("close");

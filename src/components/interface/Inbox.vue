@@ -73,19 +73,9 @@ export default defineComponent({
 
     const showEmail = ref(false);
 
-    // async function getEmailsId(id: number): Promise<void> {
-    //   await getEmailById(id).then((response) => {
-    //     return response;
-    //   });
-    // }
-
     function openEmail(id: number) {
       state.id = id;
       showEmail.value = true;
-
-      // let email = state.emails.filter((emails) => emails.id === emails.id)
-
-      // getEmailsId()
     }
 
     function closeModal() {
@@ -111,7 +101,6 @@ export default defineComponent({
       showEmail,
       openEmail,
       closeModal,
-      // getEmailsId,
     };
   },
 });

@@ -3,7 +3,7 @@
     <teleport to="#modal">
       <div
         :class="[
-          'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 text-white border border-black rounded',
+          'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 border border-black rounded',
           'transform transition-all duration-300 ease-out',
           {
             'scale-1 opacity-100': isOpen,
@@ -27,12 +27,8 @@
           />
           <div
             class="
-              flex flex-col
               w-full
               px-6
-              text-center
-              items-center
-              justify-center
             "
           >
             <slot />

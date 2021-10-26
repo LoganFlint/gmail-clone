@@ -2,6 +2,10 @@ module.exports = {
     purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     darkMode: false,
     theme: {
+       fontFamily: {
+        source: ["Source Sans Pro", "sans-serif"],
+        mono: ['Inconsolata', "monospace"]
+    },
       colors: {
         lbBlue: "#1B325A",
         lbLightBlue: "#EBF5FF",

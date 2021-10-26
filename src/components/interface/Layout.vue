@@ -1,23 +1,47 @@
 <template>
-    <div>
-        Test
-    </div>
+  <div>
+    <Button label="Hello" @click="openEmail" />
+    <EmailModal
+      :blur="true"
+      :is-open="showEmail"
+      @close="closeModal"
+      subject="Subject"
+      contact="team@vuemastery.com"
+      @archive="closeModal"
+      @unread="closeModal"
+      @newer="closeModal"
+      @older="closeModal"
+    />
+  </div>
 </template>
 
-<script lang = "ts">
-import { defineComponent } from "vue";
+<script lang="ts">
+// TODO we should figure out how auto imports work!!!
+import Button from "../Button.vue";
+import EmailModal from "../EmailModal.vue";
+import SomeModal from "../SomeModal.vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-    name: "Layout",
-    components: {
+  name: "Layout",
+  components: {
+    Button,
+    EmailModal,
+    SomeModal,
+  },
+  setup() {
+    const showEmail = ref(false);
 
-    },
-    props: {
-
-    },
-    setup(){
-        console.log("from Layout");
+    function openEmail() {
+      showEmail.value = true;
     }
 
+    function closeModal() {
+      showEmail.value = false;
+    }
+
+    console.log("from Layout");
+    return { showEmail, openEmail, closeModal };
+  },
 });
 </script>

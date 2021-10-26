@@ -1,14 +1,14 @@
 <template>
     <div>
-
     <Button label="Hello" @click="openEmail" />
-    <EmailModal :blur="true" :is-open="showEmail" @close="showEmail === false" />
+    <EmailModal :blur="true" :is-open="showEmail" @close="closeModal" />
     </div>
 </template>
 
-<script lang = "ts">
+<script lang="ts">
+// TODO we should figure out how auto imports work!!!
 import Button from "../Button.vue"
-import EmailModal from "../Modal.vue"
+import EmailModal from "../EmailModal.vue"
 import SomeModal from "../SomeModal.vue"
 import { defineComponent, ref } from "vue";
 
@@ -19,19 +19,19 @@ export default defineComponent({
         EmailModal,
         SomeModal
     },
-    props: {
-
-    },
     setup(){
        const showEmail = ref(false)
         
         function openEmail() {
-        
-        showEmail.value = true
-        console.log(showEmail.value)
+            showEmail.value = true
         }
+
+        function closeModal() {
+            showEmail.value = false
+        }
+
         console.log("from Layout");
-        return {showEmail, openEmail}
+        return {showEmail, openEmail, closeModal}
     }
 
 });

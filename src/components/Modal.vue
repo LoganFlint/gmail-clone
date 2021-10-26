@@ -1,31 +1,46 @@
 <template>
-  <teleport
-    to="#modal"
-    class="modal"
-  >
-    <div
-      :class="[
-        'fixed z-30 inset-0 transform transition-all duration-300 ease-in-out',
-        {
-          'opacity-100 filter': isOpen,
-        },
-        { 'opacity-0 invisible filter none': !isOpen },
-        { 'backdrop-filter backdrop-blur-[5px]': blur },
-      ]"
-    >
+  <div>
+    <teleport to="#modal">
       <div
-        class="flex flex-col min-h-screen items-center justify-center bg-black bg-opacity-30"
-        @mousedown.stop="handleMouseDrag"
+        :class="[
+          'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 text-white border border-black rounded',
+          'transform transition-all duration-300 ease-out',
+          {
+            'scale-1 opacity-100': isOpen,
+            'scale-0 opacity-0 invisible': !isOpen,
+          },
+        ]"
       >
-        <div
-          :class="['transition-all duration-300 transform z-40']"
-          @mousedown.stop
-        >
-          <slot />
+        <div>
+          <img
+            src="../../src/assets/close.svg"
+            class="
+              absolute
+              right-5
+              top-2
+              cursor-pointer
+              w-8
+              h-8
+              p-1.5
+            "
+            @click="closeModal"
+          />
+          <div
+            class="
+              flex flex-col
+              w-full
+              px-6
+              text-center
+              items-center
+              justify-center
+            "
+          >
+            <slot />
+          </div>
         </div>
       </div>
-    </div>
-  </teleport>
+    </teleport>
+  </div>
 </template>
 
 <script lang="ts">
@@ -37,13 +52,16 @@ export default defineComponent({
         blur: Boolean
     },
     emits: ["close"],
-    setup(_, {emit}) {
+    setup(props, {emit}) {
         function handleMouseDrag(event: MouseEvent) {
-            if(event.button == 0) {
-                emit("close")
-            }
+          if(event.button == 0) {
+            emit("close")
+          }
         }
-        return {handleMouseDrag}
+        function closeModal() {
+          emit("close")
+        }
+        return {handleMouseDrag, closeModal}
     }
 })
 </script>

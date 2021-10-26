@@ -6,7 +6,7 @@ export interface Email{
     from: string,
     id: number,
     read: boolean,
-    sentAt: Date,
+    sentAt: string,
     subject: string
 }
 
@@ -32,6 +32,5 @@ export async function getEmailById(id: number): Promise<Email> {
         .catch(error => {
             throw error;
         });
-    console.log(response);
     return response as Email;
 }

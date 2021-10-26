@@ -1,6 +1,6 @@
 <template>
-  <Modal :is-open="false" :blur="false" @close="$emit('close')">
-    <div class="pt-5 backdrop-blur-none max-h-screen">
+  <Modal @keydown.esc="onKeyDown" :is-open="false" :blur="false" @close="$emit('close')">
+    <div  class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button class="mr-4" label="Archived" @click="archiveEmail" />
         <Button class="mr-4" label="Mark Unread" @click="markUnread" />
@@ -48,7 +48,15 @@ export default defineComponent({
       emit("close");
     }
 
-    return { archiveEmail, markUnread, nextEmail, prevEmail, closeModal };
+     function onKeyDown() {
+      console.log("key down")
+      // const val = (event.target as KeyboardEvent.value)
+    //   if(event.key == "scape") {
+        emit("close")
+    //   }
+    }
+
+    return { archiveEmail, markUnread, nextEmail, prevEmail, closeModal, onKeyDown };
   },
 });
 </script>

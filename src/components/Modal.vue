@@ -1,13 +1,14 @@
 <template>
-  <teleport to="#modal">
-    <div
-      class="absolute -z-50 top-0 left-0 w-full h-full min-h-screen"
-      :class="{
-        invisible: !isOpen,
-      }"
-      @click="closeModal"
-    >
+  <div
+    class="absolute -z-50 top-0 left-0 w-full h-full min-h-screen"
+    :class="{
+      invisible: !isOpen,
+    }"
+    @click="closeModal"
+  >
+    <teleport to="#modal">
       <div
+        
         :class="[
           'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 border border-black rounded',
           'transform transition-all duration-300 ease-out',
@@ -28,8 +29,8 @@
           </div>
         </div>
       </div>
-    </div>
-  </teleport>
+    </teleport>
+  </div>
 </template>
 
 <script lang="ts">
@@ -50,7 +51,15 @@ export default defineComponent({
     function closeModal() {
       emit("close");
     }
-    return { handleMouseDrag, closeModal };
+
+    function onKeyDown() {
+      console.log("key down")
+      // const val = (event.target as KeyboardEvent.value)
+      
+        emit("close")
+      
+    }
+    return { handleMouseDrag, closeModal, onKeyDown };
   },
 });
 </script>

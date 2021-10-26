@@ -1,5 +1,5 @@
 <template>
-    <button class="py-4 px-5 border-2 border-unicornSilver rounded font-mono text-xl font-bold  whitespace-nowrap ">
+    <button class="py-4 px-5 border-2 border-unicornSilver rounded font-mono text-lg whitespace-nowrap ">
         {{ label }}
     </button>
 </template>

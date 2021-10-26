@@ -8,9 +8,8 @@
   >
     <teleport to="#modal">
       <div
-        
         :class="[
-          'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 border border-black rounded',
+          'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 bg-white border border-black rounded',
           'transform transition-all duration-300 ease-out',
           {
             'scale-1 opacity-100': isOpen,
@@ -48,18 +47,12 @@ export default defineComponent({
         emit("close");
       }
     }
+    
     function closeModal() {
       emit("close");
     }
-
-    function onKeyDown() {
-      console.log("key down")
-      // const val = (event.target as KeyboardEvent.value)
-      
-        emit("close")
-      
-    }
-    return { handleMouseDrag, closeModal, onKeyDown };
+    
+    return { handleMouseDrag, closeModal };
   },
 });
 </script>

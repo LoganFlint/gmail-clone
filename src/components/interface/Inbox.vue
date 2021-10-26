@@ -23,6 +23,7 @@
       :class="{
         'bg-unicornSilver': i % 2 === 0,
       }"
+      @click="openEmail(email.id)"
     >
       <div class="w-1/4">
         {{ email.from }}
@@ -40,19 +41,56 @@
       </div>
     </div>
   </div>
+
+  <EmailModal
+    :emailId="state.id"
+    :blur="true"
+    :is-open="showEmail"
+    @close="closeModal"
+    @archive="closeModal"
+    @unread="closeModal"
+    @newer="closeModal"
+    @older="closeModal"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-import { sendEmail, requestEmails, getEmailById } from "../../services/api";
+import EmailModal from "../EmailModal.vue";
+import { defineComponent, reactive, ref } from "vue";
+import { sendEmail, requestEmails } from "../../services/api";
 import { Email } from "../../services/modules/emails";
 
 export default defineComponent({
   name: "Inbox",
+  components: {
+    EmailModal,
+  },
   setup() {
     const state = reactive({
       emails: [] as Email[],
+      id: 0,
     });
+
+    const showEmail = ref(false);
+
+    // async function getEmailsId(id: number): Promise<void> {
+    //   await getEmailById(id).then((response) => {
+    //     return response;
+    //   });
+    // }
+
+    function openEmail(id: number) {
+      state.id = id;
+      showEmail.value = true;
+
+      // let email = state.emails.filter((emails) => emails.id === emails.id)
+
+      // getEmailsId()
+    }
+
+    function closeModal() {
+      showEmail.value = false;
+    }
 
     async function send(email: Email): Promise<void> {
       await sendEmail(email);
@@ -70,6 +108,10 @@ export default defineComponent({
       state,
       send,
       getEmails,
+      showEmail,
+      openEmail,
+      closeModal,
+      // getEmailsId,
     };
   },
 });

@@ -1,14 +1,14 @@
 <template>
-  <Modal @keydown.esc="onKeyDown" :is-open="false" :blur="false" @close="$emit('close')">
-    <div  class="pt-5 backdrop-blur-none max-h-screen">
+  <Modal :is-open="false" :blur="false" @close="$emit('close')">
+    <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button class="mr-4" label="Archived" @click="archiveEmail" />
         <Button class="mr-4" label="Mark Unread" @click="markUnread" />
         <Button class="mr-4" label="Newer" @click="nextEmail" />
         <Button class="mr-4" label="Older" @click="prevEmail" />
       </div>
-      <div class="text-2xl font-bold">Subject: {{ subject }}</div>
-      <div>from {{ contact }}</div>
+      <div class="text-2xl font-bold">Subject: {{ state.email.subject }}</div>
+      <div>from {{ state.email.from }}</div>
     </div>
   </Modal>
 </template>
@@ -16,18 +16,23 @@
 <script lang="ts">
 import Button from "./Button.vue";
 import Modal from "./Modal.vue";
-import { defineComponent } from "vue";
+import { getEmailById } from "../services/api";
+import { Email } from "../services/modules/emails";
+
+import { defineComponent, reactive, watch } from "vue";
 export default defineComponent({
   components: {
     Modal,
     Button,
   },
   props: {
-    subject: { type: String, default: "" },
-    contact: { type: String, default: "" },
+    emailId: { type: Number, required: true },
   },
   emits: ["close", "archive", "unread", "newer", "older"],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
+    const state = reactive({
+      email: {} as Email,
+    });
     function archiveEmail() {
       emit("archive");
     }
@@ -44,19 +49,37 @@ export default defineComponent({
       emit("older");
     }
 
-    function closeModal() {  
+    function closeModal() {
       emit("close");
     }
 
-     function onKeyDown() {
-      console.log("key down")
-      // const val = (event.target as KeyboardEvent.value)
-    //   if(event.key == "scape") {
-        emit("close")
-    //   }
-    }
+    // function onKeyDown() {
+    //   console.log("key down");
+    //   // const val = (event.target as KeyboardEvent.value)
+    //   //   if(event.key == "scape") {
+    //   emit("close");
+    //   //   }
+    // }
 
-    return { archiveEmail, markUnread, nextEmail, prevEmail, closeModal, onKeyDown };
+    watch(
+      () => props.emailId,
+      () => {
+        console.log(props.emailId);
+         getEmailById(props.emailId).then((res) => {
+           state.email = res
+         })
+      }
+    );
+
+    return {
+      archiveEmail,
+      markUnread,
+      nextEmail,
+      prevEmail,
+      closeModal,
+      // onKeyDown,
+      state
+    };
   },
 });
 </script>

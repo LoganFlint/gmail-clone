@@ -1,5 +1,4 @@
 <template>
-  <div>
     <Button label="Hello" @click="openEmail" />
     <EmailModal
       :blur="true"
@@ -12,7 +11,6 @@
       @newer="closeModal"
       @older="closeModal"
     />
-  </div>
 </template>
 
 <script lang="ts">
@@ -37,7 +35,7 @@ export default defineComponent({
     }
 
     function closeModal() {
-      showEmail.value = false;
+        showEmail.value = false;
     }
 
     console.log("from Layout");

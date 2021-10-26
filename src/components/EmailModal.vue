@@ -1,50 +1,54 @@
 <template>
   <Modal :is-open="false" :blur="false" @close="$emit('close')">
     <div class="pt-5 backdrop-blur-none max-h-screen">
-        <div class="pb-8">
-            <Button class="mr-4" label="Archived" @click="archiveEmail" />
-            <Button class="mr-4" label="Mark Unread" @click="markUnread" />
-            <Button class="mr-4" label="Newer" @click="nextEmail" />
-            <Button class="mr-4" label="Older" @click="prevEmail" />
-        </div>
-      <div class="text-2xl font-bold ">Subject: {{ subject }}</div>
+      <div class="pb-8">
+        <Button class="mr-4" label="Archived" @click="archiveEmail" />
+        <Button class="mr-4" label="Mark Unread" @click="markUnread" />
+        <Button class="mr-4" label="Newer" @click="nextEmail" />
+        <Button class="mr-4" label="Older" @click="prevEmail" />
+      </div>
+      <div class="text-2xl font-bold">Subject: {{ subject }}</div>
       <div>from {{ contact }}</div>
     </div>
   </Modal>
 </template>
 
 <script lang="ts">
-import Button from "./Button.vue"
+import Button from "./Button.vue";
 import Modal from "./Modal.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
   components: {
     Modal,
-    Button
+    Button,
   },
   props: {
     subject: { type: String, default: "" },
     contact: { type: String, default: "" },
   },
   emits: ["close", "archive", "unread", "newer", "older"],
-  setup(_, {emit}) {
+  setup(_, { emit }) {
     function archiveEmail() {
-        emit("archive")
+      emit("archive");
     }
 
     function markUnread() {
-        emit("unread")
+      emit("unread");
     }
 
     function nextEmail() {
-        emit("newer")
+      emit("newer");
     }
 
     function prevEmail() {
-        emit("older")
+      emit("older");
     }
 
-    return { archiveEmail, markUnread, nextEmail, prevEmail }
-  }
+    function closeModal() {  
+      emit("close");
+    }
+
+    return { archiveEmail, markUnread, nextEmail, prevEmail, closeModal };
+  },
 });
 </script>

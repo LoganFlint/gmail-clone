@@ -1,6 +1,12 @@
 <template>
-  <div>
-    <teleport to="#modal">
+  <teleport to="#modal">
+    <div
+      class="absolute -z-50 top-0 left-0 w-full h-full min-h-screen"
+      :class="{
+        invisible: !isOpen,
+      }"
+      @click="closeModal"
+    >
       <div
         :class="[
           'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 border border-black rounded',
@@ -14,50 +20,37 @@
         <div>
           <img
             src="../../src/assets/close.svg"
-            class="
-              absolute
-              right-5
-              top-2
-              cursor-pointer
-              w-8
-              h-8
-              p-1.5
-            "
+            class="absolute right-5 top-2 cursor-pointer w-8 h-8 p-1.5"
             @click="closeModal"
           />
-          <div
-            class="
-              w-full
-              px-6
-            "
-          >
+          <div class="w-full px-6">
             <slot />
           </div>
         </div>
       </div>
-    </teleport>
-  </div>
+    </div>
+  </teleport>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-    props: {
-        isOpen: Boolean,
-        blur: Boolean
-    },
-    emits: ["close"],
-    setup(props, {emit}) {
-        function handleMouseDrag(event: MouseEvent) {
-          if(event.button == 0) {
-            emit("close")
-          }
-        }
-        function closeModal() {
-          emit("close")
-        }
-        return {handleMouseDrag, closeModal}
+  props: {
+    isOpen: Boolean,
+    blur: Boolean,
+  },
+  emits: ["close"],
+  setup(props, { emit }) {
+    function handleMouseDrag(event: MouseEvent) {
+      if (event.button == 0) {
+        emit("close");
+      }
     }
-})
+    function closeModal() {
+      emit("close");
+    }
+    return { handleMouseDrag, closeModal };
+  },
+});
 </script>

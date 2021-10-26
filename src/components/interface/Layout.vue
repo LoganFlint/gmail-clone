@@ -1,4 +1,5 @@
 <template>
+  <div>
     <Button label="Hello" @click="openEmail" />
     <EmailModal
       :blur="true"
@@ -11,6 +12,9 @@
       @newer="closeModal"
       @older="closeModal"
     />
+  </div>
+
+  <Inbox />
 </template>
 
 <script lang="ts">
@@ -18,6 +22,7 @@
 import Button from "../Button.vue";
 import EmailModal from "../EmailModal.vue";
 import SomeModal from "../SomeModal.vue";
+import Inbox from "../interface/Inbox.vue";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -26,6 +31,7 @@ export default defineComponent({
     Button,
     EmailModal,
     SomeModal,
+    Inbox,
   },
   setup() {
     const showEmail = ref(false);
@@ -35,7 +41,7 @@ export default defineComponent({
     }
 
     function closeModal() {
-        showEmail.value = false;
+      showEmail.value = false;
     }
 
     console.log("from Layout");

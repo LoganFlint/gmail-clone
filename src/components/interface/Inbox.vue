@@ -47,7 +47,6 @@
     :blur="true"
     :is-open="showEmail"
     @close="closeModal"
-    @archive="closeModal"
     @unread="closeModal"
     @newer="closeModal"
     @older="closeModal"

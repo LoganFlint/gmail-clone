@@ -12,7 +12,7 @@
   >
     <div class="flex">
       <div class="pr-3  tracking-wider">{{ label }}</div>
-      <div v-if="keydown">{{ keydown }}</div>
+      <div>{{ keydown }}</div>
     </div>
   </button>
 </template>

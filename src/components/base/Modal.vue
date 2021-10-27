@@ -3,7 +3,7 @@
     class="absolute -z-50 top-0 left-0 w-full h-full min-h-screen"
     :class="{
       'invisible': !isOpen,
-      'filter blur-lg': blur
+      'filter blur-lg': blur === true
     }"
     @click="closeModal"
   >

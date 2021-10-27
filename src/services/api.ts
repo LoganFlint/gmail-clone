@@ -1,8 +1,14 @@
-import { requestEmails, sendEmail, getEmailById, updateEmail } from "./modules/emails";
+import { requestEmails, sendEmail, getEmailById, updateEmail, archiveEmail, archiveEmailById, unarchiveEmail, unarchiveEmailById, toggleArchive, toggleArchiveById } from "./modules/emails";
 
 export {
     requestEmails,
     sendEmail,
     getEmailById,
-    updateEmail
+    updateEmail,
+    archiveEmail,
+    archiveEmailById,
+    unarchiveEmail,
+    unarchiveEmailById,
+    toggleArchive,
+    toggleArchiveById
 }

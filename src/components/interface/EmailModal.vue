@@ -7,28 +7,32 @@
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button
+          keydown="(e)"
           class="mr-4"
           label="Archived"
           @click="archiveEmail"
         />
         <Button
+          keydown="(r)"
           class="mr-4"
           label="Mark Unread"
           @click="markUnread"
         />
         <Button
+          keydown="(k)"
           class="mr-4"
           label="Newer"
           @click="nextEmail"
         />
         <Button
+          keydown="(j)"
           class="mr-4"
           label="Older"
           @click="prevEmail"
         />
       </div>
       <div class="text-2xl font-bold pr-16 pb-3">
-        Subject:{{ state.email.subject }}
+        Subject: <span class="pl-1"> {{ state.email.subject }} </span> 
       </div>
       <div class="text-lg">
         From <span class="italic">{{ state.email.from }}</span> on
@@ -42,9 +46,9 @@
 </template>
 
 <script lang="ts">
-import Button from "../base/Button.vue";
-import Modal from "../base/Modal.vue";
-import { getEmailById } from "../../services/api";
+import Button from "./Button.vue";
+import Modal from "./Modal.vue";
+import { getEmailById, updateEmail } from "../../services/api";
 import { Email } from "../../services/modules/emails";
 
 import { defineComponent, reactive, watch } from "vue";
@@ -62,8 +66,12 @@ export default defineComponent({
     const state = reactive({
       email: {} as Email,
     });
+
     function archiveEmail() {
-      emit("archive");
+      updateEmail(state.email).then((res) => {
+        state.email.archived = !state.email.archived
+        return res
+      })
     }
 
     function markUnread() {

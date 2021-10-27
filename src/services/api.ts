@@ -1,7 +1,8 @@
-import { requestEmails, sendEmail, getEmailById } from "./modules/emails";
+import { requestEmails, sendEmail, getEmailById, updateEmail } from "./modules/emails";
 
 export {
     requestEmails,
     sendEmail,
-    getEmailById
+    getEmailById,
+    updateEmail
 }

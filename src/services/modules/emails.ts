@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export interface Email{
+export interface Email {
     archived: boolean,
     body: string,
     from: string,
@@ -12,7 +12,7 @@ export interface Email{
 
 export async function requestEmails(): Promise<Email[]> {
     const response = await axios.get("http://localhost:3000/emails")
-        .then( ({ data }) => data )
+        .then(({ data }) => data)
         .catch(error => {
             throw error;
         })
@@ -28,7 +28,18 @@ export async function sendEmail(email: Email): Promise<void> {
 
 export async function getEmailById(id: number): Promise<Email> {
     const response = await axios.get(`http://localhost:3000/emails/${id}`)
-        .then( ({ data }) => data)
+        .then(({ data }) => data)
+        .catch(error => {
+            throw error;
+        });
+    return response as Email;
+}
+
+export async function updateEmail(email: Email): Promise<Email> {
+    const response = await axios.put(`http://localhost:3000/emails/${email.id}`, email)
+        .then(({ data }) => {
+            return data
+        })
         .catch(error => {
             throw error;
         });

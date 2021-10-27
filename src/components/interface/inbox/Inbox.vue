@@ -17,7 +17,7 @@
     v-model="state.open"
     :is-open="state.showEmail"
     @close="closeModal"
-    @archive="closeModal"
+    @archived="toggleArchive"
     @unread="closeModal"
     @read="toggleRead"
   />
@@ -33,6 +33,7 @@ interface SelectedEmail {
   email: Email;
   selected: boolean;
   read: boolean;
+  archived: boolean
 }
 export default defineComponent({
   name: "Inbox",
@@ -63,8 +64,13 @@ export default defineComponent({
         }
       });
     }
-    
+
     function toggleRead() {
+      getEmails();
+      state.count++;
+    }
+
+    function toggleArchive() {
       getEmails();
       state.count++;
     }
@@ -104,6 +110,7 @@ export default defineComponent({
       toggleRead,
       nextEmail,
       buildKey,
+      toggleArchive,
     };
   },
 });

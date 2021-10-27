@@ -5,14 +5,15 @@
         <Button
           keydown="(e)"
           class="mr-4"
-          label="Archived"
+          :label="state.email.archived === true ? 'Un-Archive' : 'Archive'"
           :color="state.email.archived === true ? 'blue' : ''"
           @click="toggleArchived"
         />
         <Button
           keydown="(r)"
           class="mr-4"
-          label="Mark Unread"
+          :label="state.email.read === true ? 'Mark-Unread' : 'Mark-Read'"
+          :color="state.email.blue === true ? 'blue' : ''"
           @click="toggleReadMail"
         />
         <Button keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
@@ -39,7 +40,7 @@ import {
   getEmailById,
   toggleArchive,
   toggleRead,
-  updateEmail
+  updateEmail,
 } from "../../services/api";
 import { Email } from "../../services/modules/emails";
 import { defineComponent, reactive, watch } from "vue";
@@ -52,16 +53,20 @@ export default defineComponent({
     modelValue: { type: Number, required: true },
     isOpen: { type: Boolean, default: false },
   },
-  emits: ["update:modelValue", "close", "read", "unread"],
+  emits: ["update:modelValue", "close", "read", "unread", "archived"],
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
     });
 
-    function toggleArchived(): void {
+    function toggleArchived(archived: boolean): void {
       toggleArchive(state.email).then((res) => {
         state.email = res;
       });
+      archived = state.email.archived;
+      emit("archived", archived);
+      console.log(archived)
+      closeModal();
     }
 
     function toggleReadMail(read: boolean) {
@@ -69,6 +74,8 @@ export default defineComponent({
         state.email = res;
       });
       read = state.email.read;
+            console.log(read)
+
       emit("read", read);
       closeModal();
     }
@@ -79,7 +86,7 @@ export default defineComponent({
         state.email.read = true;
         updateEmail(state.email);
       });
-      emit("update:modelValue", props.modelValue + 1)
+      emit("update:modelValue", props.modelValue + 1);
     }
 
     function prevEmail() {
@@ -88,7 +95,7 @@ export default defineComponent({
         state.email.read = true;
         updateEmail(state.email);
       });
-      emit("update:modelValue", props.modelValue - 1)
+      emit("update:modelValue", props.modelValue - 1);
     }
 
     function closeModal() {

@@ -13,9 +13,10 @@
       items-center
     "
     :class="{
-      'bg-unicornSilver': email.read,
+      'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray': email.read,
+      'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black': email.archived,
     }"
-    @update:modelValue="state.email.read"
+    @update:modelValue="state.email.read && state.email.archived"
   >
     <Checkbox
       v-model="state.selected"
@@ -58,16 +59,10 @@ export default defineComponent({
     index: { type: Number, default: 0 },
     modelValue: { type: Boolean, default: false },
   },
-  // emits: ["update:modelValue"],
   setup(props) {
-    // onMounted(async () => {
-    //   requestEmails().then((res) => {
-    //     return res;
-    //   });
-    // });
-
     const state = reactive({
       read: props.email.read,
+      archived: props.email.archived,
       selected: false,
       emails: [] as Email[],
     });
@@ -78,7 +73,6 @@ export default defineComponent({
         return res;
       });
     }
-
     return {
       state,
       getEmails,

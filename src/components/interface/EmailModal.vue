@@ -17,7 +17,7 @@
           keydown="(r)"
           class="mr-4"
           label="Mark Unread"
-          @click="markUnread"
+          @click="toggleReadMail"
         />
         <Button
           keydown="(k)"
@@ -49,7 +49,7 @@
 <script lang="ts">
 import Button from "../base/Button.vue";
 import Modal from "../base/Modal.vue";
-import { getEmailById, toggleArchive } from "../../services/api";
+import { getEmailById, toggleArchive, toggleRead } from "../../services/api";
 import { Email } from "../../services/modules/emails";
 
 import { defineComponent, reactive, watch } from "vue";
@@ -62,7 +62,7 @@ export default defineComponent({
     emailId: { type: Number, required: true },
     isOpen: { type: Boolean, default: false }
   },
-  emits: ["close", "archive", "unread", "newer", "older"],
+  emits: ["close", "update:modelValue", "unread", "newer", "older"],
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
@@ -74,8 +74,14 @@ export default defineComponent({
       });
     }
 
-    function markUnread() {
-      emit("unread");
+    function toggleReadMail(read: boolean) {
+      toggleRead(state.email).then((res) => {
+        state.email = res
+      })
+      read = state.email.read
+      emit("update:modelValue", read)
+      closeModal(read)
+
     }
 
     function nextEmail() {
@@ -86,8 +92,9 @@ export default defineComponent({
       emit("older");
     }
 
-    function closeModal() {
-      emit("close");
+    function closeModal(read: boolean) {
+      console.log("read", read)
+      emit("close", read);
     }
 
     watch(
@@ -101,7 +108,7 @@ export default defineComponent({
 
     return {
       toggleArchived,
-      markUnread,
+      toggleReadMail,
       nextEmail,
       prevEmail,
       closeModal,

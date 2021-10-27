@@ -1,17 +1,10 @@
 <template>
-  <div
-    class="p-8 m-auto flex w-full justify-center items-center"
-  >
-    <img src="../../../assets/launchBadgeLogo.svg">
-    <div class="font-bold text-xl m-3">
-      launchmail
-    </div>
+  <div class="p-8 m-auto flex w-full justify-center items-center">
+    <img src="../../../assets/launchBadgeLogo.svg" />
+    <div class="font-bold text-xl m-3">launchmail</div>
   </div>
 
-  <div
-    v-for="(email, i) in state.emails"
-    :key="email.email.id"
-  >
+  <div v-for="(email, i) in state.emails" :key="email.email.id">
     <EmailItem
       v-model="state.emails[i].selected"
       :email="email.email"
@@ -32,8 +25,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-import { sendEmail, requestEmails, getEmailById } from "../../../services/api"
+import { defineComponent, reactive, onUpdated } from "vue";
+import { sendEmail, requestEmails, getEmailById,  } from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
 
 import EmailItem from "./EmailItem.vue";
@@ -41,7 +34,8 @@ import EmailModal from "../EmailModal.vue";
 
 interface SelectedEmail {
   email: Email,
-  selected: boolean
+  selected: boolean,
+  read: boolean
 }
 
 export default defineComponent({
@@ -51,6 +45,10 @@ export default defineComponent({
       EmailModal
     },
     setup(){
+      onUpdated(() => {
+        getEmails()
+      })
+
         const state = reactive({
             emails: [] as SelectedEmail[],
             open: 0,
@@ -77,7 +75,8 @@ export default defineComponent({
           state.showEmail = true;
         }
 
-        function closeModal(): void {
+        function closeModal(read: boolean): void {
+          // getEmails()
           state.showEmail = false;
         }
 
@@ -92,5 +91,4 @@ export default defineComponent({
         }
     }
 });
-
 </script>

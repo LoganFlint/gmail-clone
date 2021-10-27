@@ -77,3 +77,8 @@ export async function toggleArchive(email: Email): Promise<Email> {
     email.archived = !email.archived;
     return await updateEmail(email);
 }
+
+export async function toggleRead(email: Email): Promise<Email> {
+    email.read = !email.read;
+    return await updateEmail(email);
+}

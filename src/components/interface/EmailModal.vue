@@ -39,9 +39,9 @@ import {
   getEmailById,
   toggleArchive,
   toggleRead,
+  updateEmail
 } from "../../services/api";
 import { Email } from "../../services/modules/emails";
-
 import { defineComponent, reactive, watch } from "vue";
 export default defineComponent({
   components: {
@@ -49,10 +49,10 @@ export default defineComponent({
     Button,
   },
   props: {
-    emailId: { type: Number, required: true },
+    modelValue: { type: Number, required: true },
     isOpen: { type: Boolean, default: false },
   },
-  emits: ["close", "read", "unread", "newer", "older"],
+  emits: ["update:modelValue", "close", "read", "unread"],
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
@@ -70,32 +70,35 @@ export default defineComponent({
       });
       read = state.email.read;
       emit("read", read);
-      closeModal(read);
+      closeModal();
     }
 
     function nextEmail() {
-      getEmailById(props.emailId).then((res) => {
-        // state.email.read = true;
-        // state.email.id = id;
-        console.log( props.emailId);
-        return res;
+      getEmailById(props.modelValue + 1).then((res) => {
+        state.email = res;
+        state.email.read = true;
+        updateEmail(state.email);
       });
-      emit("newer", props.emailId);
+      emit("update:modelValue", props.modelValue + 1)
     }
 
     function prevEmail() {
-      emit("older");
+      getEmailById(props.modelValue - 1).then((res) => {
+        state.email = res;
+        state.email.read = true;
+        updateEmail(state.email);
+      });
+      emit("update:modelValue", props.modelValue - 1)
     }
 
-    function closeModal(read: boolean) {
-      console.log("read", read);
-      emit("close", read);
+    function closeModal() {
+      emit("close");
     }
 
     watch(
-      () => props.emailId,
+      () => props.modelValue,
       () => {
-        getEmailById(props.emailId).then((res) => {
+        getEmailById(props.modelValue).then((res) => {
           state.email = res;
         });
       }

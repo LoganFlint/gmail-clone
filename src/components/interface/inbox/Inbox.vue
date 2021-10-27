@@ -4,7 +4,7 @@
     <div class="font-bold text-xl m-3">launchmail</div>
   </div>
 
-  <div v-for="(email, i) in state.emails" :key="email.email.id">
+  <div v-for="(email, i) in state.emails" :key="buildKey(email.email.id)">
     <EmailItem
       v-model="state.emails[i].selected"
       :email="email.email"
@@ -14,36 +14,26 @@
   </div>
 
   <EmailModal
-    :email-id="state.open"
+    v-model="state.open"
     :is-open="state.showEmail"
     @close="closeModal"
     @archive="closeModal"
     @unread="closeModal"
-    @newer="nextEmail"
-    @older="closeModal"
     @read="toggleRead"
   />
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
-import {
-  sendEmail,
-  requestEmails,
-  getEmailById,
-  goNewer,
-} from "../../../services/api";
+import { defineComponent, reactive, watch } from "vue";
+import { sendEmail, requestEmails } from "../../../services/api";
 import { Email } from "../../../services/modules/emails";
-
 import EmailItem from "./EmailItem.vue";
 import EmailModal from "../EmailModal.vue";
-
 interface SelectedEmail {
   email: Email;
   selected: boolean;
   read: boolean;
 }
-
 export default defineComponent({
   name: "Inbox",
   components: {
@@ -52,10 +42,10 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      email: {} as Email,
       emails: [] as SelectedEmail[],
       open: 0,
       showEmail: false,
+      count: 0,
     });
 
     async function send(email: Email): Promise<void> {
@@ -63,6 +53,7 @@ export default defineComponent({
     }
 
     function getEmails(): void {
+      state.emails = [];
       requestEmails().then((response) => {
         for (const item of response) {
           state.emails.push({
@@ -72,20 +63,14 @@ export default defineComponent({
         }
       });
     }
-
-    function toggleRead(read: boolean) {
-      requestEmails().then((res) => {
-        return res;
-      });
+    
+    function toggleRead() {
+      getEmails();
+      state.count++;
     }
 
-    function nextEmail(id: number) {
-      getEmailById(state.email.id).then((res) => {
-        state.email.read = true;
-        state.email.id = id
-        console.log(res, state.email.id);
-        return id ++
-      });
+    function nextEmail() {
+      console.log();
     }
 
     function openEmail(id: number): void {
@@ -97,7 +82,18 @@ export default defineComponent({
       state.showEmail = false;
     }
 
+    function buildKey(id: number): string {
+      return `${id}.${state.count}`;
+    }
+
     getEmails();
+
+    watch(
+      () => state.open,
+      () => {
+        console.log(state.open);
+      }
+    );
 
     return {
       state,
@@ -107,6 +103,7 @@ export default defineComponent({
       closeModal,
       toggleRead,
       nextEmail,
+      buildKey,
     };
   },
 });

@@ -45,3 +45,35 @@ export async function updateEmail(email: Email): Promise<Email> {
         });
     return response as Email;
 }
+
+export async function archiveEmailById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await archiveEmail(email);
+}
+
+export async function archiveEmail(email: Email): Promise<Email> {
+    if(email.archived === true) return email;
+    email.archived = true;
+    return await updateEmail(email);
+}
+
+export async function unarchiveEmailById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await unarchiveEmail(email);
+}
+
+export async function unarchiveEmail(email: Email): Promise<Email> {
+    if(email.archived === false) return email;
+    email.archived = false;
+    return await updateEmail(email);
+}
+
+export async function toggleArchiveById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await toggleArchive(email);
+}
+
+export async function toggleArchive(email: Email): Promise<Email> {
+    email.archived = !email.archived;
+    return await updateEmail(email);
+}

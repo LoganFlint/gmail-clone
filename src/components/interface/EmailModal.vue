@@ -1,7 +1,7 @@
 <template>
   <Modal
     :is-open="isOpen"
-    :blur="false"
+    blur
     @close="$emit('close')"
   >
     <div class="pt-5 backdrop-blur-none max-h-screen">
@@ -9,8 +9,9 @@
         <Button
           keydown="(e)"
           class="mr-4"
-          label="Archive"
-          @click="archiveEmail"
+          label="Archived"
+          :color="state.email.archived === true? 'blue' : ''"
+          @click="toggleArchived"
         />
         <Button
           keydown="(r)"
@@ -48,7 +49,7 @@
 <script lang="ts">
 import Button from "../base/Button.vue";
 import Modal from "../base/Modal.vue";
-import { getEmailById, updateEmail } from "../../services/api";
+import { getEmailById, toggleArchive } from "../../services/api";
 import { Email } from "../../services/modules/emails";
 
 import { defineComponent, reactive, watch } from "vue";
@@ -67,11 +68,10 @@ export default defineComponent({
       email: {} as Email,
     });
 
-    function archiveEmail() {
-      state.email.archived = !state.email.archived
-      updateEmail(state.email).then((res) => {
-        return res
-      })
+    function toggleArchived(): void {
+      toggleArchive(state.email).then((res) => {
+        state.email = res;
+      });
     }
 
     function markUnread() {
@@ -100,7 +100,7 @@ export default defineComponent({
     );
 
     return {
-      archiveEmail,
+      toggleArchived,
       markUnread,
       nextEmail,
       prevEmail,

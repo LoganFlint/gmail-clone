@@ -8,10 +8,17 @@
       font-mono
       text-lg
       whitespace-nowrap
+      transition-all
+      duration-300
     "
+    :class="{
+      'bg-lbLightBlue': color === 'blue'
+    }"
   >
     <div class="flex">
-      <div class="pr-3  tracking-wider">{{ label }}</div>
+      <div class="pr-3  tracking-wider">
+        {{ label }}
+      </div>
       <div>{{ keydown }}</div>
     </div>
   </button>
@@ -24,6 +31,7 @@ export default defineComponent({
   props: {
     label: { type: String, default: "" },
     keydown: { type: String, default: "" },
+    color: { type: String, default: "" }
   },
 });
 </script>

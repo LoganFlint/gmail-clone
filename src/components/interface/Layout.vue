@@ -3,8 +3,7 @@
 </template>
 
 <script lang="ts">
-// TODO we should figure out how auto imports work!!!
-import Inbox from "../interface/Inbox.vue";
+import Inbox from "./inbox/Inbox.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({

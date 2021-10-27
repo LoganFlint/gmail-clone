@@ -1,9 +1,22 @@
 <template>
   <div
-    class="clear-both w-full hover:bg-lbLightBlue cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
+    class="
+      clear-both
+      w-full
+      hover:bg-lbLightBlue
+      cursor-pointer
+      flex
+      whitespace-nowrap
+      pr-8
+      pl-8
+      h-10
+      items-center
+    "
     :class="{
-      'bg-unicornSilver': index % 2 === 0  
+      'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray': email.read,
+      'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black': email.archived,
     }"
+    @update:modelValue="state.email.read && state.email.archived"
   >
     <Checkbox
       v-model="state.selected"
@@ -37,7 +50,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, watch } from "vue";
+import { defineComponent, PropType, reactive, onMounted } from "vue";
+
+import { requestEmails } from "../../../services/api";
 
 import { Email } from "../../../services/modules/emails";
 
@@ -45,32 +60,33 @@ import Checkbox from "../../base/Checkbox.vue";
 import Button from "../../base/Button.vue";
 
 export default defineComponent({
-    name: "EmailItem",
-    components: {
-      Checkbox,
-      Button,
-    },
-    props: {
-        email: { type: Object as PropType<Email>, required: true },
-        index: { type: Number, default: 0 },
-        modelValue: { type: Boolean, default: false }
-    },
-    emits: [
-      "update:modelValue",
-      "openEmail"
-    ],
-    setup(props){
-      const state = reactive({
-        selected: false
-      });
+  name: "EmailItem",
+  components: {
+    Checkbox,
+  },
+  props: {
+    email: { type: Object as PropType<Email>, required: true },
+    index: { type: Number, default: 0 },
+    modelValue: { type: Boolean, default: false },
+  },
+  setup(props) {
+    const state = reactive({
+      read: props.email.read,
+      archived: props.email.archived,
+      selected: false,
+      emails: [] as Email[],
+    });
 
-      watch(() => props.modelValue, () => {
-        state.selected = props.modelValue
-      })
-      
-      return {
-        state,
-      }
+    function getEmails(): void {
+      requestEmails().then((res) => {
+        console.log(res);
+        return res;
+      });
     }
+    return {
+      state,
+      getEmails,
+    };
+  },
 });
 </script>

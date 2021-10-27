@@ -77,3 +77,22 @@ export async function toggleArchive(email: Email): Promise<Email> {
     email.archived = !email.archived;
     return await updateEmail(email);
 }
+
+export async function toggleRead(email: Email): Promise<Email> {
+    email.read = !email.read;
+    return await updateEmail(email);
+}
+
+export async function goNewer(email: Email): Promise<Email> {
+    let archived = email.archived = false
+    let read = email.read = true
+    let id = email.id ++
+    return await getEmailById(id)
+    
+    // return await updateEmail(email);
+}
+
+// export async function goOlder(email: Email): Promise<Email> {
+//     email.read = !email.read;
+//     return await updateEmail(email);
+// }

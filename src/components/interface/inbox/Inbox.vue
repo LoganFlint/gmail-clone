@@ -1,11 +1,7 @@
 <template>
-  <div
-    class="p-8 m-auto flex w-full justify-center items-center"
-  >
-    <img src="../../../assets/launchBadgeLogo.svg">
-    <div class="font-bold text-xl m-3">
-      launchmail
-    </div>
+  <div class="p-8 m-auto flex w-full justify-center items-center">
+    <img src="../../../assets/launchBadgeLogo.svg" />
+    <div class="font-bold text-xl m-3">launchmail</div>
   </div>
 
   <ActionMenu
@@ -32,13 +28,12 @@
   </div>
 
   <EmailModal
-    :email-id="state.open"
+    v-model="state.open"
     :is-open="state.showEmail"
     @close="closeModal"
-    @archive="closeModal"
+    @archived="toggleArchive"
     @unread="closeModal"
-    @newer="closeModal"
-    @older="closeModal"
+    @read="toggleRead"
   />
 </template>
 
@@ -46,16 +41,16 @@
 import { defineComponent, reactive } from "vue";
 import { sendEmail, requestEmails, getEmailById, archiveEmail, unarchiveEmail } from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
-
 import EmailItem from "./EmailItem.vue";
 import EmailModal from "../EmailModal.vue";
 import ActionMenu from "./ActionMenu.vue";
 
 interface SelectedEmail {
-  email: Email,
-  selected: boolean
+  email: Email;
+  selected: boolean;
+  read: boolean;
+  archived: boolean
 }
-
 export default defineComponent({
     name: "Inbox",
     components: {
@@ -64,48 +59,48 @@ export default defineComponent({
       ActionMenu
     },
     setup(){
-        const state = reactive({
-            emails: [] as SelectedEmail[],
-            open: 0,
-            showEmail: false,
-            showActionMenu: false
+      const state = reactive({
+        emails: [] as SelectedEmail[],
+        open: 0,
+        showEmail: false,
+        showActionMenu: false
+      });
+
+      function getEmails(): void {
+        state.emails = [];
+        requestEmails().then(response => {
+          for(const item of response) {
+            state.emails.push({
+              email: item,
+              selected: false
+              } as SelectedEmail);
+            }
         });
+      }
+      
+      function openEmail(id: number): void {
+        state.open = id;
+        state.showEmail = true;
+      }
 
-        async function send(email: Email): Promise<void> {
-            await sendEmail(email);
-        }
+      function toggleRead() {
+        getEmails();
+      }
 
-        function getEmails(): void {
-          state.emails = [];
-            requestEmails().then(response => {
-                for(const item of response) {
-                  state.emails.push({
-                    email: item,
-                    selected: false
-                  } as SelectedEmail);
-                }
-            });
-        }
+      function toggleArchive() {
+        getEmails();
+      }
 
-        function openEmail(id: number): void {
-          state.open = id;
-          state.showEmail = true;
+      function selectAll(selected: boolean): void {
+        state.showActionMenu = selected;
+        for(const i in state.emails) {
+          state.emails[i].selected = selected;
         }
+      }
 
-        function closeModal(): void {
-          state.showEmail = false;
-        }
-
-        function selectAll(selected: boolean): void {
-          state.showActionMenu = selected;
-          for(const i in state.emails) {
-            state.emails[i].selected = selected;
-          }
-        }
-
-        function deleteSelected(): void {
-          console.log("Need to create this function in email.ts");
-        }
+      function deleteSelected(): void {
+        console.log("Need to create this function in email.ts");
+      }
 
         async function archiveSelected(): Promise<void> {
           for(const email of state.emails) {
@@ -119,7 +114,6 @@ export default defineComponent({
             if(email.selected === true) await unarchiveEmail(email.email);
           }
           getEmails();
-
         }
 
         async function readSelected(): Promise<void> {
@@ -140,13 +134,15 @@ export default defineComponent({
           state.showActionMenu = false;
         }
 
+        function closeModal(): void {
+          state.showEmail = false;
+        }
+
         getEmails();
 
         return {
             state,
-            send,
             getEmails,
-            openEmail,
             closeModal,
             selectAll,
             deleteSelected,
@@ -154,9 +150,11 @@ export default defineComponent({
             unarchiveSelected,
             readSelected,
             unreadSelected,
-            handleActionMenu
+            handleActionMenu,
+            toggleRead,
+            toggleArchive,
+            openEmail
         }
-    }
+      }
 });
-
 </script>

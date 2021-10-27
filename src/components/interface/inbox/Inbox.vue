@@ -8,6 +8,16 @@
     </div>
   </div>
 
+  <ActionMenu
+    class="mr-4"
+    :open="state.showActionMenu"
+    @select-all="selectAll"
+    @delete-selected="deleteSelected"
+    @archive-selected="archiveSelected"
+    @unarchive-selected="unarchiveSelected"
+    @read-selected="readSelected"
+    @unread-selected="unreadSelected"
+  />
   <div
     v-for="(email, i) in state.emails"
     :key="email.email.id"
@@ -16,7 +26,8 @@
       v-model="state.emails[i].selected"
       :email="email.email"
       :index="i"
-      @click="openEmail(email.email.id)"
+      @open-email="openEmail"
+      @update:model-value="handleActionMenu"
     />
   </div>
 
@@ -33,11 +44,12 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { sendEmail, requestEmails, getEmailById } from "../../../services/api"
+import { sendEmail, requestEmails, getEmailById, archiveEmail, unarchiveEmail } from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
 
 import EmailItem from "./EmailItem.vue";
 import EmailModal from "../EmailModal.vue";
+import ActionMenu from "./ActionMenu.vue";
 
 interface SelectedEmail {
   email: Email,
@@ -48,13 +60,15 @@ export default defineComponent({
     name: "Inbox",
     components: {
       EmailItem,
-      EmailModal
+      EmailModal,
+      ActionMenu
     },
     setup(){
         const state = reactive({
             emails: [] as SelectedEmail[],
             open: 0,
-            showEmail: false
+            showEmail: false,
+            showActionMenu: false
         });
 
         async function send(email: Email): Promise<void> {
@@ -62,6 +76,7 @@ export default defineComponent({
         }
 
         function getEmails(): void {
+          state.emails = [];
             requestEmails().then(response => {
                 for(const item of response) {
                   state.emails.push({
@@ -81,6 +96,50 @@ export default defineComponent({
           state.showEmail = false;
         }
 
+        function selectAll(selected: boolean): void {
+          state.showActionMenu = selected;
+          for(const i in state.emails) {
+            state.emails[i].selected = selected;
+          }
+        }
+
+        function deleteSelected(): void {
+          console.log("Need to create this function in email.ts");
+        }
+
+        async function archiveSelected(): Promise<void> {
+          for(const email of state.emails) {
+            if(email.selected === true) await archiveEmail(email.email);
+          }
+          getEmails();
+        }
+
+        async function unarchiveSelected(): Promise<void> {
+          for(const email of state.emails) {
+            if(email.selected === true) await unarchiveEmail(email.email);
+          }
+          getEmails();
+
+        }
+
+        async function readSelected(): Promise<void> {
+          console.log("Need to create this function in email.ts");
+        }
+
+        async function unreadSelected(): Promise<void> {
+          console.log("Need to create this function in email.ts");
+        }
+
+        function handleActionMenu(): void {
+          for(const email of state.emails) {
+            if(email.selected === true) {
+              state.showActionMenu = true;
+              return;
+            }
+          }
+          state.showActionMenu = false;
+        }
+
         getEmails();
 
         return {
@@ -89,6 +148,13 @@ export default defineComponent({
             getEmails,
             openEmail,
             closeModal,
+            selectAll,
+            deleteSelected,
+            archiveSelected,
+            unarchiveSelected,
+            readSelected,
+            unreadSelected,
+            handleActionMenu
         }
     }
 });

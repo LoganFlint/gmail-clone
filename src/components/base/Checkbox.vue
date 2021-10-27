@@ -2,6 +2,7 @@
   <div>
     <input
       :disabled="disabled"
+      :checked="modelValue"
       type="checkbox"
       class="rounded w-4 h-4 border border-black focus:ring-0 focus:ring-offset-0"
       @input="toggle"

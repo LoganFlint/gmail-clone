@@ -60,11 +60,11 @@ export default defineComponent({
   },
   // emits: ["update:modelValue"],
   setup(props) {
-    onMounted(async () => {
-      requestEmails().then((res) => {
-        return res;
-      });
-    });
+    // onMounted(async () => {
+    //   requestEmails().then((res) => {
+    //     return res;
+    //   });
+    // });
 
     const state = reactive({
       read: props.email.read,

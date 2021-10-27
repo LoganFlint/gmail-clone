@@ -19,76 +19,95 @@
     @close="closeModal"
     @archive="closeModal"
     @unread="closeModal"
-    @newer="closeModal"
+    @newer="nextEmail"
     @older="closeModal"
+    @read="toggleRead"
   />
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onUpdated } from "vue";
-import { sendEmail, requestEmails, getEmailById,  } from "../../../services/api"
+import { defineComponent, reactive } from "vue";
+import {
+  sendEmail,
+  requestEmails,
+  getEmailById,
+  goNewer,
+} from "../../../services/api";
 import { Email } from "../../../services/modules/emails";
 
 import EmailItem from "./EmailItem.vue";
 import EmailModal from "../EmailModal.vue";
 
 interface SelectedEmail {
-  email: Email,
-  selected: boolean,
-  read: boolean
+  email: Email;
+  selected: boolean;
+  read: boolean;
 }
 
 export default defineComponent({
-    name: "Inbox",
-    components: {
-      EmailItem,
-      EmailModal
-    },
-    setup(){
-      onUpdated(() => {
-        getEmails()
-      })
+  name: "Inbox",
+  components: {
+    EmailItem,
+    EmailModal,
+  },
+  setup() {
+    const state = reactive({
+      email: {} as Email,
+      emails: [] as SelectedEmail[],
+      open: 0,
+      showEmail: false,
+    });
 
-        const state = reactive({
-            emails: [] as SelectedEmail[],
-            open: 0,
-            showEmail: false
-        });
-
-        async function send(email: Email): Promise<void> {
-            await sendEmail(email);
-        }
-
-        function getEmails(): void {
-            requestEmails().then(response => {
-                for(const item of response) {
-                  state.emails.push({
-                    email: item,
-                    selected: false
-                  } as SelectedEmail);
-                }
-            });
-        }
-
-        function openEmail(id: number): void {
-          state.open = id;
-          state.showEmail = true;
-        }
-
-        function closeModal(read: boolean): void {
-          // getEmails()
-          state.showEmail = false;
-        }
-
-        getEmails();
-
-        return {
-            state,
-            send,
-            getEmails,
-            openEmail,
-            closeModal,
-        }
+    async function send(email: Email): Promise<void> {
+      await sendEmail(email);
     }
+
+    function getEmails(): void {
+      requestEmails().then((response) => {
+        for (const item of response) {
+          state.emails.push({
+            email: item,
+            selected: false,
+          } as SelectedEmail);
+        }
+      });
+    }
+
+    function toggleRead(read: boolean) {
+      requestEmails().then((res) => {
+        return res;
+      });
+    }
+
+    function nextEmail(id: number) {
+      getEmailById(state.email.id).then((res) => {
+        state.email.read = true;
+        state.email.id = id
+        console.log(res, state.email.id);
+        return id ++
+      });
+    }
+
+    function openEmail(id: number): void {
+      state.open = id;
+      state.showEmail = true;
+    }
+
+    function closeModal(read: boolean): void {
+      state.showEmail = false;
+    }
+
+    getEmails();
+
+    return {
+      state,
+      send,
+      getEmails,
+      openEmail,
+      closeModal,
+      toggleRead,
+      nextEmail,
+    };
+  },
 });
 </script>

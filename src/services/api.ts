@@ -1,4 +1,4 @@
-import { requestEmails, sendEmail, getEmailById, updateEmail, archiveEmail, archiveEmailById, unarchiveEmail, unarchiveEmailById, toggleArchive, toggleArchiveById, toggleRead } from "./modules/emails";
+import { requestEmails, sendEmail, getEmailById, updateEmail, archiveEmail, archiveEmailById, unarchiveEmail, unarchiveEmailById, toggleArchive, toggleArchiveById, toggleRead, goNewer } from "./modules/emails";
 
 export {
     requestEmails,
@@ -11,5 +11,6 @@ export {
     unarchiveEmailById,
     toggleArchive,
     toggleArchiveById,
-    toggleRead
+    toggleRead,
+    goNewer
 }

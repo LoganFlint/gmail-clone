@@ -14,7 +14,6 @@ export default defineComponent({
   setup() {
     onMounted(async () => {
       requestEmails().then((res) => {
-        console.log(res);
         return res;
       });
     });

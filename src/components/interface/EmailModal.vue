@@ -1,16 +1,12 @@
 <template>
-  <Modal
-    :is-open="isOpen"
-    blur
-    @close="$emit('close')"
-  >
+  <Modal :is-open="isOpen" blur @close="$emit('close')">
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button
           keydown="(e)"
           class="mr-4"
           label="Archived"
-          :color="state.email.archived === true? 'blue' : ''"
+          :color="state.email.archived === true ? 'blue' : ''"
           @click="toggleArchived"
         />
         <Button
@@ -19,21 +15,11 @@
           label="Mark Unread"
           @click="toggleReadMail"
         />
-        <Button
-          keydown="(k)"
-          class="mr-4"
-          label="Newer"
-          @click="nextEmail"
-        />
-        <Button
-          keydown="(j)"
-          class="mr-4"
-          label="Older"
-          @click="prevEmail"
-        />
+        <Button keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
+        <Button keydown="(j)" class="mr-4" label="Older" @click="prevEmail" />
       </div>
       <div class="text-2xl font-bold pr-16 pb-3">
-        Subject: <span class="pl-1"> {{ state.email.subject }} </span> 
+        Subject: <span class="pl-1"> {{ state.email.subject }} </span>
       </div>
       <div class="text-lg">
         From <span class="italic">{{ state.email.from }}</span> on
@@ -49,7 +35,11 @@
 <script lang="ts">
 import Button from "../base/Button.vue";
 import Modal from "../base/Modal.vue";
-import { getEmailById, toggleArchive, toggleRead } from "../../services/api";
+import {
+  getEmailById,
+  toggleArchive,
+  toggleRead,
+} from "../../services/api";
 import { Email } from "../../services/modules/emails";
 
 import { defineComponent, reactive, watch } from "vue";
@@ -60,9 +50,9 @@ export default defineComponent({
   },
   props: {
     emailId: { type: Number, required: true },
-    isOpen: { type: Boolean, default: false }
+    isOpen: { type: Boolean, default: false },
   },
-  emits: ["close", "update:modelValue", "unread", "newer", "older"],
+  emits: ["close", "read", "unread", "newer", "older"],
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
@@ -76,16 +66,21 @@ export default defineComponent({
 
     function toggleReadMail(read: boolean) {
       toggleRead(state.email).then((res) => {
-        state.email = res
-      })
-      read = state.email.read
-      emit("update:modelValue", read)
-      closeModal(read)
-
+        state.email = res;
+      });
+      read = state.email.read;
+      emit("read", read);
+      closeModal(read);
     }
 
     function nextEmail() {
-      emit("newer");
+      getEmailById(props.emailId).then((res) => {
+        // state.email.read = true;
+        // state.email.id = id;
+        console.log( props.emailId);
+        return res;
+      });
+      emit("newer", props.emailId);
     }
 
     function prevEmail() {
@@ -93,7 +88,7 @@ export default defineComponent({
     }
 
     function closeModal(read: boolean) {
-      console.log("read", read)
+      console.log("read", read);
       emit("close", read);
     }
 

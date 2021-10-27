@@ -5,7 +5,7 @@
 <script lang = "ts">
 import { defineComponent } from "vue";
 
-import Inbox from "./Inbox.vue"
+import Inbox from "./inbox/Inbox.vue"
 
 export default defineComponent({
     name: "Layout",

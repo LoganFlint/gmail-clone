@@ -2,7 +2,7 @@
   <div
     class="p-8 m-auto flex w-full justify-center items-center"
   >
-    <img src="../../assets/launchBadgeLogo.svg">
+    <img src="../../../assets/launchBadgeLogo.svg">
     <div class="font-bold text-xl m-3">
       launchmail
     </div>
@@ -10,11 +10,11 @@
 
   <div
     v-for="(email, i) in state.emails"
-    :key="email.id"
-    class="transition-all duration-300 w-full overflow-hidden"
+    :key="email.email.id"
   >
     <EmailItem
-      :email="email"
+      v-model="state.emails[i].selected"
+      :email="email.email"
       :index="i"
     />
   </div>
@@ -22,10 +22,14 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { sendEmail, requestEmails } from "../../services/api"
-import { Email } from "../../services/modules/emails";
-
+import { sendEmail, requestEmails, getEmailById } from "../../../services/api"
+import { Email } from "../../../services/modules/emails";
 import EmailItem from "./EmailItem.vue";
+
+interface SelectedEmail {
+  email: Email,
+  selected: boolean
+}
 
 export default defineComponent({
     name: "Inbox",
@@ -34,7 +38,7 @@ export default defineComponent({
     },
     setup(){
         const state = reactive({
-            emails: [] as Email[]
+            emails: [] as SelectedEmail[]
         });
 
         async function send(email: Email): Promise<void> {
@@ -43,13 +47,17 @@ export default defineComponent({
 
         function getEmails(): void {
             requestEmails().then(response => {
-                state.emails = response;
+                for(const item of response) {
+                  state.emails.push({
+                    email: item,
+                    selected: false
+                  } as SelectedEmail);
+                }
             });
-
         }
 
         getEmails();
-        
+
         return {
             state,
             send,

@@ -10,34 +10,45 @@
       class="m-3 mt-4"
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
-    <div class="w-1/4 overflow-hidden overflow-ellipsis">
-      {{ email.from }}
-    </div>
-    <div class="w-1/2 flex mr-2">
-      <div class="font-bold mr-8 overflow-hidden overflow-ellipsis">
-        {{ email.subject }}
-      </div>
-      <div class="overflow-hidden overflow-ellipsis">
-        {{ email.body }}
-      </div>
-    </div>
-    <div class="w-1/4 overflow-ellipsis text-right">
-      {{ new Date(email.sentAt).toLocaleTimeString() }}
-    </div>
+    <table
+      class="w-full table-fixed"
+      @click="$emit('openEmail', email.id)"
+    >
+      <tr>
+        <td class="w-1/5 overflow-hidden overflow-ellipsis">
+          {{ email.from }}
+        </td>
+        <td>
+          <div class="flex w-full">
+            <div class="max-w-5/6 font-bold mr-8 overflow-hidden overflow-ellipsis">
+              {{ email.subject }}
+            </div>
+            <div class="w-full overflow-hidden overflow-ellipsis">
+              {{ email.body }}
+            </div>
+          </div>
+        </td>
+        <td class="w-1/6 overflow-ellipsis text-right">
+          {{ new Date(email.sentAt).toLocaleTimeString() }}
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive } from "vue";
+import { defineComponent, PropType, reactive, watch } from "vue";
 
 import { Email } from "../../../services/modules/emails";
 
 import Checkbox from "../../base/Checkbox.vue";
+import Button from "../../base/Button.vue";
 
 export default defineComponent({
     name: "EmailItem",
     components: {
-      Checkbox
+      Checkbox,
+      Button,
     },
     props: {
         email: { type: Object as PropType<Email>, required: true },
@@ -45,12 +56,17 @@ export default defineComponent({
         modelValue: { type: Boolean, default: false }
     },
     emits: [
-      "update:modelValue"
+      "update:modelValue",
+      "openEmail"
     ],
-    setup(){
+    setup(props){
       const state = reactive({
         selected: false
       });
+
+      watch(() => props.modelValue, () => {
+        state.selected = props.modelValue
+      })
       
       return {
         state,

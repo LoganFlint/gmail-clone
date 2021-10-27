@@ -9,7 +9,7 @@
         <Button
           keydown="(e)"
           class="mr-4"
-          label="Archived"
+          label="Archive"
           @click="archiveEmail"
         />
         <Button
@@ -46,8 +46,8 @@
 </template>
 
 <script lang="ts">
-import Button from "./Button.vue";
-import Modal from "./Modal.vue";
+import Button from "../base/Button.vue";
+import Modal from "../base/Modal.vue";
 import { getEmailById, updateEmail } from "../../services/api";
 import { Email } from "../../services/modules/emails";
 
@@ -68,8 +68,8 @@ export default defineComponent({
     });
 
     function archiveEmail() {
+      state.email.archived = !state.email.archived
       updateEmail(state.email).then((res) => {
-        state.email.archived = !state.email.archived
         return res
       })
     }

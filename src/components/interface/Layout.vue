@@ -1,23 +1,18 @@
 <template>
-  <Inbox />    
+  <Inbox />
 </template>
 
-<script lang = "ts">
+<script lang="ts">
+import Inbox from "./inbox/Inbox.vue";
 import { defineComponent } from "vue";
 
-import Inbox from "./inbox/Inbox.vue"
-
 export default defineComponent({
-    name: "Layout",
-    components: {
-        Inbox
-    },
-    props: {
-
-    },
-    setup(){
-        console.log("from Layout");
-    }
-
+  name: "Layout",
+  components: {
+    Inbox,
+  },
+  setup() {
+    console.log("from Layout");
+  },
 });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="clear-both w-full hover:bg-lbLightBlue flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
+    class="clear-both w-full hover:bg-lbLightBlue cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
     :class="{
       'bg-unicornSilver': index % 2 === 0  
     }"

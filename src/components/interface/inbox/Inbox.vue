@@ -16,15 +16,28 @@
       v-model="state.emails[i].selected"
       :email="email.email"
       :index="i"
+      @click="openEmail(email.email.id)"
     />
   </div>
+
+  <EmailModal
+    :email-id="state.open"
+    :is-open="state.showEmail"
+    @close="closeModal"
+    @archive="closeModal"
+    @unread="closeModal"
+    @newer="closeModal"
+    @older="closeModal"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import { sendEmail, requestEmails, getEmailById } from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
+
 import EmailItem from "./EmailItem.vue";
+import EmailModal from "../EmailModal.vue";
 
 interface SelectedEmail {
   email: Email,
@@ -34,11 +47,14 @@ interface SelectedEmail {
 export default defineComponent({
     name: "Inbox",
     components: {
-      EmailItem
+      EmailItem,
+      EmailModal
     },
     setup(){
         const state = reactive({
-            emails: [] as SelectedEmail[]
+            emails: [] as SelectedEmail[],
+            open: 0,
+            showEmail: false
         });
 
         async function send(email: Email): Promise<void> {
@@ -56,12 +72,23 @@ export default defineComponent({
             });
         }
 
+        function openEmail(id: number): void {
+          state.open = id;
+          state.showEmail = true;
+        }
+
+        function closeModal(): void {
+          state.showEmail = false;
+        }
+
         getEmails();
 
         return {
             state,
             send,
             getEmails,
+            openEmail,
+            closeModal,
         }
     }
 });

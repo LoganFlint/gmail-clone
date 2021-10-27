@@ -1,11 +1,31 @@
 <template>
-  <Modal :is-open="false" :blur="false" @close="$emit('close')">
+  <Modal
+    :is-open="isOpen"
+    :blur="false"
+    @close="$emit('close')"
+  >
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
-        <Button class="mr-4" label="Archived" @click="archiveEmail" />
-        <Button class="mr-4" label="Mark Unread" @click="markUnread" />
-        <Button class="mr-4" label="Newer" @click="nextEmail" />
-        <Button class="mr-4" label="Older" @click="prevEmail" />
+        <Button
+          class="mr-4"
+          label="Archived"
+          @click="archiveEmail"
+        />
+        <Button
+          class="mr-4"
+          label="Mark Unread"
+          @click="markUnread"
+        />
+        <Button
+          class="mr-4"
+          label="Newer"
+          @click="nextEmail"
+        />
+        <Button
+          class="mr-4"
+          label="Older"
+          @click="prevEmail"
+        />
       </div>
       <div class="text-2xl font-bold pr-16 pb-3">
         Subject:{{ state.email.subject }}
@@ -14,16 +34,18 @@
         From <span class="italic">{{ state.email.from }}</span> on
         <span>{{ state.email.sentAt }}</span>
       </div>
-      <div class="pt-10 pr-32">{{ state.email.body }}</div>
+      <div class="pt-10 pr-32">
+        {{ state.email.body }}
+      </div>
     </div>
   </Modal>
 </template>
 
 <script lang="ts">
-import Button from "./Button.vue";
-import Modal from "./Modal.vue";
-import { getEmailById } from "../services/api";
-import { Email } from "../services/modules/emails";
+import Button from "../base/Button.vue";
+import Modal from "../base/Modal.vue";
+import { getEmailById } from "../../services/api";
+import { Email } from "../../services/modules/emails";
 
 import { defineComponent, reactive, watch } from "vue";
 export default defineComponent({
@@ -33,6 +55,7 @@ export default defineComponent({
   },
   props: {
     emailId: { type: Number, required: true },
+    isOpen: { type: Boolean, default: false }
   },
   emits: ["close", "archive", "unread", "newer", "older"],
   setup(props, { emit }) {
@@ -62,7 +85,6 @@ export default defineComponent({
     watch(
       () => props.emailId,
       () => {
-        console.log(props.emailId);
         getEmailById(props.emailId).then((res) => {
           state.email = res;
         });

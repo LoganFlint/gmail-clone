@@ -32,7 +32,7 @@
 <script lang="ts">
 import Button from "./Button.vue";
 import Modal from "./Modal.vue";
-import { getEmailById, updateEmail, requestEmails } from "../services/api";
+import { getEmailById, updateEmail } from "../services/api";
 import { Email } from "../services/modules/emails";
 
 import { defineComponent, reactive, watch } from "vue";
@@ -44,20 +44,15 @@ export default defineComponent({
   props: {
     emailId: { type: Number, required: true },
   },
-  emits: ["close", "unread", "newer", "older"],
+  emits: ["close", "archive", "unread", "newer", "older"],
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
     });
+
     function archiveEmail() {
-      updateEmail(state.email, state.email.archived).then((res) => {
-        if (state.email.archived == false) {
-          state.email.archived = true
-          console.log(state.email.archived)
-        } else if ( state.email.archived == true) {
-          state.email.archived = false
-          console.log(state.email.archived)
-        }
+      updateEmail(state.email).then((res) => {
+        state.email.archived = !state.email.archived
         return res
       })
     }

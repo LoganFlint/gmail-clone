@@ -35,8 +35,8 @@ export async function getEmailById(id: number): Promise<Email> {
     return response as Email;
 }
 
-export async function updateEmail(emailId: Email, emailArchived: Boolean): Promise<Email> {
-    const response = await axios.put(`http://localhost:3000/emails/${emailId.id}`, emailArchived)
+export async function updateEmail(email: Email): Promise<Email> {
+    const response = await axios.put(`http://localhost:3000/emails/${email.id}`, email)
         .then(({ data }) => {
             return data
         })

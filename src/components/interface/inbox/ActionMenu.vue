@@ -51,9 +51,6 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 
-import Checkbox from "../../base/Checkbox.vue";
-import ActionMenuItem from "./ActionMenuItem.vue";
-
 import trash from "../../../assets/trash.svg";
 import archive from "../../../assets/archive.svg";
 import unarchive from "../../../assets/unarchive.svg";
@@ -61,11 +58,6 @@ import read from "../../../assets/read.svg";
 import unread from "../../../assets/unread.svg";
 
 export default defineComponent({
-    name: "ActionMenu",
-    components: {
-      Checkbox,
-      ActionMenuItem
-    },
     props: {
       open: { type: Boolean, default: false },
       id: { type: Number, default: 0 },

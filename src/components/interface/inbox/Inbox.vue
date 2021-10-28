@@ -40,9 +40,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import {
-  sendEmail,
   requestEmails,
-  getEmailById,
   archiveEmail,
   unarchiveEmail,
   readEmail,
@@ -50,9 +48,6 @@ import {
   unreadEmail
 } from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
-import EmailItem from "./EmailItem.vue";
-import EmailModal from "../EmailModal.vue";
-import ActionMenu from "./ActionMenu.vue";
 
 interface SelectedEmail {
   email: Email;
@@ -61,12 +56,7 @@ interface SelectedEmail {
   archived: boolean
 }
 export default defineComponent({
-  name: "Inbox",
-  components: {
-    EmailItem,
-    EmailModal,
-    ActionMenu
-  },
+
   setup() {
     const state = reactive({
       emails: [] as SelectedEmail[],

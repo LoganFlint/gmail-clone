@@ -23,7 +23,6 @@
 import { defineComponent, reactive } from "vue";
 
 export default defineComponent({
-    name: "ActionMenuItem",
     props: {
         icon: { type: String, required: true },
         label: { type: String, default: "" }

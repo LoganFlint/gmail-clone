@@ -34,8 +34,6 @@
 </template>
 
 <script lang="ts">
-import Button from "../base/Button.vue";
-import Modal from "../base/Modal.vue";
 import {
   getEmailById,
   toggleArchive,
@@ -45,10 +43,6 @@ import {
 import { Email } from "../../services/modules/emails";
 import { defineComponent, reactive, watch } from "vue";
 export default defineComponent({
-  components: {
-    Modal,
-    Button,
-  },
   props: {
     modelValue: { type: Number, required: true },
     isOpen: { type: Boolean, default: false },

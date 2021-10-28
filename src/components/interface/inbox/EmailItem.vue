@@ -3,7 +3,6 @@
     class="
       clear-both
       w-full
-      hover:bg-lbLightBlue
       cursor-pointer
       flex
       whitespace-nowrap
@@ -13,6 +12,7 @@
       items-center
     "
     :class="{
+      'hover:bg-lbLightBlue hover:text-gray': !email.read && !email.archived,
       'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray': email.read,
       'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black': email.archived,
     }"
@@ -55,13 +55,8 @@ import { requestEmails } from "../../../services/api";
 
 import { Email } from "../../../services/modules/emails";
 
-import Checkbox from "../../base/Checkbox.vue";
-
 export default defineComponent({
-  name: "EmailItem",
-  components: {
-    Checkbox,
-  },
+ 
   props: {
     email: { type: Object as PropType<Email>, required: true },
     index: { type: Number, default: 0 },

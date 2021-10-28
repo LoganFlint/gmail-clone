@@ -35,6 +35,7 @@
           @click="openReply"
         />
         <ComposeEmailModal  
+          v-model="state.id"
           :is-open="showReply"
           @close="closeModal"
           />
@@ -101,14 +102,15 @@ export default defineComponent({
 
     const showReply = ref(false) 
 
-    function openReply(id: number) { 
-      state.id = id
+    function openReply() { 
       state.open = !state.open
-      emit("close", id)
+      emit("close")
       showReply.value = true
     }
 
-
+  function handleSendTo(): void {
+    console.log()
+    }
 
     function closeModal() {
       showReply.value = false
@@ -118,6 +120,7 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       () => {
+        state.id = props.modelValue
         getEmailById(props.modelValue).then((res) => {
           state.email = res;
         });
@@ -133,6 +136,7 @@ export default defineComponent({
       state,
       openReply,
       showReply,
+      handleSendTo
     };
   },
 });

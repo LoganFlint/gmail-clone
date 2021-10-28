@@ -62,7 +62,7 @@ export default defineComponent({
       emails: [] as SelectedEmail[],
       open: 0,
       showEmail: false,
-      showActionMenu: false
+      showActionMenu: false,
     });
 
     function getEmails(): void {

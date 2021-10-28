@@ -1,20 +1,12 @@
 <template>
   <div
-    class="
-      clear-both
-      w-full
-      cursor-pointer
-      flex
-      whitespace-nowrap
-      pr-8
-      pl-8
-      h-10
-      items-center
-    "
+    class="clear-both w-full cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
     :class="{
       'hover:bg-lbLightBlue hover:text-gray': !email.read && !email.archived,
-      'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray': email.read,
-      'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black': email.archived,
+      'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray':
+        email.read,
+      'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black':
+        email.archived,
     }"
   >
     <Checkbox
@@ -22,20 +14,20 @@
       class="m-3 mt-4"
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
-    <table
-      class="w-full table-fixed"
-      @click="$emit('openEmail', email.id)"
-    >
+    <table class="w-full table-fixed" @click="$emit('openEmail', email.id)">
       <tr>
         <td class="w-1/5 overflow-hidden overflow-ellipsis">
           {{ email.from }}
         </td>
         <td>
           <div class="flex w-full">
-            <div class="max-w-5/6 font-bold mr-8 overflow-hidden overflow-ellipsis">
+            <div class="flex-grow"></div>
+            <div
+              class="w-4/5 flex-grow font-bold mr-8 overflow-hidden overflow-ellipsis"
+            >
               {{ email.subject }}
             </div>
-            <div class="w-full overflow-hidden overflow-ellipsis">
+            <div class="w-2/6 overflow-hidden overflow-ellipsis">
               {{ email.body }}
             </div>
           </div>
@@ -49,42 +41,44 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, watch } from "vue";
+  import { defineComponent, PropType, reactive, watch } from "vue";
 
-import { requestEmails } from "../../../services/api";
+  import { requestEmails } from "../../../services/api";
 
-import { Email } from "../../../services/modules/emails";
+  import { Email } from "../../../services/modules/emails";
 
-export default defineComponent({
- 
-  props: {
-    email: { type: Object as PropType<Email>, required: true },
-    index: { type: Number, default: 0 },
-    modelValue: { type: Boolean, default: false },
-  },
-  emits: [ "update:modelValue", "openEmail" ], 
-  setup(props) {
-    const state = reactive({
-      read: props.email.read,
-      archived: props.email.archived,
-      selected: false,
-      emails: [] as Email[],
-    });
-
-    function getEmails(): void {
-      requestEmails().then((res) => {
-        return res;
+  export default defineComponent({
+    props: {
+      email: { type: Object as PropType<Email>, required: true },
+      index: { type: Number, default: 0 },
+      modelValue: { type: Boolean, default: false },
+    },
+    emits: ["update:modelValue", "openEmail"],
+    setup(props) {
+      const state = reactive({
+        read: props.email.read,
+        archived: props.email.archived,
+        selected: false,
+        emails: [] as Email[],
       });
-    }
 
-    watch(() => props.modelValue, ()=> {
-      state.selected = props.modelValue;
-    })
+      function getEmails(): void {
+        requestEmails().then((res) => {
+          return res;
+        });
+      }
 
-    return {
-      state,
-      getEmails,
-    };
-  },
-});
+      watch(
+        () => props.modelValue,
+        () => {
+          state.selected = props.modelValue;
+        }
+      );
+
+      return {
+        state,
+        getEmails,
+      };
+    },
+  });
 </script>

@@ -29,6 +29,15 @@
       <div class="pt-10 pr-32">
         {{ state.email.body }}
       </div>
+       <Button
+          class="mt-4 flex justify-center"
+          label="reply"
+          @click="openReply"
+        />
+        <ComposeEmailModal  
+          :is-open="showReply"
+          @close="closeReply"
+          />
     </div>
   </Modal>
 </template>
@@ -41,7 +50,7 @@ import {
   updateEmail,
 } from "../../services/api";
 import { Email } from "../../services/modules/emails";
-import { defineComponent, reactive, watch } from "vue";
+import { defineComponent, reactive, ref, watch } from "vue";
 export default defineComponent({
   props: {
     modelValue: { type: Number, required: true },
@@ -90,6 +99,17 @@ export default defineComponent({
       emit("update:modelValue", props.modelValue - 1);
     }
 
+    const showReply = ref(false) 
+
+    function openReply() {  
+      showReply.value = true
+    }
+
+    function closeReply() {  
+      showReply.value = false
+      emit("close")
+    }
+
     function closeModal() {
       emit("close");
     }
@@ -110,6 +130,9 @@ export default defineComponent({
       prevEmail,
       closeModal,
       state,
+      openReply,
+      showReply,
+      closeReply
     };
   },
 });

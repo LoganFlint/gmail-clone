@@ -1,39 +1,26 @@
 <template>
-  <Modal
-    :is-open="isOpen"
-    blur
-    @close="$emit('close')"
-  >
+  <Modal :is-open="isOpen" blur @close="$emit('close')">
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button
           keydown="(e)"
           class="mr-4"
-          label="Archived"
-          :color="state.email.archived === true? 'blue' : ''"
+          :label="state.email.archived === true ? 'Un-Archive' : 'Archive'"
+          :color="state.email.archived === true ? 'blue' : ''"
           @click="toggleArchived"
         />
         <Button
           keydown="(r)"
           class="mr-4"
-          label="Mark Unread"
-          @click="markUnread"
+          :label="state.email.read === true ? 'Mark-Unread' : 'Mark-Read'"
+          :color="state.email.read === true ? 'blue' : ''"
+          @click="toggleReadMail"
         />
-        <Button
-          keydown="(k)"
-          class="mr-4"
-          label="Newer"
-          @click="nextEmail"
-        />
-        <Button
-          keydown="(j)"
-          class="mr-4"
-          label="Older"
-          @click="prevEmail"
-        />
+        <Button keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
+        <Button keydown="(j)" class="mr-4" label="Older" @click="prevEmail" />
       </div>
       <div class="text-2xl font-bold pr-16 pb-3">
-        Subject: <span class="pl-1"> {{ state.email.subject }} </span> 
+        Subject: <span class="pl-1"> {{ state.email.subject }} </span>
       </div>
       <div class="text-lg">
         From <span class="italic">{{ state.email.from }}</span> on
@@ -49,9 +36,13 @@
 <script lang="ts">
 import Button from "../base/Button.vue";
 import Modal from "../base/Modal.vue";
-import { getEmailById, toggleArchive } from "../../services/api";
+import {
+  getEmailById,
+  toggleArchive,
+  toggleRead,
+  updateEmail,
+} from "../../services/api";
 import { Email } from "../../services/modules/emails";
-
 import { defineComponent, reactive, watch } from "vue";
 export default defineComponent({
   components: {
@@ -59,31 +50,50 @@ export default defineComponent({
     Button,
   },
   props: {
-    emailId: { type: Number, required: true },
-    isOpen: { type: Boolean, default: false }
+    modelValue: { type: Number, required: true },
+    isOpen: { type: Boolean, default: false },
   },
-  emits: ["close", "archive", "unread", "newer", "older"],
+  emits: ["update:modelValue", "close", "emailsUpdated"],
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
     });
 
-    function toggleArchived(): void {
+    function toggleArchived(archived: boolean): void {
       toggleArchive(state.email).then((res) => {
         state.email = res;
       });
+      archived = state.email.archived;
+      emit("emailsUpdated");
+      console.log(archived)
     }
 
-    function markUnread() {
-      emit("unread");
+    function toggleReadMail(read: boolean) {
+      toggleRead(state.email).then((res: Email) => {
+        state.email = res;
+      });
+      read = state.email.read;
+            console.log(read)
+
+      emit("emailsUpdated");
     }
 
     function nextEmail() {
-      emit("newer");
+      getEmailById(props.modelValue + 1).then((res) => {
+        state.email = res;
+        state.email.read = true;
+        updateEmail(state.email);
+      });
+      emit("update:modelValue", props.modelValue + 1);
     }
 
     function prevEmail() {
-      emit("older");
+      getEmailById(props.modelValue - 1).then((res) => {
+        state.email = res;
+        state.email.read = true;
+        updateEmail(state.email);
+      });
+      emit("update:modelValue", props.modelValue - 1);
     }
 
     function closeModal() {
@@ -91,9 +101,9 @@ export default defineComponent({
     }
 
     watch(
-      () => props.emailId,
+      () => props.modelValue,
       () => {
-        getEmailById(props.emailId).then((res) => {
+        getEmailById(props.modelValue).then((res) => {
           state.email = res;
         });
       }
@@ -101,7 +111,7 @@ export default defineComponent({
 
     return {
       toggleArchived,
-      markUnread,
+      toggleReadMail,
       nextEmail,
       prevEmail,
       closeModal,

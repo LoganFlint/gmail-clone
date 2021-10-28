@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="p-8 m-auto flex w-full justify-center items-center"
-  >
+  <div class="p-8 m-auto flex w-full justify-center items-center">
     <img src="../../../assets/launchBadgeLogo.svg">
     <div class="font-bold text-xl m-3">
       launchmail
@@ -32,131 +30,140 @@
   </div>
 
   <EmailModal
-    :email-id="state.open"
+    v-model="state.open"
     :is-open="state.showEmail"
     @close="closeModal"
-    @archive="closeModal"
-    @unread="closeModal"
-    @newer="closeModal"
-    @older="closeModal"
+    @emails-updated="getEmails"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { sendEmail, requestEmails, getEmailById, archiveEmail, unarchiveEmail } from "../../../services/api"
+import {
+  sendEmail,
+  requestEmails,
+  getEmailById,
+  archiveEmail,
+  unarchiveEmail,
+  readEmail,
+  readEmailById,
+  unreadEmail
+} from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
-
 import EmailItem from "./EmailItem.vue";
 import EmailModal from "../EmailModal.vue";
 import ActionMenu from "./ActionMenu.vue";
 
 interface SelectedEmail {
-  email: Email,
-  selected: boolean
+  email: Email;
+  selected: boolean;
+  read: boolean;
+  archived: boolean
 }
-
 export default defineComponent({
-    name: "Inbox",
-    components: {
-      EmailItem,
-      EmailModal,
-      ActionMenu
-    },
-    setup(){
-        const state = reactive({
-            emails: [] as SelectedEmail[],
-            open: 0,
-            showEmail: false,
-            showActionMenu: false
-        });
+  name: "Inbox",
+  components: {
+    EmailItem,
+    EmailModal,
+    ActionMenu
+  },
+  setup() {
+    const state = reactive({
+      emails: [] as SelectedEmail[],
+      open: 0,
+      showEmail: false,
+      showActionMenu: false
+    });
 
-        async function send(email: Email): Promise<void> {
-            await sendEmail(email);
+    function getEmails(): void {
+      state.emails = [];
+      requestEmails().then(response => {
+        for (const item of response) {
+          state.emails.push({
+            email: item,
+            selected: false
+          } as SelectedEmail);
         }
-
-        function getEmails(): void {
-          state.emails = [];
-            requestEmails().then(response => {
-                for(const item of response) {
-                  state.emails.push({
-                    email: item,
-                    selected: false
-                  } as SelectedEmail);
-                }
-            });
-        }
-
-        function openEmail(id: number): void {
-          state.open = id;
-          state.showEmail = true;
-        }
-
-        function closeModal(): void {
-          state.showEmail = false;
-        }
-
-        function selectAll(selected: boolean): void {
-          state.showActionMenu = selected;
-          for(const i in state.emails) {
-            state.emails[i].selected = selected;
-          }
-        }
-
-        function deleteSelected(): void {
-          console.log("Need to create this function in email.ts");
-        }
-
-        async function archiveSelected(): Promise<void> {
-          for(const email of state.emails) {
-            if(email.selected === true) await archiveEmail(email.email);
-          }
-          getEmails();
-        }
-
-        async function unarchiveSelected(): Promise<void> {
-          for(const email of state.emails) {
-            if(email.selected === true) await unarchiveEmail(email.email);
-          }
-          getEmails();
-
-        }
-
-        async function readSelected(): Promise<void> {
-          console.log("Need to create this function in email.ts");
-        }
-
-        async function unreadSelected(): Promise<void> {
-          console.log("Need to create this function in email.ts");
-        }
-
-        function handleActionMenu(): void {
-          for(const email of state.emails) {
-            if(email.selected === true) {
-              state.showActionMenu = true;
-              return;
-            }
-          }
-          state.showActionMenu = false;
-        }
-
-        getEmails();
-
-        return {
-            state,
-            send,
-            getEmails,
-            openEmail,
-            closeModal,
-            selectAll,
-            deleteSelected,
-            archiveSelected,
-            unarchiveSelected,
-            readSelected,
-            unreadSelected,
-            handleActionMenu
-        }
+      });
     }
-});
 
+    function openEmail(id: number): void {
+      state.open = id;
+      state.showEmail = true;
+      readEmailById(id);
+    }
+
+
+
+    function selectAll(selected: boolean): void {
+      state.showActionMenu = selected;
+      for (const i in state.emails) {
+        state.emails[i].selected = selected;
+      }
+    }
+
+    function deleteSelected(): void {
+      console.log("Need to create this function in email.ts");
+    }
+
+    async function archiveSelected(): Promise<void> {
+      for (const email of state.emails) {
+        if (email.selected === true) await archiveEmail(email.email);
+      }
+      getEmails();
+    }
+
+    async function unarchiveSelected(): Promise<void> {
+      for (const email of state.emails) {
+        if (email.selected === true) await unarchiveEmail(email.email);
+      }
+      getEmails();
+    }
+
+    async function readSelected(): Promise<void> {
+      for (const email of state.emails) {
+        if (email.selected === true) await readEmail(email.email);
+      }
+      getEmails();
+    }
+
+    async function unreadSelected(): Promise<void> {
+      for (const email of state.emails) {
+        if (email.selected === true) await unreadEmail(email.email);
+      }
+      getEmails();
+    }
+
+    function handleActionMenu(): void {
+      for (const email of state.emails) {
+        if (email.selected === true) {
+          state.showActionMenu = true;
+          return;
+        }
+      }
+      state.showActionMenu = false;
+    }
+
+    function closeModal(): void {
+      getEmails();
+      state.showEmail = false;
+    }
+
+    getEmails();
+
+    return {
+      state,
+      getEmails,
+      closeModal,
+      selectAll,
+      deleteSelected,
+      archiveSelected,
+      unarchiveSelected,
+      readSelected,
+      unreadSelected,
+      handleActionMenu,
+      openEmail
+    }
+  }
+});
 </script>

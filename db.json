@@ -35,6 +35,15 @@
       "sentAt": "2020-03-24T18:25:43.511Z",
       "archived": false,
       "read": false
+    },
+    {
+      "body": "My response here.",
+      "subject": "Talk to Vue Team!",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": false,
+      "sentAt": "2021-10-28T21:57:06.235Z",
+      "id": 5
     }
   ]
 }

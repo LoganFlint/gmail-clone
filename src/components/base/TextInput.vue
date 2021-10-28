@@ -6,33 +6,25 @@
         :type="inputType"
         :placeholder="placeholder"
         :value="modelValue"
-        :class="{
-          'rounded cursor-auto outline-none border border-unicornSilver ml-2 pl-3': small,
-        }"
+        class="rounded cursor-auto outline-none border border-unicornSilver ml-2 pl-3"
         v-bind="$attrs"
         @input="updateValue"
-        @focus="state.focused = true"
-        @blur="state.focused = false"
       />
       <textarea
         v-else
         :type="inputType"
         :placeholder="placeholder"
         :value="modelValue"
-        :class="{
-          'focus:outline-none outline-none border border-unicornSilver focus:border-lbBlue text-gray rounded h-72 pr-3 pt-2 pl-4': !small,
-        }"
+        class="focus:outline-none outline-none border border-unicornSilver focus:border-lbBlue text-gray rounded h-72 pr-3 pt-2 pl-4"
         v-bind="$attrs"
         @input="updateValue"
-        @focus="state.focused = true"
-        @blur="state.focused = false"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, computed } from "vue";
+  import { defineComponent } from "vue";
   export default defineComponent({
     props: {
       modelValue: { type: [String, Number], default: null },
@@ -42,16 +34,11 @@
     },
     emits: ["update:modelValue"],
 
-    setup(props, { emit }) {
-      const state = reactive({
-        focused: false,
-      });
-
+    setup(_, { emit }) {
       function updateValue(event: Event) {
         emit("update:modelValue", (event.target as HTMLInputElement).value);
       }
-
-      return { updateValue, state };
+      return { updateValue };
     },
   });
 </script>

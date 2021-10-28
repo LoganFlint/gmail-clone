@@ -83,8 +83,6 @@ export default defineComponent({
       readEmailById(id);
     }
 
-
-
     function selectAll(selected: boolean): void {
       state.showActionMenu = selected;
       for (const i in state.emails) {

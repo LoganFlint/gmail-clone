@@ -31,12 +31,12 @@
       </div>
        <Button
           class="mt-4 flex justify-center"
-          label="reply"
+          label="Reply"
           @click="openReply"
         />
         <ComposeEmailModal  
           :is-open="showReply"
-          @close="closeReply"
+          @close="closeModal"
           />
     </div>
   </Modal>
@@ -60,6 +60,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
+      open: props.isOpen,
+      id: props.modelValue
     });
 
     function toggleArchived(archived: boolean): void {
@@ -76,8 +78,6 @@ export default defineComponent({
         state.email = res;
       });
       read = state.email.read;
-            console.log(read)
-
       emit("emailsUpdated");
     }
 
@@ -101,16 +101,17 @@ export default defineComponent({
 
     const showReply = ref(false) 
 
-    function openReply() {  
+    function openReply(id: number) { 
+      state.id = id
+      state.open = !state.open
+      emit("close", id)
       showReply.value = true
     }
 
-    function closeReply() {  
-      showReply.value = false
-      emit("close")
-    }
+
 
     function closeModal() {
+      showReply.value = false
       emit("close");
     }
 
@@ -132,7 +133,6 @@ export default defineComponent({
       state,
       openReply,
       showReply,
-      closeReply
     };
   },
 });

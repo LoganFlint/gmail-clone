@@ -31,15 +31,22 @@
     v-model="state.open"
     :is-open="state.showEmail"
     @close="closeModal"
-    @archived="toggleArchive"
-    @unread="closeModal"
-    @read="toggleRead"
+    @emails-updated="getEmails"
   />
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { sendEmail, requestEmails, getEmailById, archiveEmail, unarchiveEmail } from "../../../services/api"
+import { 
+  sendEmail, 
+  requestEmails, 
+  getEmailById, 
+  archiveEmail, 
+  unarchiveEmail,
+  readEmail,
+  readEmailById,
+  unreadEmail
+  } from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
 import EmailItem from "./EmailItem.vue";
 import EmailModal from "../EmailModal.vue";
@@ -81,15 +88,10 @@ export default defineComponent({
       function openEmail(id: number): void {
         state.open = id;
         state.showEmail = true;
+        readEmailById(id);
       }
 
-      function toggleRead() {
-        getEmails();
-      }
 
-      function toggleArchive() {
-        getEmails();
-      }
 
       function selectAll(selected: boolean): void {
         state.showActionMenu = selected;
@@ -117,11 +119,17 @@ export default defineComponent({
         }
 
         async function readSelected(): Promise<void> {
-          console.log("Need to create this function in email.ts");
+          for(const email of state.emails) {
+            if(email.selected === true) await readEmail(email.email);
+          }
+          getEmails();
         }
 
         async function unreadSelected(): Promise<void> {
-          console.log("Need to create this function in email.ts");
+          for(const email of state.emails) {
+            if(email.selected === true) await unreadEmail(email.email);
+          }
+          getEmails();
         }
 
         function handleActionMenu(): void {
@@ -135,6 +143,7 @@ export default defineComponent({
         }
 
         function closeModal(): void {
+          getEmails();
           state.showEmail = false;
         }
 
@@ -151,8 +160,6 @@ export default defineComponent({
             readSelected,
             unreadSelected,
             handleActionMenu,
-            toggleRead,
-            toggleArchive,
             openEmail
         }
       }

@@ -16,7 +16,6 @@
       'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray': email.read,
       'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black': email.archived,
     }"
-    @update:modelValue="state.email.read && state.email.archived"
   >
     <Checkbox
       v-model="state.selected"
@@ -50,14 +49,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, onMounted } from "vue";
+import { defineComponent, PropType, reactive, watch } from "vue";
 
 import { requestEmails } from "../../../services/api";
 
 import { Email } from "../../../services/modules/emails";
 
 import Checkbox from "../../base/Checkbox.vue";
-import Button from "../../base/Button.vue";
 
 export default defineComponent({
   name: "EmailItem",
@@ -69,6 +67,7 @@ export default defineComponent({
     index: { type: Number, default: 0 },
     modelValue: { type: Boolean, default: false },
   },
+  emits: [ "update:modelValue", "openEmail" ], 
   setup(props) {
     const state = reactive({
       read: props.email.read,
@@ -79,10 +78,14 @@ export default defineComponent({
 
     function getEmails(): void {
       requestEmails().then((res) => {
-        console.log(res);
         return res;
       });
     }
+
+    watch(() => props.modelValue, ()=> {
+      state.selected = props.modelValue;
+    })
+
     return {
       state,
       getEmails,

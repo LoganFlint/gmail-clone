@@ -83,6 +83,33 @@ export async function toggleRead(email: Email): Promise<Email> {
     return await updateEmail(email);
 }
 
+export async function toggleReadById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await toggleRead(email);
+}
+
+export async function readEmail(email: Email): Promise<Email> {
+    if(email.read === true) return email;
+    email.read = true;
+    return await updateEmail(email);
+}
+
+export async function readEmailById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await readEmail(email);
+}
+
+export async function unreadEmail(email: Email): Promise<Email> {
+    if(email.read === false) return email;
+    email.read = false;
+    return await updateEmail(email);
+}
+
+export async function unreadEmailById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await unreadEmail(email);
+}
+
 export async function goNewer(email: Email): Promise<Email> {
     let archived = email.archived = false
     let read = email.read = true

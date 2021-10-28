@@ -13,7 +13,7 @@
           keydown="(r)"
           class="mr-4"
           :label="state.email.read === true ? 'Mark-Unread' : 'Mark-Read'"
-          :color="state.email.blue === true ? 'blue' : ''"
+          :color="state.email.read === true ? 'blue' : ''"
           @click="toggleReadMail"
         />
         <Button keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
@@ -53,7 +53,7 @@ export default defineComponent({
     modelValue: { type: Number, required: true },
     isOpen: { type: Boolean, default: false },
   },
-  emits: ["update:modelValue", "close", "read", "unread", "archived"],
+  emits: ["update:modelValue", "close", "emailsUpdated"],
   setup(props, { emit }) {
     const state = reactive({
       email: {} as Email,
@@ -64,20 +64,18 @@ export default defineComponent({
         state.email = res;
       });
       archived = state.email.archived;
-      emit("archived", archived);
+      emit("emailsUpdated");
       console.log(archived)
-      closeModal();
     }
 
     function toggleReadMail(read: boolean) {
-      toggleRead(state.email).then((res) => {
+      toggleRead(state.email).then((res: Email) => {
         state.email = res;
       });
       read = state.email.read;
             console.log(read)
 
-      emit("read", read);
-      closeModal();
+      emit("emailsUpdated");
     }
 
     function nextEmail() {

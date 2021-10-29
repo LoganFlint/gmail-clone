@@ -1,5 +1,8 @@
 import { 
-    requestEmails, 
+    requestAllEmails,
+    requestPrimary,
+    requestArchived, 
+    requestTrash,
     sendEmail, 
     getEmailById, 
     updateEmail, 
@@ -22,7 +25,10 @@ import {
     } from "./modules/emails";
 
 export {
-    requestEmails,
+    requestAllEmails,
+    requestPrimary,
+    requestArchived,
+    requestTrash,
     sendEmail,
     getEmailById,
     updateEmail,

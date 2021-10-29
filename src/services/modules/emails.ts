@@ -11,13 +11,46 @@ export interface Email {
     markedToDelete: boolean
 }
 
-export async function requestEmails(): Promise<Email[]> {
+export async function requestAllEmails(): Promise<Email[]> {
     const response = await axios.get("http://localhost:3000/emails")
         .then(({ data }) => data)
         .catch(error => {
             throw error;
         })
     return response as Email[];
+}
+
+export async function requestPrimary(): Promise<Email[]> {
+    const response = await axios.get("http://localhost:3000/emails")
+        .then(({ data }) => {
+            return Object.values(data as Email[]).filter((email: Email) => email.archived === false && email.markedToDelete === false)
+        })
+        .catch(error => {
+            throw error;
+        });
+    return response;
+}
+
+export async function requestArchived(): Promise<Email[]> {
+    const response = await axios.get("http://localhost:3000/emails")
+        .then(({ data }) => {
+            return Object.values(data as Email[]).filter((email: Email) => email.archived === true);
+        })
+        .catch(error => {
+            throw error;
+        });
+    return response;
+}
+
+export async function requestTrash(): Promise<Email[]> {
+    const response = await axios.get("http://localhost:3000/emails")
+    .then(({ data }) => {
+        return Object.values(data as Email[]).filter((email: Email) => email.markedToDelete === true);
+    })
+    .catch(error => {
+        throw error;
+    });
+    return response;
 }
 
 export async function sendEmail(email: Email): Promise<void> {
@@ -111,20 +144,6 @@ export async function unreadEmailById(id: number): Promise<Email> {
     const email = await getEmailById(id);
     return await unreadEmail(email);
 }
-
-export async function goNewer(email: Email): Promise<Email> {
-    let archived = email.archived = false
-    let read = email.read = true
-    let id = email.id ++
-    return await getEmailById(id)
-    
-    // return await updateEmail(email);
-}
-
-// export async function goOlder(email: Email): Promise<Email> {
-//     email.read = !email.read;
-//     return await updateEmail(email);
-// }
 
 export async function markForDeletion(email: Email): Promise<Email> {
     if(email.markedToDelete === true) return email;

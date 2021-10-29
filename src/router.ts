@@ -9,7 +9,7 @@ const router = createRouter({
         {
             path: "/",
             component: Layout,
-            name: "inbox"
+            name: "inbox",
         }
     ]
 })

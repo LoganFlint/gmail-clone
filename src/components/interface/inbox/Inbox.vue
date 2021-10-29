@@ -43,6 +43,7 @@
           @open-email="openEmail"
           @update:model-value="handleActionMenu"
           @send-reply="openSend"
+          @click="state.open = email.email.id"
         />
       </div>
     </div>
@@ -236,10 +237,6 @@
         state.showActionMenu = false;
         getEmails();
       }
-
-      watch(()=> state.showActionMenu, ()=> {
-        console.log(state.showActionMenu);
-      });
 
       getEmails();
 

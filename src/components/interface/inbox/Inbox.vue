@@ -1,65 +1,68 @@
 <template>
-  <div class="p-8 m-auto flex w-full justify-center items-center">
-    <img src="../../../assets/launchBadgeLogo.svg">
-    <div class="font-bold text-xl m-3">
-      launchmail
+  <div class="flex flex-col justify-center overflow-auto sm:overflow-visible">
+    <div class="p-8 m-auto flex w-full justify-center items-center">
+      <img src="../../../assets/launchBadgeLogo.svg">
+      <div class="font-bold text-xl m-3">
+        launchmail
+      </div>
     </div>
-  </div>
 
-  <div class="flex items-center">
-    <ActionMenu
-      class="mr-4"
-      :open="state.showActionMenu"
-      :mode="state.mode"
-      @select-all="selectAll"
-      @delete-selected="markDelete"
-      @undelete-selected="unmarkDelete"
-      @archive-selected="archiveSelected"
-      @unarchive-selected="unarchiveSelected"
-      @read-selected="readSelected"
-      @unread-selected="unreadSelected"
-    />
-  </div>
-
-  <TabBar
-    v-model="state.mode"
-    class="ml-16 mb-8"
-  />
-
-  <div v-if="current.length > 0">
-    <div
-      v-for="(email, i) in current"
-      :key="email.email.id"
-    >
-      <EmailItem
-        v-model="state.emails[i].selected"
-        :email="email.email"
-        :index="i"
-        @open-email="openEmail"
-        @update:model-value="handleActionMenu"
-        @send-reply="openSend"
+    <div class="flex items-center">
+      <ActionMenu
+        class="mr-4"
+        :open="state.showActionMenu"
+        :mode="state.mode"
+        @select-all="selectAll"
+        @delete-selected="markDelete"
+        @undelete-selected="unmarkDelete"
+        @archive-selected="archiveSelected"
+        @unarchive-selected="unarchiveSelected"
+        @read-selected="readSelected"
+        @unread-selected="unreadSelected"
       />
     </div>
-  </div>
 
-  <div
-    v-else
-    class="w-full font-xl font-bold text-center mt-24"
-  >
-    There's nothing to show here!
-  </div>
+    <TabBar
+      v-model="state.mode"
+      class="ml-16 mb-8"
+    />
 
-  <EmailModal
-    v-model="state.open"
-    :is-open="state.showEmail"
-    @close="closeModal"
-    @emails-updated="getEmails"
-  />
-  <ComposeEmailModal
-    v-model="state.open"
-    :is-open="showSendEmail"
-    @close="closeSend"
-  />
+    <div v-if="current.length > 0">
+      <div
+        v-for="(email, i) in current"
+        :key="email.email.id"
+        class="overflow-auto"
+      >
+        <EmailItem
+          v-model="state.emails[i].selected"
+          :email="email.email"
+          :index="i"
+          @open-email="openEmail"
+          @update:model-value="handleActionMenu"
+          @send-reply="openSend"
+        />
+      </div>
+    </div>
+
+    <div
+      v-else
+      class="w-full font-xl font-bold text-center mt-24"
+    >
+      There's nothing to show here!
+    </div>
+
+    <EmailModal
+      v-model="state.open"
+      :is-open="state.showEmail"
+      @close="closeModal"
+      @emails-updated="getEmails"
+    />
+    <ComposeEmailModal
+      v-model="state.open"
+      :is-open="showSendEmail"
+      @close="closeSend"
+    />
+  </div>
 </template>
 
 <script lang="ts">

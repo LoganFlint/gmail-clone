@@ -1,5 +1,7 @@
 <template>
-  <Inbox />
+  <div class="min-w-[400px]">
+    <Inbox />
+  </div>
 </template>
 
 <script lang="ts">

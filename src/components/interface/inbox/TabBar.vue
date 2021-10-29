@@ -1,9 +1,9 @@
 <template>
-  <div class="flex items-start w-full">
+  <div class="flex flex-wrap items-start w-full">
     <div
       v-for="(tab, i) of state.tabs"
       :key="i"
-      class="m-2 mr-4 w-1/5"
+      class="m-2 mr-4 w-40"
     >
       <Tab
         v-model="state.tabs[i].selected"

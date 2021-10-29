@@ -60,19 +60,17 @@
         id: props.modelValue,
       });
 
-      function toggleArchived(archived: boolean): void {
+      function toggleArchived(): void {
         toggleArchive(state.email).then((res) => {
           state.email = res;
         });
-        archived = state.email.archived;
         emit("emailsUpdated");
       }
 
-      function toggleReadMail(read: boolean) {
+      function toggleReadMail() {
         toggleRead(state.email).then((res: Email) => {
           state.email = res;
         });
-        state.email.read = read;
         emit("emailsUpdated");
       }
 

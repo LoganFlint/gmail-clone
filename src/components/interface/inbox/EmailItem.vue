@@ -1,6 +1,6 @@
 <template>
   <div
-    class="clear-both w-full cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
+    class="cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 min-w-[600px]"
     :class="{
       'hover:bg-lbLightBlue hover:text-gray': !email.read && !email.archived,
       'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray':

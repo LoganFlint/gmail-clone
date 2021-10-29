@@ -9,7 +9,7 @@
       :src="icon"
     >
     <div
-      class="text-sm bg-black bg-opacity-75 text-white px-3 rounded transition-all duration-300 mt-4"
+      class="whitespace-nowrap text-sm bg-black bg-opacity-75 text-white px-3 rounded transition-all duration-300 mt-4"
       :class="{
         'invisible opacity-0': state.showLabel === false
       }"

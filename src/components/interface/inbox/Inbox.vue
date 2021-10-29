@@ -5,26 +5,24 @@
       launchmail
     </div>
   </div>
-<div class=" flex items-center">
-
-  <ActionMenu
-    class="mr-4"
-    :open="state.showActionMenu"
-    @select-all="selectAll"
-    @delete-selected="deleteSelected"
-    @archive-selected="archiveSelected"
-    @unarchive-selected="unarchiveSelected"
-    @read-selected="readSelected"
-    @unread-selected="unreadSelected"
-  />
+  <div class="flex items-center">
+    <ActionMenu
+      class="mr-4"
+      :open="state.showActionMenu"
+      @select-all="selectAll"
+      @delete-selected="deleteSelected"
+      @archive-selected="archiveSelected"
+      @unarchive-selected="unarchiveSelected"
+      @read-selected="readSelected"
+      @unread-selected="unreadSelected"
+    />
     <ActionMenuItem
-        :icon="sendMail"
-        label="Send Email"
-        class="-mb-4"
-        @click="quickSend"
-      />
-
-</div>
+      :icon="sendMail"
+      label="Send Email"
+      class="-mb-4"
+      @click="quickSend"
+    />
+  </div>
   <div v-for="(email, i) in state.emails" :key="email.email.id">
     <EmailItem
       v-model="state.emails[i].selected"
@@ -51,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import sendMail from "../../../assets/sendEmail.svg"
+  import sendMail from "../../../assets/sendEmail.svg";
 
   import { defineComponent, reactive, ref } from "vue";
   import {
@@ -154,11 +152,12 @@ import sendMail from "../../../assets/sendEmail.svg"
       const showSendEmail = ref(false);
 
       function openSend() {
+        state.showEmail = false;
         showSendEmail.value = true;
       }
 
       function quickSend() {
-         window.location.assign("mailto:launchmail@gmail.com");
+        window.location.assign("mailto:launchmail@gmail.com");
       }
 
       getEmails();
@@ -175,10 +174,11 @@ import sendMail from "../../../assets/sendEmail.svg"
         unreadSelected,
         handleActionMenu,
         openEmail,
-        openSend,
+        // openSend,
         showSendEmail,
         sendMail,
-        quickSend
+        quickSend,
+        openSend,
       };
     },
   });

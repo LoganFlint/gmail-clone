@@ -104,10 +104,6 @@
         showReply.value = true;
       }
 
-      function handleSendTo(): void {
-        console.log();
-      }
-
       function closeModal() {
         showReply.value = false;
         emit("close");
@@ -132,7 +128,6 @@
         state,
         openReply,
         showReply,
-        handleSendTo,
       };
     },
   });

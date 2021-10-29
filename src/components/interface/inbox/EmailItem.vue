@@ -30,7 +30,11 @@
               {{ email.body }}
             </div>
             <div class="px-6 flex w-52 justify-center">
-            <img @click="sendEmail" src="../../../assets/sendEmail.svg" alt="send email">
+              <img
+                @click="sendEmail"
+                src="../../../assets/sendEmail.svg"
+                alt="send email"
+              />
             </div>
           </div>
         </td>
@@ -55,8 +59,8 @@
       index: { type: Number, default: 0 },
       modelValue: { type: Boolean, default: false },
     },
-    emits: ["update:modelValue", "openEmail"],
-    setup(props) {
+    emits: ["update:modelValue", "openEmail", "sendReply"],
+    setup(props, { emit }) {
       const state = reactive({
         read: props.email.read,
         archived: props.email.archived,
@@ -71,7 +75,7 @@
       }
 
       function sendEmail() {
-        console.log()
+        emit("sendReply");
       }
 
       watch(
@@ -84,7 +88,7 @@
       return {
         state,
         getEmails,
-        sendEmail
+        sendEmail,
       };
     },
   });

@@ -53,6 +53,15 @@
       "read": false,
       "sentAt": "2021-10-28T23:03:55.005Z",
       "id": 6
+    },
+    {
+      "body": "test from quick reply",
+      "subject": "test",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": false,
+      "sentAt": "2021-10-29T01:12:48.769Z",
+      "id": 7
     }
   ]
 }

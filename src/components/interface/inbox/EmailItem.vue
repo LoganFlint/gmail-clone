@@ -21,7 +21,6 @@
         </td>
         <td>
           <div class="flex w-full">
-            <div class="flex-grow"></div>
             <div
               class="w-4/5 flex-grow font-bold mr-8 overflow-hidden overflow-ellipsis"
             >
@@ -30,9 +29,12 @@
             <div class="w-2/6 overflow-hidden overflow-ellipsis">
               {{ email.body }}
             </div>
+            <div class="px-6 flex w-52 justify-center">
+            <img @click="sendEmail" src="../../../assets/sendEmail.svg" alt="send email">
+            </div>
           </div>
         </td>
-        <td class="w-1/6 overflow-ellipsis text-right">
+        <td class="w-28 overflow-ellipsis text-right">
           {{ new Date(email.sentAt).toLocaleTimeString() }}
         </td>
       </tr>
@@ -68,6 +70,10 @@
         });
       }
 
+      function sendEmail() {
+        console.log()
+      }
+
       watch(
         () => props.modelValue,
         () => {
@@ -78,6 +84,7 @@
       return {
         state,
         getEmails,
+        sendEmail
       };
     },
   });

@@ -29,94 +29,103 @@
       <div class="pt-10 pr-32">
         {{ state.email.body }}
       </div>
+      <Button
+        class="mt-4 flex justify-center"
+        label="Reply"
+        @click="openReply"
+      />
     </div>
   </Modal>
 </template>
 
 <script lang="ts">
-import Button from "../base/Button.vue";
-import Modal from "../base/Modal.vue";
-import {
-  getEmailById,
-  toggleArchive,
-  toggleRead,
-  updateEmail,
-} from "../../services/api";
-import { Email } from "../../services/modules/emails";
-import { defineComponent, reactive, watch } from "vue";
-export default defineComponent({
-  components: {
-    Modal,
-    Button,
-  },
-  props: {
-    modelValue: { type: Number, required: true },
-    isOpen: { type: Boolean, default: false },
-  },
-  emits: ["update:modelValue", "close", "emailsUpdated"],
-  setup(props, { emit }) {
-    const state = reactive({
-      email: {} as Email,
-    });
-
-    function toggleArchived(archived: boolean): void {
-      toggleArchive(state.email).then((res) => {
-        state.email = res;
+  import {
+    getEmailById,
+    toggleArchive,
+    toggleRead,
+    updateEmail,
+  } from "../../services/api";
+  import { Email } from "../../services/modules/emails";
+  import { defineComponent, reactive, ref, watch } from "vue";
+  export default defineComponent({
+    props: {
+      modelValue: { type: Number, required: true },
+      isOpen: { type: Boolean, default: false },
+    },
+    emits: ["update:modelValue", "close", "emailsUpdated", "sendReply"],
+    setup(props, { emit }) {
+      const state = reactive({
+        email: {} as Email,
+        open: props.isOpen,
+        id: props.modelValue,
       });
-      archived = state.email.archived;
-      emit("emailsUpdated");
-      console.log(archived)
-    }
 
-    function toggleReadMail(read: boolean) {
-      toggleRead(state.email).then((res: Email) => {
-        state.email = res;
-      });
-      read = state.email.read;
-            console.log(read)
-
-      emit("emailsUpdated");
-    }
-
-    function nextEmail() {
-      getEmailById(props.modelValue + 1).then((res) => {
-        state.email = res;
-        state.email.read = true;
-        updateEmail(state.email);
-      });
-      emit("update:modelValue", props.modelValue + 1);
-    }
-
-    function prevEmail() {
-      getEmailById(props.modelValue - 1).then((res) => {
-        state.email = res;
-        state.email.read = true;
-        updateEmail(state.email);
-      });
-      emit("update:modelValue", props.modelValue - 1);
-    }
-
-    function closeModal() {
-      emit("close");
-    }
-
-    watch(
-      () => props.modelValue,
-      () => {
-        getEmailById(props.modelValue).then((res) => {
+      function toggleArchived(archived: boolean): void {
+        toggleArchive(state.email).then((res) => {
           state.email = res;
         });
+        archived = state.email.archived;
+        emit("emailsUpdated");
       }
-    );
 
-    return {
-      toggleArchived,
-      toggleReadMail,
-      nextEmail,
-      prevEmail,
-      closeModal,
-      state,
-    };
-  },
-});
+      function toggleReadMail(read: boolean) {
+        toggleRead(state.email).then((res: Email) => {
+          state.email = res;
+        });
+        state.email.read = read;
+        emit("emailsUpdated");
+      }
+
+      function nextEmail() {
+        getEmailById(props.modelValue + 1).then((res) => {
+          state.email = res;
+          state.email.read = true;
+          updateEmail(state.email);
+        });
+        emit("update:modelValue", props.modelValue + 1);
+      }
+
+      function prevEmail() {
+        getEmailById(props.modelValue - 1).then((res) => {
+          state.email = res;
+          state.email.read = true;
+          updateEmail(state.email);
+        });
+        emit("update:modelValue", props.modelValue - 1);
+      }
+
+      const showReply = ref(false);
+
+      function openReply() {
+        state.open = !state.open;
+        emit("sendReply");
+      }
+
+      function closeModal() {
+        showReply.value = false;
+        emit("close");
+      }
+
+      watch(
+        () => props.modelValue,
+        () => {
+          state.id = props.modelValue;
+          getEmailById(props.modelValue).then((res) => {
+            state.email = res;
+          });
+        }
+      );
+
+      return {
+        toggleArchived,
+        toggleReadMail,
+        nextEmail,
+        prevEmail,
+        closeModal,
+        state,
+        openReply,
+        showReply,
+      };
+    },
+  });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col text-center items-center transition-all duration-300"
+    class="flex flex-col text-center items-center transition-all duration-300 cursor-pointer"
     @mouseover="state.showLabel = true"
     @mouseleave="state.showLabel = false"
   >
@@ -23,7 +23,6 @@
 import { defineComponent, reactive } from "vue";
 
 export default defineComponent({
-    name: "ActionMenuItem",
     props: {
         icon: { type: String, required: true },
         label: { type: String, default: "" }

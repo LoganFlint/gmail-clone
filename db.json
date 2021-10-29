@@ -37,7 +37,57 @@
       "body": "Newsletter Issue #161",
       "sentAt": "2020-03-24T18:25:43.511Z",
       "archived": false,
+      "read": false,
+      "markedToDelete": false
+    },
+    {
+      "body": "My response here.",
+      "subject": "Talk to Vue Team!",
+      "from": "team@vuemastery.com",
+      "archived": false,
       "read": true,
+      "sentAt": "2021-10-28T21:57:06.235Z",
+      "id": 5,
+      "markedToDelete": false
+    },
+    {
+      "body": "testing",
+      "subject": "vue",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": false,
+      "sentAt": "2021-10-28T23:03:55.005Z",
+      "id": 6,
+      "markedToDelete": false
+    },
+    {
+      "body": "test from quick reply",
+      "subject": "test",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T01:12:48.769Z",
+      "id": 7,
+      "markedToDelete": false
+    },
+    {
+      "body": "final test!",
+      "subject": "test again",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": false,
+      "sentAt": "2021-10-29T03:37:02.122Z",
+      "id": 8,
+      "markedToDelete": false
+    },
+    {
+      "body": "Good night! (ㆆ_ㆆ)",
+      "subject": "test off of a test :)",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T03:39:46.529Z",
+      "id": 9,
       "markedToDelete": false
     }
   ]

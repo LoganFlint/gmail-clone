@@ -6,18 +6,20 @@
     </div>
   </div>
 
-  <ActionMenu
-    class="mr-4"
-    :open="state.showActionMenu"
-    :mode="state.mode"
-    @select-all="selectAll"
-    @delete-selected="markDelete"
-    @undelete-selected="unmarkDelete"
-    @archive-selected="archiveSelected"
-    @unarchive-selected="unarchiveSelected"
-    @read-selected="readSelected"
-    @unread-selected="unreadSelected"
-  />
+  <div class="flex items-center">
+    <ActionMenu
+      class="mr-4"
+      :open="state.showActionMenu"
+      :mode="state.mode"
+      @select-all="selectAll"
+      @delete-selected="markDelete"
+      @undelete-selected="unmarkDelete"
+      @archive-selected="archiveSelected"
+      @unarchive-selected="unarchiveSelected"
+      @read-selected="readSelected"
+      @unread-selected="unreadSelected"
+    />
+  </div>
 
   <TabBar
     v-model="state.mode"
@@ -35,6 +37,7 @@
         :index="i"
         @open-email="openEmail"
         @update:model-value="handleActionMenu"
+        @send-reply="openSend"
       />
     </div>
   </div>
@@ -52,10 +55,15 @@
     @close="closeModal"
     @emails-updated="getEmails"
   />
+  <ComposeEmailModal
+    v-model="state.open"
+    :is-open="showSendEmail"
+    @close="closeSend"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, reactive, ref, computed } from "vue";
 import {
   sendEmail,
   requestEmails,
@@ -68,42 +76,24 @@ import {
   markForDeletion,
   unmarkForDeletion
 } from "../../../services/api"
+
 import { Email } from "../../../services/modules/emails";
-import EmailItem from "./EmailItem.vue";
-import EmailModal from "../EmailModal.vue";
-import ActionMenu from "./ActionMenu.vue";
-import TabBar from "./TabBar.vue";
+
+import sendMail from "../../../assets/sendEmail.svg";
 
 interface SelectedEmail {
   email: Email;
   selected: boolean;
   read: boolean;
-  archived: boolean
+  archived: boolean;
 }
+
 export default defineComponent({
   name: "Inbox",
-  components: {
-    EmailItem,
-    EmailModal,
-    ActionMenu,
-    TabBar
-  },
   setup() {
 
-    // const archived = computed(() => {
-    //   return state.emails.filter((email) => email.email.archived === true);
-    // });
-
-    // const primary = computed(() => {
-    //   return state.emails.filter((email) => email.email.archived === false && email.email.markedToDelete === false);
-    // });
-
-    // const trash = computed(() => {
-    //   return state.emails.filter((email) => email.email.markedToDelete === true);
-    // });
-
     const current = computed(() => {
-      switch(state.mode) {
+      switch (state.mode) {
         case "archived":
           return state.emails.filter((email) => email.email.archived === true);
         case "primary":
@@ -135,6 +125,7 @@ export default defineComponent({
     }
 
     function openEmail(id: number): void {
+      console.log("from open email");
       state.open = id;
       state.showEmail = true;
       readEmailById(id);
@@ -148,14 +139,14 @@ export default defineComponent({
     }
 
     async function markDelete(): Promise<void> {
-      for(const email of state.emails) {
+      for (const email of state.emails) {
         if (email.selected === true) await markForDeletion(email.email);
       }
       getEmails();
     }
 
     async function unmarkDelete(): Promise<void> {
-      for(const email of state.emails) {
+      for (const email of state.emails) {
         if (email.selected === true) await unmarkForDeletion(email.email);
       }
       getEmails();
@@ -203,7 +194,21 @@ export default defineComponent({
       getEmails();
       state.showEmail = false;
     }
-    
+
+    const showSendEmail = ref(false);
+
+    function openSend() {
+      showSendEmail.value = true;
+    }
+
+    function closeSend() {
+      showSendEmail.value = false;
+    }
+
+    function quickSend() {
+      window.location.assign("mailto:launchmail@gmail.com");
+    }
+
     getEmails();
 
     return {
@@ -217,9 +222,14 @@ export default defineComponent({
       readSelected,
       unreadSelected,
       handleActionMenu,
+      openEmail,
+      showSendEmail,
+      sendMail,
+      quickSend,
+      openSend,
+      closeSend,
       markDelete,
       unmarkDelete,
-      openEmail
     }
   }
 });

@@ -1,20 +1,12 @@
 <template>
   <div
-    class="
-      clear-both
-      w-full
-      hover:bg-lbLightBlue
-      cursor-pointer
-      flex
-      whitespace-nowrap
-      pr-8
-      pl-8
-      h-10
-      items-center
-    "
+    class="clear-both w-full cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
     :class="{
-      'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray': email.read,
-      'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black': email.archived,
+      'hover:bg-lbLightBlue hover:text-gray': !email.read && !email.archived,
+      'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray':
+        email.read,
+      'bg-lbBlue text-white hover:bg-lbLightBlue hover:text-black':
+        email.archived,
     }"
   >
     <Checkbox
@@ -24,13 +16,18 @@
     />
     <table
       class="w-full table-fixed"
-      @click="$emit('openEmail', email.id)"
     >
       <tr>
-        <td class="w-1/5 overflow-hidden overflow-ellipsis">
+        <td
+          class="w-1/5 overflow-hidden overflow-ellipsis"
+          @click="$emit('openEmail', email.id)"
+        >
           {{ email.from }}
         </td>
-        <td>
+        <td
+          class="w-3/5"
+          @click="$emit('openEmail', email.id)"
+        >
           <div class="flex w-full">
             <div class="max-w-5/6 font-bold mr-8 overflow-hidden overflow-ellipsis">
               {{ email.subject }}
@@ -40,7 +37,17 @@
             </div>
           </div>
         </td>
-        <td class="w-1/6 overflow-ellipsis text-right">
+        <td
+          class="justify-right"
+          @click="$emit('sendReply')"
+        >
+          <img
+            src="../../../assets/sendEmail.svg"
+            alt="send email"
+            class="w-6 h-6"
+          >
+        </td>
+        <td class="w-28 overflow-ellipsis text-right">
           {{ new Date(email.sentAt).toLocaleTimeString() }}
         </td>
       </tr>
@@ -49,47 +56,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, watch } from "vue";
+  import { defineComponent, PropType, reactive, watch } from "vue";
 
-import { requestEmails } from "../../../services/api";
+  import { Email } from "../../../services/modules/emails";
 
-import { Email } from "../../../services/modules/emails";
-
-import Checkbox from "../../base/Checkbox.vue";
-
-export default defineComponent({
-  name: "EmailItem",
-  components: {
-    Checkbox,
-  },
-  props: {
-    email: { type: Object as PropType<Email>, required: true },
-    index: { type: Number, default: 0 },
-    modelValue: { type: Boolean, default: false },
-  },
-  emits: [ "update:modelValue", "openEmail" ], 
-  setup(props) {
-    const state = reactive({
-      read: props.email.read,
-      archived: props.email.archived,
-      selected: false,
-      emails: [] as Email[],
-    });
-
-    function getEmails(): void {
-      requestEmails().then((res) => {
-        return res;
+  export default defineComponent({
+    props: {
+      email: { type: Object as PropType<Email>, required: true },
+      index: { type: Number, default: 0 },
+      modelValue: { type: Boolean, default: false },
+    },
+    emits: ["update:modelValue", "openEmail", "sendReply"],
+    setup(props) {
+      const state = reactive({
+        read: props.email.read,
+        archived: props.email.archived,
+        selected: false,
+        emails: [] as Email[],
       });
-    }
 
-    watch(() => props.modelValue, ()=> {
-      state.selected = props.modelValue;
-    })
+      watch(
+        () => props.modelValue,
+        () => {
+          state.selected = props.modelValue;
+        }
+      );
 
-    return {
-      state,
-      getEmails,
-    };
-  },
-});
+      return {
+        state,
+      };
+    },
+  });
 </script>

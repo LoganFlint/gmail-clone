@@ -23,9 +23,7 @@
           />
         </div>
       </div>
-      <div
-        class="border border-unicornSilver rounded pt-2 pb-5 pl-3 pr-3 mr-5"
-      >
+      <div class="border border-unicornSilver rounded pt-2 pb-5 pl-3 pr-3 mr-5">
         <div class="text-sm pr-8 pt-1 pb-5 font-light">
           "{{ state.email.body }}"
         </div>
@@ -62,7 +60,6 @@
         email: {} as Email,
       });
 
-
       function sendAnEmail() {
         sendEmail({
           body: emailBody.value,
@@ -70,7 +67,7 @@
           from: state.email.from,
           archived: false,
           read: false,
-          sentAt: new Date().toISOString()
+          sentAt: new Date().toISOString(),
         } as Email);
         console.log(state.email);
       }

@@ -8,7 +8,8 @@
     <div
       class="-mb-4 transition-all duration-300 flex"
       :class="{
-        'opacity-0 invisible -ml-36': open === false
+        'opacity-0 invisible -ml-36  w-0': open === false,
+        '-mr-20': open === true
       }"
     >
       <ActionMenuItem

@@ -8,7 +8,7 @@
       "sentAt": "2020-03-27T18:25:43.511Z",
       "archived": false,
       "read": true,
-      "markedToDelete": true
+      "markedToDelete": false
     },
     {
       "id": 2,
@@ -18,7 +18,7 @@
       "sentAt": "2020-05-20T18:25:43.511Z",
       "archived": false,
       "read": true,
-      "markedToDelete": true
+      "markedToDelete": false
     },
     {
       "id": 3,
@@ -28,7 +28,7 @@
       "sentAt": "2020-03-18T18:25:43.511Z",
       "archived": false,
       "read": true,
-      "markedToDelete": true
+      "markedToDelete": false
     },
     {
       "id": 4,
@@ -37,7 +37,7 @@
       "body": "Newsletter Issue #161",
       "sentAt": "2020-03-24T18:25:43.511Z",
       "archived": false,
-      "read": true,
+      "read": false,
       "markedToDelete": false
     },
     {
@@ -55,7 +55,7 @@
       "subject": "vue",
       "from": "team@vuemastery.com",
       "archived": false,
-      "read": true,
+      "read": false,
       "sentAt": "2021-10-28T23:03:55.005Z",
       "id": 6,
       "markedToDelete": false
@@ -75,7 +75,7 @@
       "subject": "test again",
       "from": "team@vuemastery.com",
       "archived": false,
-      "read": true,
+      "read": false,
       "sentAt": "2021-10-29T03:37:02.122Z",
       "id": 8,
       "markedToDelete": false

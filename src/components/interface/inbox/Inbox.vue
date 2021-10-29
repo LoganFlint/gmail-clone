@@ -12,6 +12,7 @@
       v-model="state.showActionMenu"
       :mode="state.mode"
       @update:modelValue="menuOpen"
+      @delete-forever="goneForever"
       @select-all="selectAll"
       @delete-selected="markDelete"
       @undelete-selected="unmarkDelete"
@@ -66,6 +67,7 @@
     unreadEmail,
     markForDeletion,
     unmarkForDeletion,
+    deleteForever,
   } from "../../../services/api";
 
   import { Email } from "../../../services/modules/emails";
@@ -75,6 +77,7 @@
     selected: boolean;
     read: boolean;
     archived: boolean;
+    markedToDelete: boolean;
   }
 
   export default defineComponent({
@@ -214,6 +217,14 @@
         window.location.assign("mailto:launchmail@gmail.com");
       }
 
+      async function goneForever(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await deleteForever(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
       getEmails();
 
       return {
@@ -235,6 +246,7 @@
         markDelete,
         unmarkDelete,
         menuOpen,
+        goneForever,
       };
     },
   });

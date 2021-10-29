@@ -22,7 +22,7 @@
         <ActionMenuItem
           :icon="mode === 'trash' ? deleteForever : trash"
           :label="mode === 'trash' ? 'Delete Forever' : 'Delete'"
-          @click="$emit('deleteSelected')"
+          @click="$emit(mode === 'trash'? 'deleteForever' : 'deleteSelected')"
         />
 
         <ActionMenuItem
@@ -83,6 +83,7 @@
       "sendEmail",
       "selectAll",
       "deleteSelected",
+      "deleteForever",
       "undeleteSelected",
       "archiveSelected",
       "unarchiveSelected",

@@ -19,7 +19,9 @@ import {
     markForDeletion,
     markForDeletionById,
     unmarkForDeletion,
-    unmarkForDeletionById
+    unmarkForDeletionById,
+    deleteEmail,
+    deleteForever
     } from "./modules/emails";
 
 export {
@@ -43,5 +45,7 @@ export {
     markForDeletion,
     markForDeletionById,
     unmarkForDeletion,
-    unmarkForDeletionById
+    unmarkForDeletionById,
+    deleteEmail,
+    deleteForever
 }

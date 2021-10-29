@@ -7,7 +7,8 @@ export interface Email {
     id: number,
     read: boolean,
     sentAt: string,
-    subject: string
+    subject: string,
+    markedToDelete: boolean
 }
 
 export async function requestEmails(): Promise<Email[]> {
@@ -54,6 +55,7 @@ export async function archiveEmailById(id: number): Promise<Email> {
 export async function archiveEmail(email: Email): Promise<Email> {
     if(email.archived === true) return email;
     email.archived = true;
+    email.markedToDelete = false;
     return await updateEmail(email);
 }
 
@@ -123,3 +125,27 @@ export async function goNewer(email: Email): Promise<Email> {
 //     email.read = !email.read;
 //     return await updateEmail(email);
 // }
+
+export async function markForDeletion(email: Email): Promise<Email> {
+    if(email.markedToDelete === true) return email;
+    email.markedToDelete = true;
+    email.archived = false;
+    return await updateEmail(email);
+}
+
+export async function markForDeletionById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await markForDeletion(email);
+}
+
+export async function unmarkForDeletion(email: Email): Promise<Email> {
+    if(email.markedToDelete === false) return email;
+    email.markedToDelete = false;
+    email.archived = false;
+    return await updateEmail(email);
+}
+
+export async function unmarkForDeletionById(id: number): Promise<Email> {
+    const email = await getEmailById(id);
+    return await unmarkForDeletion(email);
+}

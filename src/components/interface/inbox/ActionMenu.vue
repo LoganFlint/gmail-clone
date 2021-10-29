@@ -12,34 +12,35 @@
       }"
     >
       <ActionMenuItem
-        :icon="trash"
-        label="Delete"
+        :icon="mode === 'trash'? deleteForever : trash"
+        :label="mode === 'trash'? 'Delete Forever' : 'Delete'"
         @click="$emit('deleteSelected')"
       />
 
       <ActionMenuItem
-        :icon="archive"
-        label="Archive"
-        class="-ml-3"
-        @click="$emit('archiveSelected')"
+        v-if="mode === 'trash'"
+        :icon="undelete"
+        label="Undelete"
+        class="-ml-12"
+        @click="$emit('undeleteSelected')"
       />
 
       <ActionMenuItem
-        :icon="unarchive"
-        label="Unarchive"
-        class="-ml-6"
-        @click="$emit('unarchiveSelected')"
+        :icon="mode === 'archived' ? unarchive : archive"
+        :label="mode === 'archived'? 'Unarchive' : 'Archive'"
+        class="-ml-5"
+        @click="$emit(mode === 'archived'? 'unarchiveSelected' : 'archiveSelected')"
       />
 
       <ActionMenuItem
-        :icon="read"
+        :icon="openMail"
         label="Mark as read"
         class="-ml-9"
         @click="$emit('readSelected')"
       />
 
       <ActionMenuItem
-        :icon="unread"
+        :icon="mail"
         label="Mark as unread"
         class="-ml-14"
         @click="$emit('unreadSelected')"
@@ -57,8 +58,10 @@ import ActionMenuItem from "./ActionMenuItem.vue";
 import trash from "../../../assets/trash.svg";
 import archive from "../../../assets/archive.svg";
 import unarchive from "../../../assets/unarchive.svg";
-import read from "../../../assets/read.svg";
-import unread from "../../../assets/unread.svg";
+import openMail from "../../../assets/openmail.svg";
+import mail from "../../../assets/mail.svg";
+import deleteForever from "../../../assets/delete.svg"
+import undelete from "../../../assets/undelete.svg";
 
 export default defineComponent({
     name: "ActionMenu",
@@ -69,9 +72,10 @@ export default defineComponent({
     props: {
       open: { type: Boolean, default: false },
       id: { type: Number, default: 0 },
+      mode: { type: String, default: "primary" }
     },
     emits: [
-      "selectAll", "deleteSelected", "archiveSelected", "unarchiveSelected", "readSelected", "unreadSelected"
+      "selectAll", "deleteSelected", "undeleteSelected", "archiveSelected", "unarchiveSelected", "readSelected", "unreadSelected"
     ],
     setup(){
         const state = reactive({
@@ -83,8 +87,10 @@ export default defineComponent({
           trash,
           archive,
           unarchive,
-          read,
-          unread
+          openMail,
+          mail,
+          deleteForever,
+          undelete
         }
     }
 });

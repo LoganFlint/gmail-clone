@@ -52,7 +52,7 @@
       modelValue: { type: Number, default: 0 },
     },
     emits: ["close", "update:modelValue"],
-    setup(props) {
+    setup(props, { emit }) {
       const emailBody = ref<string>("");
       const emailSubject = ref<string>("");
 
@@ -69,7 +69,7 @@
           read: false,
           sentAt: new Date().toISOString(),
         } as Email);
-        console.log(state.email);
+        emit("close");
       }
 
       watch(

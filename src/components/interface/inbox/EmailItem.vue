@@ -14,9 +14,12 @@
       class="m-3 mt-4"
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
-    <table class="w-full table-fixed" @click="$emit('openEmail', email.id)">
+    <table class="w-full table-fixed">
       <tr>
-        <td class="w-1/5 overflow-hidden overflow-ellipsis">
+        <td
+          @click="$emit('openEmail', email.id)"
+          class="w-1/5 overflow-hidden overflow-ellipsis"
+        >
           {{ email.from }}
         </td>
         <td>

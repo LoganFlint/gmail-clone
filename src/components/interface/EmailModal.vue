@@ -98,10 +98,9 @@
       const showReply = ref(false);
 
       function openReply() {
-        emit("sendReply");
         state.open = !state.open;
-        emit("close");
-        showReply.value = true;
+        console.log("open reply");
+        emit("sendReply");
       }
 
       function closeModal() {

@@ -31,6 +31,7 @@
       @open-email="openEmail"
       @update:model-value="handleActionMenu"
       @click="state.open = email.email.id"
+      @send-reply="openSend"
     />
   </div>
 
@@ -39,12 +40,11 @@
     :is-open="state.showEmail"
     @close="closeModal"
     @emails-updated="getEmails"
-    @send-reply="openSend"
   />
   <ComposeEmailModal
     v-model="state.open"
     :is-open="showSendEmail"
-    @close="closeModal"
+    @close="closeSend"
   />
 </template>
 
@@ -69,7 +69,7 @@
     archived: boolean;
   }
   export default defineComponent({
-    setup(props) {
+    setup() {
       const state = reactive({
         emails: [] as SelectedEmail[],
         open: 0,
@@ -152,8 +152,11 @@
       const showSendEmail = ref(false);
 
       function openSend() {
-        state.showEmail = false;
         showSendEmail.value = true;
+      }
+
+      function closeSend() {
+        showSendEmail.value = false;
       }
 
       function quickSend() {
@@ -174,11 +177,11 @@
         unreadSelected,
         handleActionMenu,
         openEmail,
-        // openSend,
         showSendEmail,
         sendMail,
         quickSend,
         openSend,
+        closeSend,
       };
     },
   });

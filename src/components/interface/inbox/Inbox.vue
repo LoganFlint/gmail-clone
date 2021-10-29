@@ -80,7 +80,6 @@ import {
 
 import { Email } from "../../../services/modules/emails";
 
-import sendMail from "../../../assets/sendEmail.svg";
 
 interface SelectedEmail {
   email: Email;
@@ -143,6 +142,7 @@ export default defineComponent({
       for (const email of state.emails) {
         if (email.selected === true) await markForDeletion(email.email);
       }
+      state.showActionMenu = false
       getEmails();
     }
 
@@ -150,6 +150,7 @@ export default defineComponent({
       for (const email of state.emails) {
         if (email.selected === true) await unmarkForDeletion(email.email);
       }
+      state.showActionMenu = false
       getEmails();
     }
 
@@ -157,6 +158,7 @@ export default defineComponent({
       for (const email of state.emails) {
         if (email.selected === true) await archiveEmail(email.email);
       }
+      state.showActionMenu = false
       getEmails();
     }
 
@@ -164,6 +166,7 @@ export default defineComponent({
       for (const email of state.emails) {
         if (email.selected === true) await unarchiveEmail(email.email);
       }
+      state.showActionMenu = false
       getEmails();
     }
 
@@ -171,6 +174,7 @@ export default defineComponent({
       for (const email of state.emails) {
         if (email.selected === true) await readEmail(email.email);
       }
+      state.showActionMenu = false
       getEmails();
     }
 
@@ -178,6 +182,7 @@ export default defineComponent({
       for (const email of state.emails) {
         if (email.selected === true) await unreadEmail(email.email);
       }
+      state.showActionMenu = false
       getEmails();
     }
 
@@ -225,7 +230,6 @@ export default defineComponent({
       handleActionMenu,
       openEmail,
       showSendEmail,
-      sendMail,
       quickSend,
       openSend,
       closeSend,

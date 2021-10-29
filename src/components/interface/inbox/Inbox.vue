@@ -18,6 +18,7 @@
       @unarchive-selected="unarchiveSelected"
       @read-selected="readSelected"
       @unread-selected="unreadSelected"
+      @send-email="quickSend"
     />
   </div>
 

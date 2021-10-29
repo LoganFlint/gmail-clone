@@ -15,7 +15,11 @@ import {
     readEmailById, 
     unreadEmail, 
     unreadEmailById, 
-    goNewer 
+    goNewer,
+    markForDeletion,
+    markForDeletionById,
+    unmarkForDeletion,
+    unmarkForDeletionById
     } from "./modules/emails";
 
 export {
@@ -35,5 +39,9 @@ export {
     readEmailById, 
     unreadEmail, 
     unreadEmailById, 
-    goNewer
+    goNewer,
+    markForDeletion,
+    markForDeletionById,
+    unmarkForDeletion,
+    unmarkForDeletionById
 }

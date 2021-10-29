@@ -9,24 +9,41 @@
   <ActionMenu
     class="mr-4"
     :open="state.showActionMenu"
+    :mode="state.mode"
     @select-all="selectAll"
-    @delete-selected="deleteSelected"
+    @delete-selected="markDelete"
+    @undelete-selected="unmarkDelete"
     @archive-selected="archiveSelected"
     @unarchive-selected="unarchiveSelected"
     @read-selected="readSelected"
     @unread-selected="unreadSelected"
   />
+
+  <TabBar
+    v-model="state.mode"
+    class="ml-16 mb-8"
+  />
+
+  <div v-if="current.length > 0">
+    <div
+      v-for="(email, i) in current"
+      :key="email.email.id"
+    >
+      <EmailItem
+        v-model="state.emails[i].selected"
+        :email="email.email"
+        :index="i"
+        @open-email="openEmail"
+        @update:model-value="handleActionMenu"
+      />
+    </div>
+  </div>
+
   <div
-    v-for="(email, i) in state.emails"
-    :key="email.email.id"
+    v-else
+    class="w-full font-xl font-bold text-center mt-24"
   >
-    <EmailItem
-      v-model="state.emails[i].selected"
-      :email="email.email"
-      :index="i"
-      @open-email="openEmail"
-      @update:model-value="handleActionMenu"
-    />
+    There's nothing to show here!
   </div>
 
   <EmailModal
@@ -38,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, computed } from "vue";
 import {
   sendEmail,
   requestEmails,
@@ -47,12 +64,15 @@ import {
   unarchiveEmail,
   readEmail,
   readEmailById,
-  unreadEmail
+  unreadEmail,
+  markForDeletion,
+  unmarkForDeletion
 } from "../../../services/api"
 import { Email } from "../../../services/modules/emails";
 import EmailItem from "./EmailItem.vue";
 import EmailModal from "../EmailModal.vue";
 import ActionMenu from "./ActionMenu.vue";
+import TabBar from "./TabBar.vue";
 
 interface SelectedEmail {
   email: Email;
@@ -65,14 +85,41 @@ export default defineComponent({
   components: {
     EmailItem,
     EmailModal,
-    ActionMenu
+    ActionMenu,
+    TabBar
   },
   setup() {
+
+    // const archived = computed(() => {
+    //   return state.emails.filter((email) => email.email.archived === true);
+    // });
+
+    // const primary = computed(() => {
+    //   return state.emails.filter((email) => email.email.archived === false && email.email.markedToDelete === false);
+    // });
+
+    // const trash = computed(() => {
+    //   return state.emails.filter((email) => email.email.markedToDelete === true);
+    // });
+
+    const current = computed(() => {
+      switch(state.mode) {
+        case "archived":
+          return state.emails.filter((email) => email.email.archived === true);
+        case "primary":
+          return state.emails.filter((email) => email.email.archived === false && email.email.markedToDelete === false);
+        case "trash":
+          return state.emails.filter((email) => email.email.markedToDelete === true);
+      }
+      return state.emails;
+    });
+
     const state = reactive({
       emails: [] as SelectedEmail[],
       open: 0,
       showEmail: false,
-      showActionMenu: false
+      showActionMenu: false,
+      mode: "primary"
     });
 
     function getEmails(): void {
@@ -93,8 +140,6 @@ export default defineComponent({
       readEmailById(id);
     }
 
-
-
     function selectAll(selected: boolean): void {
       state.showActionMenu = selected;
       for (const i in state.emails) {
@@ -102,8 +147,18 @@ export default defineComponent({
       }
     }
 
-    function deleteSelected(): void {
-      console.log("Need to create this function in email.ts");
+    async function markDelete(): Promise<void> {
+      for(const email of state.emails) {
+        if (email.selected === true) await markForDeletion(email.email);
+      }
+      getEmails();
+    }
+
+    async function unmarkDelete(): Promise<void> {
+      for(const email of state.emails) {
+        if (email.selected === true) await unmarkForDeletion(email.email);
+      }
+      getEmails();
     }
 
     async function archiveSelected(): Promise<void> {
@@ -148,20 +203,22 @@ export default defineComponent({
       getEmails();
       state.showEmail = false;
     }
-
+    
     getEmails();
 
     return {
       state,
+      current,
       getEmails,
       closeModal,
       selectAll,
-      deleteSelected,
       archiveSelected,
       unarchiveSelected,
       readSelected,
       unreadSelected,
       handleActionMenu,
+      markDelete,
+      unmarkDelete,
       openEmail
     }
   }

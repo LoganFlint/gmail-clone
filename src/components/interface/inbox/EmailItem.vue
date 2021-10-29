@@ -14,9 +14,7 @@
       class="m-3 mt-3"
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
-    <table
-      class="w-full table-fixed"
-    >
+    <table class="w-full table-fixed">
       <tr>
         <td
           class="w-1/5 overflow-hidden overflow-ellipsis"
@@ -25,26 +23,26 @@
           {{ email.from }}
         </td>
         <td
-          class="w-3/5"
+          class="w-3/5 pr-8"
           @click="$emit('openEmail', email.id)"
         >
           <div class="flex w-full">
-            <div class="max-w-5/6 font-bold mr-8 overflow-hidden overflow-ellipsis">
+            <div
+              class="w-4/5 flex-grow font-bold mr-8 overflow-hidden overflow-ellipsis"
+            >
               {{ email.subject }}
             </div>
-            <div class="w-full overflow-hidden overflow-ellipsis">
+            <div class="w-2/6 overflow-hidden overflow-ellipsis">
               {{ email.body }}
             </div>
           </div>
         </td>
-        <td
-          class="justify-right"
-          @click="$emit('sendReply')"
-        >
+        <td class="pl-6">
           <img
             src="../../../assets/sendEmail.svg"
             alt="send email"
-            class="w-6 h-6"
+            class="w-5 h-5"
+            @click="$emit('sendReply')"
           >
         </td>
         <td class="w-28 overflow-ellipsis text-right">

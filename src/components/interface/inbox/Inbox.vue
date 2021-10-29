@@ -9,9 +9,11 @@
 
     <div class="flex items-center">
       <ActionMenu
+        v-model="state.showActionMenu"
         class="mr-4"
-        :open="state.showActionMenu"
         :mode="state.mode"
+        @update:modelValue="menuOpen"
+        @delete-forever="goneForever"
         @select-all="selectAll"
         @delete-selected="markDelete"
         @undelete-selected="unmarkDelete"
@@ -19,6 +21,7 @@
         @unarchive-selected="unarchiveSelected"
         @read-selected="readSelected"
         @unread-selected="unreadSelected"
+        @send-email="quickSend"
       />
     </div>
 
@@ -26,7 +29,6 @@
       v-model="state.mode"
       class="ml-16 mb-8"
     />
-
 
     <div v-if="current.length > 0">
       <div
@@ -51,7 +53,6 @@
     >
       There's nothing to show here!
     </div>
-
     <EmailModal
       v-model="state.open"
       :is-open="state.showEmail"
@@ -68,174 +69,197 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed } from "vue";
-import {
-  sendEmail,
-  requestAllEmails,
-  requestArchived,
-  getEmailById,
-  archiveEmail,
-  unarchiveEmail,
-  readEmail,
-  readEmailById,
-  unreadEmail,
-  markForDeletion,
-  unmarkForDeletion
-} from "../../../services/api"
+  import { defineComponent, reactive, ref, computed } from "vue";
+  import {
+    requestAllEmails,
+    archiveEmail,
+    unarchiveEmail,
+    readEmail,
+    readEmailById,
+    unreadEmail,
+    markForDeletion,
+    unmarkForDeletion,
+    deleteForever,
+  } from "../../../services/api";
 
-import { Email } from "../../../services/modules/emails";
+  import { Email } from "../../../services/modules/emails";
 
-import sendMail from "../../../assets/sendEmail.svg";
-
-interface SelectedEmail {
-  email: Email;
-  selected: boolean;
-  read: boolean;
-  archived: boolean;
-}
-
-export default defineComponent({
-  name: "Inbox",
-  setup() {
-
-    const current = computed(() => {
-      switch (state.mode) {
-        case "archived":
-          return state.emails.filter((email) => email.email.archived === true);
-        case "primary":
-          return state.emails.filter((email) => email.email.archived === false && email.email.markedToDelete === false);
-        case "trash":
-          return state.emails.filter((email) => email.email.markedToDelete === true);
-      }
-      return state.emails;
-    });
-
-    const state = reactive({
-      emails: [] as SelectedEmail[],
-      open: 0,
-      showEmail: false,
-      showActionMenu: false,
-      mode: "primary"
-    });
-
-    function getEmails(): void {
-      state.emails = [];
-      requestAllEmails().then((response: Email[])=> {
-        for (const item of response) {
-          state.emails.push({
-            email: item,
-            selected: false
-          } as SelectedEmail);
-        }
-      });
-    }
-
-    function openEmail(id: number): void {
-      state.open = id;
-      state.showEmail = true;
-      readEmailById(id);
-    }
-
-    function selectAll(selected: boolean): void {
-      state.showActionMenu = selected;
-      for (const i in state.emails) {
-        state.emails[i].selected = selected;
-      }
-    }
-
-    async function markDelete(): Promise<void> {
-      for (const email of state.emails) {
-        if (email.selected === true) await markForDeletion(email.email);
-      }
-      getEmails();
-    }
-
-    async function unmarkDelete(): Promise<void> {
-      for (const email of state.emails) {
-        if (email.selected === true) await unmarkForDeletion(email.email);
-      }
-      getEmails();
-    }
-
-    async function archiveSelected(): Promise<void> {
-      for (const email of state.emails) {
-        if (email.selected === true) await archiveEmail(email.email);
-      }
-      getEmails();
-    }
-
-    async function unarchiveSelected(): Promise<void> {
-      for (const email of state.emails) {
-        if (email.selected === true) await unarchiveEmail(email.email);
-      }
-      getEmails();
-    }
-
-    async function readSelected(): Promise<void> {
-      for (const email of state.emails) {
-        if (email.selected === true) await readEmail(email.email);
-      }
-      getEmails();
-    }
-
-    async function unreadSelected(): Promise<void> {
-      for (const email of state.emails) {
-        if (email.selected === true) await unreadEmail(email.email);
-      }
-      getEmails();
-    }
-
-    function handleActionMenu(): void {
-      for (const email of state.emails) {
-        if (email.selected === true) {
-          state.showActionMenu = true;
-          return;
-        }
-      }
-      state.showActionMenu = false;
-    }
-
-    function closeModal(): void {
-      getEmails();
-      state.showEmail = false;
-    }
-
-    const showSendEmail = ref(false);
-
-    function openSend() {
-      showSendEmail.value = true;
-    }
-
-    function closeSend() {
-      showSendEmail.value = false;
-    }
-
-    function quickSend() {
-      window.location.assign("mailto:launchmail@gmail.com");
-    }
-
-    getEmails();
-
-    return {
-      state,
-      current,
-      getEmails,
-      closeModal,
-      selectAll,
-      archiveSelected,
-      unarchiveSelected,
-      readSelected,
-      unreadSelected,
-      handleActionMenu,
-      openEmail,
-      showSendEmail,
-      sendMail,
-      quickSend,
-      openSend,
-      closeSend,
-      markDelete,
-      unmarkDelete,
-    }
+  interface SelectedEmail {
+    email: Email;
+    selected: boolean;
+    read: boolean;
+    archived: boolean;
+    markedToDelete: boolean;
   }
-});
+
+  export default defineComponent({
+    name: "Inbox",
+    setup() {
+      const current = computed(() => {
+        switch (state.mode) {
+          case "archived":
+            return state.emails.filter(
+              (email) => email.email.archived === true
+            );
+          case "primary":
+            return state.emails.filter(
+              (email) =>
+                email.email.archived === false &&
+                email.email.markedToDelete === false
+            );
+          case "trash":
+            return state.emails.filter(
+              (email) => email.email.markedToDelete === true
+            );
+        }
+        return state.emails;
+      });
+
+      const state = reactive({
+        emails: [] as SelectedEmail[],
+        open: 0,
+        showEmail: false,
+        showActionMenu: false,
+        mode: "primary",
+      });
+
+      function getEmails(): void {
+        state.emails = [];
+        requestAllEmails().then((response) => {
+          for (const item of response) {
+            state.emails.push({
+              email: item,
+              selected: false,
+            } as SelectedEmail);
+          }
+        });
+      }
+
+      function openEmail(id: number): void {
+        state.open = id;
+        state.showEmail = true;
+        readEmailById(id);
+      }
+
+      function selectAll(selected: boolean): void {
+        state.showActionMenu = selected;
+        for (const i in state.emails) {
+          state.emails[i].selected = selected;
+        }
+      }
+
+      function menuOpen(selected: boolean): void {
+        state.showActionMenu = selected;
+      }
+
+      async function markDelete(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await markForDeletion(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
+      async function unmarkDelete(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await unmarkForDeletion(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
+      async function archiveSelected(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await archiveEmail(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
+      async function unarchiveSelected(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await unarchiveEmail(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
+      async function readSelected(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await readEmail(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
+      async function unreadSelected(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await unreadEmail(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
+      function handleActionMenu(): void {
+        for (const email of state.emails) {
+          if (email.selected === true) {
+            state.showActionMenu = true;
+            return;
+          }
+        }
+        state.showActionMenu = false;
+      }
+
+      function closeModal(): void {
+        getEmails();
+        state.showEmail = false;
+      }
+
+      const showSendEmail = ref(false);
+
+      function openSend() {
+        showSendEmail.value = true;
+      }
+
+      function closeSend() {
+        showSendEmail.value = false;
+      }
+
+      function quickSend() {
+        window.location.assign("mailto:launchmail@gmail.com");
+      }
+
+      async function goneForever(): Promise<void> {
+        for (const email of state.emails) {
+          if (email.selected === true) await deleteForever(email.email);
+        }
+        state.showActionMenu = false;
+        getEmails();
+      }
+
+      getEmails();
+
+      return {
+        state,
+        current,
+        getEmails,
+        closeModal,
+        selectAll,
+        archiveSelected,
+        unarchiveSelected,
+        readSelected,
+        unreadSelected,
+        handleActionMenu,
+        openEmail,
+        showSendEmail,
+        quickSend,
+        openSend,
+        closeSend,
+        markDelete,
+        unmarkDelete,
+        menuOpen,
+        goneForever,
+      };
+    },
+  });
 </script>

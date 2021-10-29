@@ -4,7 +4,7 @@
       :disabled="disabled"
       :checked="modelValue"
       type="checkbox"
-      class="rounded w-4 h-4 border border-black focus:ring-0 focus:ring-offset-0"
+      class="rounded w-4 h-4 border border-black focus:ring-0 focus:ring-offset-0 cursor-pointer"
       @input="toggle"
     >
   </div>
@@ -21,7 +21,7 @@ export default defineComponent({
     emits: [
         "update:modelValue"
     ],
-    setup(props, context){
+    setup(props, {emit}){
         const state = reactive({
             checked: false
         });
@@ -29,7 +29,7 @@ export default defineComponent({
         function toggle(): void {
             if(props.disabled === true) return;
             state.checked = !state.checked;
-            context.emit("update:modelValue", state.checked);
+            emit("update:modelValue", state.checked);
         }
 
         return {

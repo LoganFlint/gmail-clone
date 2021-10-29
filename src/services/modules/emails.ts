@@ -80,6 +80,17 @@ export async function updateEmail(email: Email): Promise<Email> {
     return response as Email;
 }
 
+export async function deleteEmail(email: Email): Promise<Email> {
+    const response = await axios.delete(`http://localhost:3000/emails/${email.id}`)
+        .then(({ data }) => {
+            return data
+        })
+        .catch(error => {
+            throw error;
+        });
+    return response as Email;
+}
+
 export async function archiveEmailById(id: number): Promise<Email> {
     const email = await getEmailById(id);
     return await archiveEmail(email);
@@ -150,6 +161,12 @@ export async function markForDeletion(email: Email): Promise<Email> {
     email.markedToDelete = true;
     email.archived = false;
     return await updateEmail(email);
+}
+
+export async function deleteForever(email: Email): Promise<void> {
+    if(email.markedToDelete === true){
+        await deleteEmail(email);
+    } 
 }
 
 export async function markForDeletionById(id: number): Promise<Email> {

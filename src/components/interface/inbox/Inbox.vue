@@ -27,11 +27,13 @@
       class="ml-16 mb-8"
     />
 
-    <div v-if="current.length > 0">
+    <div
+      v-if="current.length > 0"
+    >
       <div
         v-for="(email, i) in current"
         :key="email.email.id"
-        class="overflow-auto"
+        class="min-w-[600px]"
       >
         <EmailItem
           v-model="state.emails[i].selected"

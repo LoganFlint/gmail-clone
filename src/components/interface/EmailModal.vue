@@ -66,7 +66,6 @@
         });
         archived = state.email.archived;
         emit("emailsUpdated");
-        console.log(archived);
       }
 
       function toggleReadMail(read: boolean) {
@@ -99,7 +98,6 @@
 
       function openReply() {
         state.open = !state.open;
-        console.log("open reply");
         emit("sendReply");
       }
 

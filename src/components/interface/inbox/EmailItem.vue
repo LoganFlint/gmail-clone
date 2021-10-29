@@ -14,32 +14,38 @@
       class="m-3 mt-4"
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
-    <table class="w-full table-fixed">
+    <table
+      class="w-full table-fixed"
+    >
       <tr>
         <td
-          @click="$emit('openEmail', email.id)"
           class="w-1/5 overflow-hidden overflow-ellipsis"
+          @click="$emit('openEmail', email.id)"
         >
           {{ email.from }}
         </td>
-        <td>
+        <td
+          class="w-3/5"
+          @click="$emit('openEmail', email.id)"
+        >
           <div class="flex w-full">
-            <div
-              class="w-4/5 flex-grow font-bold mr-8 overflow-hidden overflow-ellipsis"
-            >
+            <div class="max-w-5/6 font-bold mr-8 overflow-hidden overflow-ellipsis">
               {{ email.subject }}
             </div>
-            <div class="w-2/6 overflow-hidden overflow-ellipsis">
+            <div class="w-full overflow-hidden overflow-ellipsis">
               {{ email.body }}
             </div>
-            <div class="px-6 flex w-52 justify-center">
-              <img
-                @click="sendEmail"
-                src="../../../assets/sendEmail.svg"
-                alt="send email"
-              />
-            </div>
           </div>
+        </td>
+        <td
+          class="justify-right"
+          @click="$emit('sendReply')"
+        >
+          <img
+            src="../../../assets/sendEmail.svg"
+            alt="send email"
+            class="w-6 h-6"
+          >
         </td>
         <td class="w-28 overflow-ellipsis text-right">
           {{ new Date(email.sentAt).toLocaleTimeString() }}
@@ -52,8 +58,6 @@
 <script lang="ts">
   import { defineComponent, PropType, reactive, watch } from "vue";
 
-  import { requestEmails } from "../../../services/api";
-
   import { Email } from "../../../services/modules/emails";
 
   export default defineComponent({
@@ -63,23 +67,13 @@
       modelValue: { type: Boolean, default: false },
     },
     emits: ["update:modelValue", "openEmail", "sendReply"],
-    setup(props, { emit }) {
+    setup(props) {
       const state = reactive({
         read: props.email.read,
         archived: props.email.archived,
         selected: false,
         emails: [] as Email[],
       });
-
-      function getEmails(): void {
-        requestEmails().then((res) => {
-          return res;
-        });
-      }
-
-      function sendEmail() {
-        emit("sendReply");
-      }
 
       watch(
         () => props.modelValue,
@@ -90,8 +84,6 @@
 
       return {
         state,
-        getEmails,
-        sendEmail,
       };
     },
   });

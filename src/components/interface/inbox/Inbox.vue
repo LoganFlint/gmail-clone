@@ -27,9 +27,8 @@
       class="ml-16 mb-8"
     />
 
-    <div
-      v-if="current.length > 0"
-    >
+
+    <div v-if="current.length > 0">
       <div
         v-for="(email, i) in current"
         :key="email.email.id"
@@ -59,6 +58,7 @@
       @close="closeModal"
       @emails-updated="getEmails"
     />
+
     <ComposeEmailModal
       v-model="state.open"
       :is-open="showSendEmail"
@@ -71,7 +71,8 @@
 import { defineComponent, reactive, ref, computed } from "vue";
 import {
   sendEmail,
-  requestEmails,
+  requestAllEmails,
+  requestArchived,
   getEmailById,
   archiveEmail,
   unarchiveEmail,
@@ -119,7 +120,7 @@ export default defineComponent({
 
     function getEmails(): void {
       state.emails = [];
-      requestEmails().then(response => {
+      requestAllEmails().then((response: Email[])=> {
         for (const item of response) {
           state.emails.push({
             email: item,
@@ -130,7 +131,6 @@ export default defineComponent({
     }
 
     function openEmail(id: number): void {
-      console.log("from open email");
       state.open = id;
       state.showEmail = true;
       readEmailById(id);

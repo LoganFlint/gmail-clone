@@ -1,6 +1,6 @@
 <template>
   <div
-    class="clear-both w-full cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
+    class="cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
     :class="{
       'hover:bg-lbLightBlue hover:text-gray': !email.read && !email.archived,
       'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray':
@@ -11,7 +11,7 @@
   >
     <Checkbox
       v-model="state.selected"
-      class="m-3 mt-4"
+      class="m-3 mt-3"
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
     <table class="w-full table-fixed">

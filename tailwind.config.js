@@ -1,4 +1,9 @@
+/* eslint-env node */
+/* eslint-disable @typescript-eslint/no-var-requires */
+const forms = require("@tailwindcss/forms");
+
 module.exports = {
+  mode: "jit",
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: false,
   theme: {
@@ -20,5 +25,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [ forms ],
 }

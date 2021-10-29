@@ -10,7 +10,7 @@
     <teleport to="#modal">
       <div
         :class="[
-          'max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 bg-white border border-black rounded',
+          'min-w-64 max-h-screen overflow-y-auto my-10 mx-40 fixed inset-0 bg-white border border-black rounded',
           'transform transition-all duration-300 ease-out',
           {
             'scale-1 opacity-100': isOpen,

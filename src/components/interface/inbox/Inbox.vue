@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, computed } from "vue";
+  import { defineComponent, reactive, ref, computed, watch } from "vue";
   import {
     requestAllEmails,
     archiveEmail,
@@ -236,6 +236,10 @@
         state.showActionMenu = false;
         getEmails();
       }
+
+      watch(()=> state.showActionMenu, ()=> {
+        console.log(state.showActionMenu);
+      });
 
       getEmails();
 

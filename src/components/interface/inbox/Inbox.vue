@@ -5,7 +5,7 @@
       launchmail
     </div>
   </div>
-<div class="flex items-center">
+<div class=" flex items-center">
 
   <ActionMenu
     class="mr-4"
@@ -21,7 +21,7 @@
         :icon="sendMail"
         label="Send Email"
         class="-mb-4"
-        @click="$emit('unreadSelected')"
+        @click="quickSend"
       />
 
 </div>
@@ -157,6 +157,10 @@ import sendMail from "../../../assets/sendEmail.svg"
         showSendEmail.value = true;
       }
 
+      function quickSend() {
+         window.location.assign("mailto:launchmail@gmail.com");
+      }
+
       getEmails();
 
       return {
@@ -173,7 +177,8 @@ import sendMail from "../../../assets/sendEmail.svg"
         openEmail,
         openSend,
         showSendEmail,
-        sendMail
+        sendMail,
+        quickSend
       };
     },
   });

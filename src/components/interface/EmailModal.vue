@@ -1,5 +1,5 @@
 <template>
-  <Modal :is-open="isOpen" blur @close="$emit('close')">
+  <Modal :is-open="isOpen" blur @close="closeModal">
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button
@@ -32,7 +32,7 @@
       <Button
         class="mt-4 flex justify-center"
         label="Reply"
-        @click="openReply"
+        @click="$emit('sendReply')"
       />
     </div>
   </Modal>
@@ -92,15 +92,8 @@
         emit("update:modelValue", props.modelValue - 1);
       }
 
-      const showReply = ref(false);
-
-      function openReply() {
-        state.open = !state.open;
-        emit("sendReply");
-      }
-
       function closeModal() {
-        showReply.value = false;
+        console.log("clicked from email modal")
         emit("close");
       }
 
@@ -120,9 +113,7 @@
         nextEmail,
         prevEmail,
         closeModal,
-        state,
-        openReply,
-        showReply,
+        state
       };
     },
   });

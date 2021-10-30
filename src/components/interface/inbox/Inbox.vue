@@ -57,8 +57,9 @@
     <EmailModal
       v-model="state.open"
       :is-open="state.showEmail"
-      @close="closeModal"
+      @close="closeEmail"
       @emails-updated="getEmails"
+      @send-reply="openSend"
     />
 
     <ComposeEmailModal
@@ -70,7 +71,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, computed, watch } from "vue";
+  import { defineComponent, reactive, ref, computed } from "vue";
   import {
     requestAllEmails,
     archiveEmail,
@@ -142,6 +143,13 @@
         readEmailById(id);
       }
 
+    // tried with and without id makes no sense 
+      function closeEmail(id: number): void {
+        state.open = id;
+        state.showEmail = false;
+        console.log("clicked from inbox")
+      }
+
       function selectAll(selected: boolean): void {
         state.showActionMenu = selected;
         for (const i in state.emails) {
@@ -211,14 +219,10 @@
         state.showActionMenu = false;
       }
 
-      function closeModal(): void {
-        getEmails();
-        state.showEmail = false;
-      }
-
       const showSendEmail = ref(false);
 
       function openSend() {
+        state.showEmail = false
         showSendEmail.value = true;
       }
 
@@ -244,7 +248,6 @@
         state,
         current,
         getEmails,
-        closeModal,
         selectAll,
         archiveSelected,
         unarchiveSelected,
@@ -260,6 +263,7 @@
         unmarkDelete,
         menuOpen,
         goneForever,
+        closeEmail
       };
     },
   });

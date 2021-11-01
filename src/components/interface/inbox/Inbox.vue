@@ -22,6 +22,7 @@
         @read-selected="readSelected"
         @unread-selected="unreadSelected"
         @send-email="quickSend"
+
       />
     </div>
 
@@ -56,7 +57,7 @@
     </div>
     <EmailModal
       v-model="state.open"
-      :is-open="state.showEmail"
+      :is-open="state.showEmail" 
       @close="closeEmail"
       @emails-updated="getEmails"
       @send-reply="openSend"
@@ -64,7 +65,7 @@
 
     <ComposeEmailModal
       v-model="state.open"
-      :is-open="showSendEmail"
+      :is-open="state.showEmailSend"
       @close="closeSend"
     />
   </div>
@@ -84,7 +85,7 @@
     deleteForever,
   } from "../../../services/api";
 
-  import { Email } from "../../../services/modules/emails";
+  import { Email,  } from "../../../services/modules/emails";
 
   interface SelectedEmail {
     email: Email;
@@ -121,6 +122,7 @@
         emails: [] as SelectedEmail[],
         open: 0,
         showEmail: false,
+        showEmailSend: false,
         showActionMenu: false,
         mode: "primary",
       });
@@ -139,15 +141,12 @@
 
       function openEmail(id: number): void {
         state.open = id;
-        state.showEmail = true;
+        state.showEmail = true
         readEmailById(id);
       }
 
-    // tried with and without id makes no sense 
-      function closeEmail(id: number): void {
-        state.open = id;
-        state.showEmail = false;
-        console.log("clicked from inbox")
+      function closeEmail() {
+        state.showEmail = false
       }
 
       function selectAll(selected: boolean): void {
@@ -219,15 +218,14 @@
         state.showActionMenu = false;
       }
 
-      const showSendEmail = ref(false);
 
       function openSend() {
         state.showEmail = false
-        showSendEmail.value = true;
+        state.showEmailSend = true;
       }
 
       function closeSend() {
-        showSendEmail.value = false;
+        state.showEmailSend = false;
       }
 
       function quickSend() {
@@ -255,7 +253,6 @@
         unreadSelected,
         handleActionMenu,
         openEmail,
-        showSendEmail,
         quickSend,
         openSend,
         closeSend,
@@ -263,7 +260,7 @@
         unmarkDelete,
         menuOpen,
         goneForever,
-        closeEmail
+        closeEmail,
       };
     },
   });

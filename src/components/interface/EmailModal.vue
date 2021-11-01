@@ -1,5 +1,5 @@
 <template>
-  <Modal :is-open="isOpen" blur @close="closeModal">
+  <Modal :is-open="isOpen" blur @close="$emit('close')">
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button
@@ -46,7 +46,7 @@
     updateEmail,
   } from "../../services/api";
   import { Email } from "../../services/modules/emails";
-  import { defineComponent, reactive, ref, watch } from "vue";
+  import { defineComponent, reactive, watch } from "vue";
   export default defineComponent({
     props: {
       modelValue: { type: Number, required: true },
@@ -92,11 +92,6 @@
         emit("update:modelValue", props.modelValue - 1);
       }
 
-      function closeModal() {
-        console.log("clicked from email modal")
-        emit("close");
-      }
-
       watch(
         () => props.modelValue,
         () => {
@@ -112,7 +107,6 @@
         toggleReadMail,
         nextEmail,
         prevEmail,
-        closeModal,
         state
       };
     },

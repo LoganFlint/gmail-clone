@@ -21,11 +21,13 @@
         <div>
           <img
             src="../../assets/close.svg"
-            class="absolute right-5 top-2 cursor-pointer w-8 h-8 p-1.5"
-            @click="closeModal"
+            class="absolute right-5 top-2 z-50 cursor-pointer w-8 h-8 p-1.5"
+            @click="
+              $emit('close')
+            "
           />
           <div class="w-full px-6">
-            <slot />
+            <slot  />
           </div>
         </div>
       </div>
@@ -34,27 +36,22 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from "vue";
+import { defineComponent } from "vue";
 
-  export default defineComponent({
-    props: {
-      isOpen: Boolean,
-      blur: Boolean,
-    },
-    emits: ["close"],
-    setup(_, { emit }) {
-      function handleMouseDrag(event: MouseEvent) {
-        if (event.button == 0) {
-          emit("close");
-        }
+export default defineComponent({
+  props: {
+    isOpen: Boolean,
+    blur: Boolean,
+  },
+  emits: ["close"],
+  setup(_, { emit }) {
+    function handleMouseDrag(event: MouseEvent) {
+      if (event.button == 0) {
+        emit("close");
       }
+    }
 
-      function closeModal() {
-        console.log("close X from modal")
-        emit("close")
-      }
-
-      return { handleMouseDrag, closeModal };
-    },
-  });
+    return { handleMouseDrag };
+  },
+});
 </script>

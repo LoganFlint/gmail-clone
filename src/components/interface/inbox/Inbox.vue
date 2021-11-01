@@ -248,8 +248,6 @@
       return {
         state,
         current,
-        allSelected,
-        showSendEmail,
         getEmails,
         selectAll,
         archiveSelected,

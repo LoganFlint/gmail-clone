@@ -7,7 +7,7 @@
       "body": "First of all, lets congratulate Kia King Ishii on joining the Vue.js core team! 🎉 He has been doing an incredible job building vuex-orm and will now focus on working on the next versions of Vuex.\n\nSpeaking of which – Vuex v4.0.0-alpha.1 has just been released! This is the version of Vuex that will work with Vue 3.0 but keep the familiar API you know from the current version.",
       "sentAt": "2020-03-18T18:25:43.511Z",
       "archived": false,
-      "read": true,
+      "read": false,
       "markedToDelete": false
     },
     {
@@ -16,8 +16,8 @@
       "subject": "'Vue 3 Release Roadmap' + 6 more must-read articles from this week",
       "body": "Newsletter Issue #161",
       "sentAt": "2020-03-24T18:25:43.511Z",
-      "archived": true,
-      "read": true,
+      "archived": false,
+      "read": false,
       "markedToDelete": false
     },
     {
@@ -25,7 +25,7 @@
       "subject": "Talk to Vue Team!",
       "from": "team@vuemastery.com",
       "archived": false,
-      "read": true,
+      "read": false,
       "sentAt": "2021-10-28T21:57:06.235Z",
       "id": 5,
       "markedToDelete": false
@@ -35,7 +35,7 @@
       "subject": "vue",
       "from": "team@vuemastery.com",
       "archived": false,
-      "read": true,
+      "read": false,
       "sentAt": "2021-10-28T23:03:55.005Z",
       "id": 6,
       "markedToDelete": false
@@ -65,7 +65,7 @@
       "subject": "test off of a test :)",
       "from": "team@vuemastery.com",
       "archived": false,
-      "read": true,
+      "read": false,
       "sentAt": "2021-10-29T03:39:46.529Z",
       "id": 9,
       "markedToDelete": false
@@ -77,7 +77,8 @@
       "archived": false,
       "read": false,
       "sentAt": "2021-10-29T23:33:24.440Z",
-      "id": 10
+      "id": 10,
+      "markedToDelete": false
     },
     {
       "body": "",
@@ -86,33 +87,37 @@
       "archived": false,
       "read": false,
       "sentAt": "2021-10-29T23:33:39.111Z",
-      "id": 11
+      "id": 11,
+      "markedToDelete": false
     },
     {
       "body": "Test reply",
       "subject": "",
       "from": "damian@dulisz.com",
-      "archived": false,
+      "archived": true,
       "read": false,
       "sentAt": "2021-10-29T23:33:53.395Z",
-      "id": 12
+      "id": 12,
+      "markedToDelete": false
     },
     {
       "body": "Wtf",
       "subject": "",
-      "archived": false,
+      "archived": true,
       "read": false,
       "sentAt": "2021-10-29T23:34:56.326Z",
-      "id": 13
+      "id": 13,
+      "markedToDelete": false
     },
     {
       "body": "Wtf",
       "subject": "",
       "from": "damian@dulisz.com",
-      "archived": false,
+      "archived": true,
       "read": false,
       "sentAt": "2021-10-29T23:37:01.484Z",
-      "id": 14
+      "id": 14,
+      "markedToDelete": false
     }
   ]
 }

@@ -12,9 +12,8 @@
         v-model="state.showActionMenu"
         class="mr-4"
         :mode="state.mode"
-        @update:modelValue="menuOpen"
+        @update:modelValue="selectAll"
         @delete-forever="goneForever"
-        @select-all="selectAll"
         @delete-selected="markDelete"
         @undelete-selected="unmarkDelete"
         @archive-selected="archiveSelected"
@@ -127,6 +126,14 @@
         mode: "primary",
       });
 
+      const allSelected = computed(() => {
+        for(const email of state.emails) {
+          if(email.selected === false) return false;
+        }
+        
+        return true;
+      });
+
       function getEmails(): void {
         state.emails = [];
         requestAllEmails().then((response) => {
@@ -154,10 +161,6 @@
         for (const i in state.emails) {
           state.emails[i].selected = selected;
         }
-      }
-
-      function menuOpen(selected: boolean): void {
-        state.showActionMenu = selected;
       }
 
       async function markDelete(): Promise<void> {
@@ -245,6 +248,8 @@
       return {
         state,
         current,
+        allSelected,
+        showSendEmail,
         getEmails,
         selectAll,
         archiveSelected,
@@ -258,7 +263,6 @@
         closeSend,
         markDelete,
         unmarkDelete,
-        menuOpen,
         goneForever,
         closeEmail,
       };

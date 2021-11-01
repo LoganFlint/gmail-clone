@@ -5,13 +5,13 @@
       :checked="modelValue"
       type="checkbox"
       class="rounded w-4 h-4 border border-black focus:ring-0 focus:ring-offset-0 cursor-pointer"
-      @input="toggle"
+      @input="$emit('update:modelValue', !modelValue)"
     >
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, watch } from "vue";
 
 export default defineComponent({
     props: {
@@ -20,22 +20,6 @@ export default defineComponent({
     },
     emits: [
         "update:modelValue"
-    ],
-    setup(props, {emit}){
-        const state = reactive({
-            checked: false
-        });
-
-        function toggle(): void {
-            if(props.disabled === true) return;
-            state.checked = !state.checked;
-            emit("update:modelValue", state.checked);
-        }
-
-        return {
-            state,
-            toggle
-        }
-    }
+    ]
 });
 </script>

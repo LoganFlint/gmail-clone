@@ -3,7 +3,7 @@
     <Checkbox
       v-model="state.open"
       class="mr-2 mb-2"
-      @update:model-value="$emit('selectAll', state.open)"
+      @update:model-value="update"
     />
 
     <div class="-mb-6 flex">
@@ -74,7 +74,7 @@
 
   export default defineComponent({
     props: {
-      modelValue: { type: Boolean, default: false },
+      modelValue: { type: Boolean, default: "false" },
       id: { type: Number, default: 0 },
       mode: { type: String, default: "primary" },
     },
@@ -90,10 +90,9 @@
       "readSelected",
       "unreadSelected",
     ],
-    setup(props) {
+    setup(props, {emit}) {
       const state = reactive({
-        selectAll: false,
-        open: props.modelValue,
+        open: false,
       });
 
       watch(
@@ -102,6 +101,10 @@
           state.open = props.modelValue;
         }
       );
+
+      function update(e: boolean): void {
+        emit("update:modelValue", e);
+      }
 
       return {
         state,
@@ -113,6 +116,7 @@
         deleteForever,
         undelete,
         sendEmail,
+        update,
       };
     },
   });

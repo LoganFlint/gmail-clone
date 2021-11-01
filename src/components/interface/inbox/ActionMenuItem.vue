@@ -1,12 +1,12 @@
 <template>
   <div
     class="flex flex-col text-center items-center transition-all duration-300 cursor-pointer"
-    @mouseover="state.showLabel = true"
-    @mouseleave="state.showLabel = false"
   >
     <img
-      class="w-6 h-6"
+      class="w-8 h-8 p-1"
       :src="icon"
+      @mouseover="state.showLabel = true"
+      @mouseleave="state.showLabel = false"
     >
     <div
       class="whitespace-nowrap text-sm bg-black bg-opacity-75 text-white px-3 rounded transition-all duration-300 mt-4"

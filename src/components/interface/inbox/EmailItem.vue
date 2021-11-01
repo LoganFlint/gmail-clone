@@ -63,6 +63,7 @@
     },
     emits: ["update:modelValue", "openEmail", "sendReply"],
     setup(props) {
+
       const state = reactive({
         read: props.email.read,
         archived: props.email.archived,

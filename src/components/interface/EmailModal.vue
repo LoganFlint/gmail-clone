@@ -32,7 +32,7 @@
       <Button
         class="mt-4 flex justify-center"
         label="Reply"
-        @click="openReply"
+        @click="$emit('sendReply')"
       />
     </div>
   </Modal>
@@ -46,7 +46,7 @@
     updateEmail,
   } from "../../services/api";
   import { Email } from "../../services/modules/emails";
-  import { defineComponent, reactive, ref, watch } from "vue";
+  import { defineComponent, reactive, watch } from "vue";
   export default defineComponent({
     props: {
       modelValue: { type: Number, required: true },
@@ -92,18 +92,6 @@
         emit("update:modelValue", props.modelValue - 1);
       }
 
-      const showReply = ref(false);
-
-      function openReply() {
-        state.open = !state.open;
-        emit("sendReply");
-      }
-
-      function closeModal() {
-        showReply.value = false;
-        emit("close");
-      }
-
       watch(
         () => props.modelValue,
         () => {
@@ -119,10 +107,7 @@
         toggleReadMail,
         nextEmail,
         prevEmail,
-        closeModal,
-        state,
-        openReply,
-        showReply,
+        state
       };
     },
   });

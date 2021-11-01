@@ -22,6 +22,7 @@
         @read-selected="readSelected"
         @unread-selected="unreadSelected"
         @send-email="quickSend"
+
       />
     </div>
 
@@ -56,21 +57,22 @@
     </div>
     <EmailModal
       v-model="state.open"
-      :is-open="state.showEmail"
-      @close="closeModal"
+      :is-open="state.showEmail" 
+      @close="closeEmail"
       @emails-updated="getEmails"
+      @send-reply="openSend"
     />
 
     <ComposeEmailModal
       v-model="state.open"
-      :is-open="showSendEmail"
+      :is-open="state.showEmailSend"
       @close="closeSend"
     />
   </div>
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, computed, watch } from "vue";
+  import { defineComponent, reactive, ref, computed } from "vue";
   import {
     requestAllEmails,
     archiveEmail,
@@ -83,7 +85,7 @@
     deleteForever,
   } from "../../../services/api";
 
-  import { Email } from "../../../services/modules/emails";
+  import { Email,  } from "../../../services/modules/emails";
 
   interface SelectedEmail {
     email: Email;
@@ -120,6 +122,7 @@
         emails: [] as SelectedEmail[],
         open: 0,
         showEmail: false,
+        showEmailSend: false,
         showActionMenu: false,
         mode: "primary",
       });
@@ -138,8 +141,12 @@
 
       function openEmail(id: number): void {
         state.open = id;
-        state.showEmail = true;
+        state.showEmail = true
         readEmailById(id);
+      }
+
+      function closeEmail() {
+        state.showEmail = false
       }
 
       function selectAll(selected: boolean): void {
@@ -211,19 +218,14 @@
         state.showActionMenu = false;
       }
 
-      function closeModal(): void {
-        getEmails();
-        state.showEmail = false;
-      }
-
-      const showSendEmail = ref(false);
 
       function openSend() {
-        showSendEmail.value = true;
+        state.showEmail = false
+        state.showEmailSend = true;
       }
 
       function closeSend() {
-        showSendEmail.value = false;
+        state.showEmailSend = false;
       }
 
       function quickSend() {
@@ -244,7 +246,6 @@
         state,
         current,
         getEmails,
-        closeModal,
         selectAll,
         archiveSelected,
         unarchiveSelected,
@@ -252,7 +253,6 @@
         unreadSelected,
         handleActionMenu,
         openEmail,
-        showSendEmail,
         quickSend,
         openSend,
         closeSend,
@@ -260,6 +260,7 @@
         unmarkDelete,
         menuOpen,
         goneForever,
+        closeEmail,
       };
     },
   });

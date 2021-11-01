@@ -2,10 +2,10 @@
   <div
     class="absolute -z-50 top-0 left-0 w-full h-full min-h-screen"
     :class="{
-      'invisible': !isOpen,
-      'filter blur-lg': blur === true
+      invisible: !isOpen,
+      'filter blur-lg': blur === true,
     }"
-    @click="closeModal"
+    @click="handleMouseDrag"
   >
     <teleport to="#modal">
       <div
@@ -21,11 +21,13 @@
         <div>
           <img
             src="../../assets/close.svg"
-            class="absolute right-5 top-2 cursor-pointer w-8 h-8 p-1.5"
-            @click="closeModal"
-          >
+            class="absolute right-5 top-2 z-50 cursor-pointer w-8 h-8 p-1.5"
+            @click="
+              $emit('close')
+            "
+          />
           <div class="w-full px-6">
-            <slot />
+            <slot  />
           </div>
         </div>
       </div>
@@ -48,12 +50,8 @@ export default defineComponent({
         emit("close");
       }
     }
-    
-    function closeModal() {
-      emit("close");
-    }
-    
-    return { handleMouseDrag, closeModal };
+
+    return { handleMouseDrag };
   },
 });
 </script>

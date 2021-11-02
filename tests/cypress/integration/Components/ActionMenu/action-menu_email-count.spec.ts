@@ -1,4 +1,3 @@
-
 import db from "../../../fixtures/db.json";
 
 import { Email } from "../../../../../src/services/modules/emails";
@@ -79,6 +78,7 @@ describe("Action Bar: Primary Inbox Actions", () => {
     it("Archive all", () => {
         cy.visit("/").contains("launchmail");
         cy.get('[type="checkbox"]').first().click();
-        cy.get('[data-cy=archive-button]').click();
+        cy.get('[data-cy=archive-button]').click({ force: true });
+        cy.get('[type="checkbox"]').should("have.length", 1);
     });
 });

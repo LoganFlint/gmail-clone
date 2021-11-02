@@ -121,17 +121,10 @@ export default defineComponent({
       for (const email of state.emails) {
         if (email.selected === false) return false;
       }
-<<<<<<< HEAD
 
       return true;
     });
 
-=======
-
-      return true;
-    });
-
->>>>>>> 2a3b8ad130a2fb7f3446767668f16931493e6393
     function getEmails(): void {
       state.emails = [];
       requestAllEmails().then((response) => {

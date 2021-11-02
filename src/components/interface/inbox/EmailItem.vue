@@ -1,6 +1,16 @@
 <template>
   <div
-    class="cursor-pointer flex whitespace-nowrap pr-8 pl-8 h-10 items-center"
+    class="
+      cursor-pointer
+      flex
+      whitespace-nowrap
+      pr-8
+      pl-8
+      h-10
+      items-center
+      w-full
+      overflow-hidden
+    "
     :class="{
       'hover:bg-lbLightBlue hover:text-gray': !email.read && !email.archived,
       'bg-unicornSilver text-black hover:bg-unicornSilver hover:text-gray':
@@ -9,14 +19,14 @@
   >
     <Checkbox
       v-model="state.selected"
-      class="m-3 mt-3"
+      class=""
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
     <table class="w-full table-fixed">
       <tr>
         <td
           data-cy="open-email"
-          class="w-1/5 overflow-hidden overflow-ellipsis"
+          class="w-1/5 overflow-hidden overflow-ellipsis pl-3"
           @click="$emit('openEmail', email.id)"
         >
           {{ email.from }}
@@ -28,7 +38,6 @@
                 w-4/5
                 flex-grow
                 font-bold
-                mr-8
                 overflow-hidden overflow-ellipsis
               "
             >

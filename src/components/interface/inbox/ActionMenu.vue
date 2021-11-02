@@ -17,6 +17,7 @@
         class="transition-all duration-300 flex -ml-6"
         :class="{
           'opacity-0 invisible -ml-36': modelValue === false,
+          '-ml-14': mode === 'trash'
         }"
       >
         <ActionMenuItem
@@ -29,7 +30,7 @@
           v-if="mode === 'trash'"
           :icon="undelete"
           label="Undelete"
-          class="-ml-12"
+          class="-ml-11"
           @click="$emit('undeleteSelected')"
         />
 

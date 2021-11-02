@@ -20,6 +20,7 @@
       >
         <div>
           <img
+            data-cy="close-modal"
             src="../../assets/close.svg"
             class="absolute right-5 top-2 z-50 cursor-pointer w-8 h-8 p-1.5"
             @click="

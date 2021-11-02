@@ -8,6 +8,7 @@
 
     <div class="-mb-6 flex">
       <ActionMenuItem
+        data-cy="send-email-action-bar"
         :icon="sendEmail"
         label="Send Email"
         @click="$emit('sendEmail')"

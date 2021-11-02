@@ -3,6 +3,7 @@
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button
+          data-cy="archive-button"
           keydown="(e)"
           class="mr-4"
           :label="state.email.archived === true ? 'Un-Archive' : 'Archive'"

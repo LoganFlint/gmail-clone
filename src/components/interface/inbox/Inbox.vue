@@ -10,7 +10,6 @@
     <div class="flex items-center">
       <ActionMenu
         v-model="state.showActionMenu"
-        class="mr-4"
         data-cy="action-menu"
         :mode="state.mode"
         @update:modelValue="selectAll"

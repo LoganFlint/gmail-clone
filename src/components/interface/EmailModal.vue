@@ -17,8 +17,8 @@
           :color="state.email.read === true ? 'blue' : ''"
           @click="toggleReadMail"
         />
-        <Button keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
-        <Button keydown="(j)" class="mr-4" label="Older" @click="prevEmail" />
+        <Button data-cy="next-email" keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
+        <Button data-cy="prev-email" keydown="(j)" class="mr-4" label="Older" @click="prevEmail" />
       </div>
       <div class="text-2xl font-bold pr-16 pb-3">
         Subject: <span class="pl-1"> {{ state.email.subject }} </span>

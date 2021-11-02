@@ -23,17 +23,19 @@
           />
         </div>
       </div>
-      <div class="border border-unicornSilver rounded pt-2 pb-5 pl-3 pr-3 mr-5">
+      <div data-cy="reply-email-body" class="border border-unicornSilver rounded pt-2 pb-5 pl-3 pr-3 mr-5">
         <div class="text-sm pr-8 pt-1 pb-5 font-light">
           "{{ state.email.body }}"
         </div>
         <TextInput
+          name="sendEmailBody"
           class="w-full"
           v-model="emailBody"
           placeholder="Email Body"
         />
       </div>
       <Button
+        data-cy="send-email"
         class="mt-4 flex justify-center"
         label="Send"
         @click="sendAnEmail"

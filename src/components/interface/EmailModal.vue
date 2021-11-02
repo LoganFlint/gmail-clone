@@ -31,6 +31,7 @@
         {{ state.email.body }}
       </div>
       <Button
+        data-cy="reply-to-email"
         class="mt-4 flex justify-center"
         label="Reply"
         @click="$emit('sendReply')"

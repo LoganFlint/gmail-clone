@@ -118,6 +118,15 @@
       "sentAt": "2021-10-29T23:37:01.484Z",
       "id": 14,
       "markedToDelete": false
+    },
+    {
+      "body": "",
+      "subject": "",
+      "from": "anthony@vuejsdevelopers.com",
+      "archived": false,
+      "read": false,
+      "sentAt": "2021-11-02T19:43:25.818Z",
+      "id": 15
     }
   ]
 }

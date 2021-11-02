@@ -33,7 +33,7 @@
           v-if="mode === 'trash'"
           :icon="undelete"
           label="Undelete"
-          class="-ml-12"
+          class="-ml-11"
           data-cy="undelete-button"
           @click="$emit('undeleteSelected')"
         />

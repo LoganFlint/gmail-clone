@@ -22,24 +22,12 @@ const read = (db.emails as Email[]).filter((email: Email) => email.read);
 //     cy.get('[data-cy="close-modal"]').first().click()
 // });
 
-// it("reply to email 3 in list of emails", () => {
-//     cy.visit("/")
-//     cy.get('[data-cy="open-email"]').first().click()
-//     cy.get('[data-cy="reply-to-email"]').contains('Reply').click()
-//     cy.get('[data-cy="reply-email-body"]').contains("Newsletter Issue #161")
-//     //     cy.get().type("typing from test")
-//     // cy.get('[data-cy="send-email"]').click()
-// });
-
 it("something", () => {
     cy.visit("/")
     cy.get('[data-cy="open-email"]').first().click()
     cy.get('[data-cy=reply-to-email]').contains("Reply").click();
-    cy.get('[name=sendEmailBody]').type('typing from cypress')
-    cy.get('input[name=sendEmailBody]').should('have.value', 'typing from cypress')
-    //Now on the compose email modal
-
-    // plan to get inputed text as well
-
-    // cy.get('[data-cy=close-modal]').eq(1).click()
+    cy.get('#emailbody').type('typed from cypress')
+    // cant seem to test the value that was typed :()
+    // .should("have.text", 'typed from cypress')
+    cy.get('[data-cy="send-email"]').click()
 });

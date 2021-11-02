@@ -1,0 +1,123 @@
+{
+  "emails": [
+    {
+      "id": 3,
+      "from": "damian@dulisz.com",
+      "subject": "#177: Updated Vue.js Roadmap; Vuex v4.0.0-alpha.1 has been released; Kia King Ishii join the core team; Nuxt v2.12 released; Videos from Vue.js Amsterdam 2020 are here!",
+      "body": "First of all, lets congratulate Kia King Ishii on joining the Vue.js core team! 🎉 He has been doing an incredible job building vuex-orm and will now focus on working on the next versions of Vuex.\n\nSpeaking of which – Vuex v4.0.0-alpha.1 has just been released! This is the version of Vuex that will work with Vue 3.0 but keep the familiar API you know from the current version.",
+      "sentAt": "2020-03-18T18:25:43.511Z",
+      "archived": false,
+      "read": true,
+      "markedToDelete": true
+    },
+    {
+      "id": 4,
+      "from": "anthony@vuejsdevelopers.com",
+      "subject": "'Vue 3 Release Roadmap' + 6 more must-read articles from this week",
+      "body": "Newsletter Issue #161",
+      "sentAt": "2020-03-24T18:25:43.511Z",
+      "archived": false,
+      "read": true,
+      "markedToDelete": false
+    },
+    {
+      "body": "My response here.",
+      "subject": "Talk to Vue Team!",
+      "from": "team@vuemastery.com",
+      "archived": true,
+      "read": true,
+      "sentAt": "2021-10-28T21:57:06.235Z",
+      "id": 5,
+      "markedToDelete": false
+    },
+    {
+      "body": "testing",
+      "subject": "vue",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-28T23:03:55.005Z",
+      "id": 6,
+      "markedToDelete": false
+    },
+    {
+      "body": "test from quick reply",
+      "subject": "test",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T01:12:48.769Z",
+      "id": 7,
+      "markedToDelete": false
+    },
+    {
+      "body": "final test!",
+      "subject": "test again",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T03:37:02.122Z",
+      "id": 8,
+      "markedToDelete": false
+    },
+    {
+      "body": "Good night! (ㆆ_ㆆ)",
+      "subject": "test off of a test :)",
+      "from": "team@vuemastery.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T03:39:46.529Z",
+      "id": 9,
+      "markedToDelete": false
+    },
+    {
+      "body": "",
+      "subject": "",
+      "from": "damian@dulisz.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T23:33:24.440Z",
+      "id": 10,
+      "markedToDelete": false
+    },
+    {
+      "body": "",
+      "subject": "",
+      "from": "damian@dulisz.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T23:33:39.111Z",
+      "id": 11,
+      "markedToDelete": false
+    },
+    {
+      "body": "Test reply",
+      "subject": "",
+      "from": "damian@dulisz.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T23:33:53.395Z",
+      "id": 12,
+      "markedToDelete": false
+    },
+    {
+      "body": "Wtf",
+      "subject": "",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T23:34:56.326Z",
+      "id": 13,
+      "markedToDelete": false
+    },
+    {
+      "body": "Wtf",
+      "subject": "",
+      "from": "damian@dulisz.com",
+      "archived": false,
+      "read": true,
+      "sentAt": "2021-10-29T23:37:01.484Z",
+      "id": 14,
+      "markedToDelete": false
+    }
+  ]
+}

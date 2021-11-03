@@ -9,6 +9,7 @@
         v-model="state.tabs[i].selected"
         :title="tab.name"
         :icon="tab.icon"
+        :data-cy="`tab-${tab.name}`"
         @update:model-value="handleSelect(i)"
       />
     </div>

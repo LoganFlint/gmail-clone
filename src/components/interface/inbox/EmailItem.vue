@@ -19,14 +19,12 @@
   >
     <Checkbox
       v-model="state.selected"
-      class=""
       @update:model-value="$emit('update:modelValue', state.selected)"
     />
     <table class="w-full table-fixed">
       <tr>
         <td
-          data-cy="open-email"
-          class="w-1/5 overflow-hidden overflow-ellipsis pl-3"
+          class="w-1/5 overflow-hidden overflow-ellipsis pl-4"
           @click="$emit('openEmail', email.id)"
         >
           {{ email.from }}

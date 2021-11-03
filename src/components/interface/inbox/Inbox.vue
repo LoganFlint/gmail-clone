@@ -8,6 +8,7 @@
     <div class="flex items-center">
       <ActionMenu
         v-model="state.showActionMenu"
+        data-cy="action-menu"
         :mode="state.mode"
         @update:modelValue="selectAll"
         @delete-forever="goneForever"
@@ -41,7 +42,7 @@
       </div>
     </div>
 
-    <div v-else class="w-full font-xl font-bold text-center mt-24">
+    <div v-else class="w-full font-xl font-bold text-center pt-24">
       There's nothing to show here!
     </div>
     <EmailModal

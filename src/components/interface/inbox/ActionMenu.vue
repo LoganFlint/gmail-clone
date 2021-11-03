@@ -12,11 +12,14 @@
 
       <div
         class="transition-all duration-300 flex -ml-6"
+        data-cy="action-bar"
         :class="{
           'opacity-0 invisible -ml-36': modelValue === false,
+          '-ml-14': mode === 'trash',
         }"
       >
         <ActionMenuItem
+          data-cy="delete-button"
           :icon="mode === 'trash' ? deleteForever : trash"
           :label="mode === 'trash' ? 'Delete Forever' : 'Delete'"
           @click="$emit(mode === 'trash' ? 'deleteForever' : 'deleteSelected')"
@@ -26,7 +29,8 @@
           v-if="mode === 'trash'"
           :icon="undelete"
           label="Undelete"
-          class="-ml-12"
+          class="-ml-11"
+          data-cy="undelete-button"
           @click="$emit('undeleteSelected')"
         />
 
@@ -34,6 +38,7 @@
           :icon="mode === 'archived' ? unarchive : archive"
           :label="mode === 'archived' ? 'Unarchive' : 'Archive'"
           class="-ml-5"
+          data-cy="archive-button"
           @click="
             $emit(mode === 'archived' ? 'unarchiveSelected' : 'archiveSelected')
           "
@@ -43,6 +48,7 @@
           :icon="openMail"
           label="Mark as read"
           class="-ml-9"
+          data-cy="read-button"
           @click="$emit('readSelected')"
         />
 
@@ -50,6 +56,7 @@
           :icon="mail"
           label="Mark as unread"
           class="-ml-14"
+          data-cy="unread-button"
           @click="$emit('unreadSelected')"
         />
       </div>

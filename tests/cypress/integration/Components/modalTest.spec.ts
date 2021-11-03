@@ -20,6 +20,5 @@ it("something", () => {
     cy.get('[data-cy=reply-to-email]').contains("Reply").click();
     cy.get('#emailbody').type('typed from cypress')
     // cant seem to test the value that was typed :()
-    // .should("have.text", 'typed from cypress')
     cy.get('[data-cy="send-email"]').click()
 });

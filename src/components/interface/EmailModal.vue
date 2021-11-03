@@ -3,6 +3,7 @@
     <div class="pt-5 backdrop-blur-none max-h-screen">
       <div class="pb-8">
         <Button
+          data-cy="archive-button"
           keydown="(e)"
           class="mr-4"
           :label="state.email.archived === true ? 'Un-Archive' : 'Archive'"
@@ -16,8 +17,8 @@
           :color="state.email.read === true ? 'blue' : ''"
           @click="toggleReadMail"
         />
-        <Button keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
-        <Button keydown="(j)" class="mr-4" label="Older" @click="prevEmail" />
+        <Button data-cy="next-email" keydown="(k)" class="mr-4" label="Newer" @click="nextEmail" />
+        <Button data-cy="prev-email" keydown="(j)" class="mr-4" label="Older" @click="prevEmail" />
       </div>
       <div class="text-2xl font-bold pr-16 pb-3">
         Subject: <span class="pl-1"> {{ state.email.subject }} </span>
@@ -30,6 +31,7 @@
         {{ state.email.body }}
       </div>
       <Button
+        data-cy="reply-to-email"
         class="mt-4 flex justify-center"
         label="Reply"
         @click="$emit('sendReply')"

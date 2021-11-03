@@ -28,12 +28,16 @@
           "{{ state.email.body }}"
         </div>
         <TextInput
+          data-cy="emailbody"
+          id="emailbody"
           class="w-full"
           v-model="emailBody"
           placeholder="Email Body"
+          type="text"
         />
       </div>
       <Button
+        data-cy="send-email"
         class="mt-4 flex justify-center"
         label="Send"
         @click="sendAnEmail"

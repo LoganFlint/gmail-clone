@@ -1,16 +1,12 @@
 <template>
-  <div class="flex items-center m-4 ml-7 p-2">
-    <Checkbox
-      v-model="state.open"
-      class="pr-2 pb-2"
-      @update:model-value="update"
-    />
+  <div class="flex items-center pt-4 pl-9 pb-2">
+    <Checkbox v-model="state.open" class="mb-2" @update:model-value="update" />
 
     <div class="-mb-6 flex">
       <ActionMenuItem
+        data-cy="send-email-action-bar"
         :icon="sendEmail"
         label="Send Email"
-        data-cy="send-email-action-bar"
         @click="$emit('sendEmail')"
       />
 

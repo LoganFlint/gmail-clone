@@ -4,14 +4,16 @@
       v-for="(tab, i) of state.tabs"
       :key="i"
       class="m-2 mr-4 w-40"
+      data-cy="tab-bar"
     >
       <Tab
+        :data-cy="`tab-${tab.name}`"
         v-model="state.tabs[i].selected"
         :title="tab.name"
         :icon="tab.icon"
-        :data-cy="`tab-${tab.name}`"
         @update:model-value="handleSelect(i)"
       />
+
     </div>
   </div>
 </template>

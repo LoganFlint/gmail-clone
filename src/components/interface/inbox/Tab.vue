@@ -1,6 +1,5 @@
 <template>
   <div
-    data-cy=tab-bar
     class="cursor-pointer flex items-center px-4 py-2 border border-lbBlue rounded hover:bg-lbLightBlue"
     :class="{
       'bg-unicornSilver': modelValue === true
@@ -11,7 +10,7 @@
       class="w-6 h-6 mr-6"
       :src="icon"
     >
-    <div>
+    <div data-cy="tab-label">
       {{ title }}
     </div>
   </div>

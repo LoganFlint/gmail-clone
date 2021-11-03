@@ -8,7 +8,7 @@
       "sentAt": "2020-03-18T18:25:43.511Z",
       "archived": false,
       "read": true,
-      "markedToDelete": true
+      "markedToDelete": false
     },
     {
       "id": 4,
@@ -24,7 +24,7 @@
       "body": "My response here.",
       "subject": "Talk to Vue Team!",
       "from": "team@vuemastery.com",
-      "archived": true,
+      "archived": false,
       "read": true,
       "sentAt": "2021-10-28T21:57:06.235Z",
       "id": 5,

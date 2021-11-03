@@ -1,10 +1,8 @@
 <template>
   <div class="flex flex-col justify-center overflow-auto sm:overflow-visible">
     <div class="p-8 m-auto flex w-full justify-center items-center">
-      <img src="../../../assets/launchBadgeLogo.svg" alt="launch badge">
-      <div class="font-bold text-xl m-3">
-        launchmail
-      </div>
+      <img src="../../../assets/launchBadgeLogo.svg" />
+      <div class="font-bold text-xl p-3">launchmail</div>
     </div>
 
     <div class="flex items-center">

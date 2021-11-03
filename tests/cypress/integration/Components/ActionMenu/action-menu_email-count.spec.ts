@@ -53,7 +53,7 @@ describe("Action Bar: Primary Inbox Actions", () => {
             expect(names).to.have.lengthOf(5);
         });
 
-        cy.get('[data-cy=action-bar]').children().each((item, index, actionList) => {
+        cy.get('[data-cy=action-bar]').children().each((item, index) => {
             switch (index) {
                 case 0:
                     expect(item).to.contain("Delete");

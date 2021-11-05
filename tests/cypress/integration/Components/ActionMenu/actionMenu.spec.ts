@@ -1,4 +1,4 @@
-import db from "../../../fixtures/db.json";
+import db from "../../../../../db.json";
 
 import { Email } from "../../../../../src/services/modules/emails";
 

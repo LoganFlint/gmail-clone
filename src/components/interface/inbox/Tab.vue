@@ -6,36 +6,28 @@
     }"
     @click="selected"
   >
-    <img
+    <component
       class="w-6 h-6 mr-6"
-      :src="icon"
-    >
+      :is="icon"
+    />
     <div data-cy="tab-label">
       {{ title }}
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-    name: "Tab",
-    props: {
-        title: { type: String, required: true },
-        modelValue: { type: Boolean, default: false },
-        icon: { type: String, required: true }
-    },
-    emits: [ "update:modelValue" ],
-    setup(props, { emit }){
-        function selected(): void {
-            if(props.modelValue === true) return;
-            emit("update:modelValue", true)
-        }   
-        
-        return {
-            selected
-        }
-    }
+<script setup lang="ts">
+const props = defineProps({
+  title: { type: String, required: true },
+  modelValue: { type: Boolean, default: false },
+  icon: { type: Object, required: true }
 });
+
+const emit = defineEmits([ "update:modelValue" ]);
+
+function selected() {
+  if (props.modelValue === true) return;
+
+  emit("update:modelValue", true)
+}
 </script>

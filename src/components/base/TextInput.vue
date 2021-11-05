@@ -5,19 +5,17 @@
         v-if="small"
         :type="inputType"
         :placeholder="placeholder"
-        :value="modelValue"
         class="rounded cursor-auto outline-none border border-unicornSilver ml-2 pl-3"
         v-bind="$attrs"
-        @input="updateValue"
+        v-model="value"
       />
       <textarea
         v-else
         :type="inputType"
         :placeholder="placeholder"
-        :value="modelValue"
+        v-model="value"
         class="focus:outline-none outline-none border border-unicornSilver focus:border-lbBlue text-gray rounded h-72 pr-3 pt-2 pl-4"
         v-bind="$attrs"
-        @input="updateValue"
       />
     </div>
   </div>
@@ -25,6 +23,8 @@
 
 <script lang="ts">
   import { defineComponent } from "vue";
+  import { useVModel } from "@vueuse/core";
+
   export default defineComponent({
     props: {
       modelValue: { type: [String, Number], default: null },
@@ -34,11 +34,9 @@
     },
     emits: ["update:modelValue"],
 
-    setup(_, { emit }) {
-      function updateValue(event: Event) {
-        emit("update:modelValue", (event.target as HTMLInputElement).value);
-      }
-      return { updateValue };
+    setup(props, { emit }) {
+      const value = useVModel(props, 'modelValue', emit);
+      return { value };
     },
   });
 </script>

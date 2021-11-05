@@ -22,13 +22,13 @@
 import { defineComponent, reactive, watch } from "vue";
 
 import Tab from "./Tab.vue";
-import archived from "../../../assets/archive.svg";
-import inbox from "../../../assets/inbox.svg";
-import trash from "../../../assets/trash.svg";
+import iconArchived from "~icons/mdi/archive";
+import iconInbox from "~icons/mdi/inbox";
+import iconTrash from "~icons/mdi/delete";
 
 interface TabItem {
     name: string,
-    icon: string,
+    icon: object,
     selected: boolean
 }
 
@@ -46,17 +46,17 @@ export default defineComponent({
             tabs: [
                 {
                     name: "Primary",
-                    icon: inbox,
+                    icon: iconInbox,
                     selected: true
                 },
                 {
                     name: "Archived",
-                    icon: archived,
+                    icon: iconArchived,
                     selected: false
                 },
                 {
                     name: "Trash",
-                    icon: trash,
+                    icon: iconTrash,
                     selected: false
                 }
             ] as TabItem[]

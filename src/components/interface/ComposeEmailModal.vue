@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, ref, watch } from "vue";
+  import { defineComponent, reactive, ref, watchEffect } from "vue";
   import { sendEmail } from "../../services/api";
   import { Email, getEmailById } from "../../services/modules/emails";
   export default defineComponent({
@@ -69,21 +69,14 @@
           body: emailBody.value,
           subject: emailSubject.value,
           from: state.email.from,
-          archived: false,
-          read: false,
           sentAt: new Date().toISOString(),
-        } as Email);
+        });
         emit("close");
       }
 
-      watch(
-        () => props.modelValue,
-        () => {
-          getEmailById(props.modelValue).then((res) => {
-            state.email = res;
-          });
-        }
-      );
+      watchEffect(async () => {
+        state.email = await getEmailById(props.modelValue);
+      });
 
       return { state, emailBody, sendAnEmail, emailSubject };
     },

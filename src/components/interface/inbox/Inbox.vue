@@ -153,7 +153,9 @@ export default defineComponent({
     }
 
     async function markDelete(): Promise<void> {
+      console.log("MARKING TO DELETE");
       for (const email of state.emails) {
+      console.log("MARKING TO DELETE > ", email.selected);
         if (email.selected === true) await markForDeletion(email.email);
       }
       state.showActionMenu = false;

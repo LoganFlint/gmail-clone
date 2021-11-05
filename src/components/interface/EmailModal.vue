@@ -25,7 +25,7 @@
       </div>
       <div class="text-lg">
         From <span class="italic">{{ state.email.from }}</span> on
-        <span>{{ state.email.sentAt }}</span>
+        <span>{{ new Date(state.email.sentAt).toLocaleString() }}</span>
       </div>
       <div class="pt-10 pr-32">
         {{ state.email.body }}

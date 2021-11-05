@@ -1,187 +1,159 @@
 import axios from "axios";
 
 export interface Email {
-    archived: boolean,
-    body: string,
-    from: string,
-    id: number,
-    read: boolean,
-    sentAt: string,
-    subject: string,
-    markedToDelete: boolean
+  archived: boolean;
+  body: string;
+  from: string;
+  id: number;
+  read: boolean;
+  sentAt: string;
+  subject: string;
+  markedToDelete: boolean;
 }
 
 export async function requestAllEmails(): Promise<Email[]> {
-    const response = await axios.get("http://localhost:3000/emails")
-        .then(({ data }) => data)
-        .catch(error => {
-            throw error;
-        })
-    return response as Email[];
+  const { data } = await axios.get<Email[]>("http://localhost:3000/emails");
+
+  return data;
 }
 
 export async function requestPrimary(): Promise<Email[]> {
-    const response = await axios.get("http://localhost:3000/emails")
-        .then(({ data }) => {
-            return Object.values(data as Email[]).filter((email: Email) => email.archived === false && email.markedToDelete === false)
-        })
-        .catch(error => {
-            throw error;
-        });
-    return response;
+  const { data } = await axios.get<Email[]>("http://localhost:3000/emails");
+
+  return data.filter((email) => !email.archived && !email.markedToDelete);
 }
 
 export async function requestArchived(): Promise<Email[]> {
-    const response = await axios.get("http://localhost:3000/emails")
-        .then(({ data }) => {
-            return Object.values(data as Email[]).filter((email: Email) => email.archived === true);
-        })
-        .catch(error => {
-            throw error;
-        });
-    return response;
+  const { data } = await axios.get<Email[]>("http://localhost:3000/emails");
+
+  return data.filter((email) => email.archived);
 }
 
 export async function requestTrash(): Promise<Email[]> {
-    const response = await axios.get("http://localhost:3000/emails")
-    .then(({ data }) => {
-        return Object.values(data as Email[]).filter((email: Email) => email.markedToDelete === true);
-    })
-    .catch(error => {
-        throw error;
-    });
-    return response;
+  const { data } = await axios.get<Email[]>("http://localhost:3000/emails");
+
+  return data.filter((email) => email.markedToDelete);
 }
 
-export async function sendEmail(email: Email): Promise<void> {
-    //Currently api is running in http://localhost:8080, MySQL db is running in http://localhost:3060
-    //Getting a 404, use JSON server for now (running in 3000)
-    //await axios.post("http://localhost:8080/emails", email, { headers: {"Access-Control-Allow-Origin": "*", "Content-Type": "application/json" } } );
-    await axios.post("http://localhost:3000/emails", email);
+export async function sendEmail(email: Partial<Email>): Promise<void> {
+  await axios.post("http://localhost:3000/emails", email);
 }
 
 export async function getEmailById(id: number): Promise<Email> {
-    const response = await axios.get(`http://localhost:3000/emails/${id}`)
-        .then(({ data }) => data)
-        .catch(error => {
-            throw error;
-        });
-    return response as Email;
+  const { data } = await axios.get<Email>(`http://localhost:3000/emails/${id}`);
+
+  return data;
 }
 
 export async function updateEmail(email: Email): Promise<Email> {
-    const response = await axios.put(`http://localhost:3000/emails/${email.id}`, email)
-        .then(({ data }) => {
-            return data
-        })
-        .catch(error => {
-            throw error;
-        });
-    return response as Email;
+  const { data } = await axios.put<Email>(
+    `http://localhost:3000/emails/${email.id}`,
+    email
+  );
+
+  return data;
 }
 
-export async function deleteEmail(email: Email): Promise<Email> {
-    const response = await axios.delete(`http://localhost:3000/emails/${email.id}`)
-        .then(({ data }) => {
-            return data
-        })
-        .catch(error => {
-            throw error;
-        });
-    return response as Email;
+export async function deleteEmail(email: Email): Promise<void> {
+  await axios.delete<void>(`http://localhost:3000/emails/${email.id}`);
 }
 
 export async function archiveEmailById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await archiveEmail(email);
+  const email = await getEmailById(id);
+  return await archiveEmail(email);
 }
 
 export async function archiveEmail(email: Email): Promise<Email> {
-    if(email.archived === true) return email;
-    email.archived = true;
-    email.markedToDelete = false;
-    return await updateEmail(email);
+  if (email.archived === true) return email;
+  email.archived = true;
+  email.markedToDelete = false;
+  return await updateEmail(email);
 }
 
 export async function unarchiveEmailById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await unarchiveEmail(email);
+  const email = await getEmailById(id);
+  return await unarchiveEmail(email);
 }
 
 export async function unarchiveEmail(email: Email): Promise<Email> {
-    if(email.archived === false) return email;
-    email.archived = false;
-    return await updateEmail(email);
+  if (!email.archived) return email;
+
+  email.archived = false;
+
+  return await updateEmail(email);
 }
 
 export async function toggleArchiveById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await toggleArchive(email);
+  const email = await getEmailById(id);
+  return await toggleArchive(email);
 }
 
 export async function toggleArchive(email: Email): Promise<Email> {
-    email.archived = !email.archived;
-    return await updateEmail(email);
+  email.archived = !email.archived;
+  return await updateEmail(email);
 }
 
 export async function toggleRead(email: Email): Promise<Email> {
-    email.read = !email.read;
-    return await updateEmail(email);
+  email.read = !email.read;
+  return await updateEmail(email);
 }
 
 export async function toggleReadById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await toggleRead(email);
+  const email = await getEmailById(id);
+  return await toggleRead(email);
 }
 
 export async function readEmail(email: Email): Promise<Email> {
-    if(email.read === true) return email;
-    email.read = true;
-    return await updateEmail(email);
+  if (email.read === true) return email;
+  email.read = true;
+  return await updateEmail(email);
 }
 
 export async function readEmailById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await readEmail(email);
+  const email = await getEmailById(id);
+  return await readEmail(email);
 }
 
 export async function unreadEmail(email: Email): Promise<Email> {
-    if(email.read === false) return email;
-    email.read = false;
-    return await updateEmail(email);
+  if (email.read === false) return email;
+  email.read = false;
+  return await updateEmail(email);
 }
 
 export async function unreadEmailById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await unreadEmail(email);
+  const email = await getEmailById(id);
+  return await unreadEmail(email);
 }
 
 export async function markForDeletion(email: Email): Promise<Email> {
-    if(email.markedToDelete === true) return email;
-    email.markedToDelete = true;
-    email.archived = false;
-    return await updateEmail(email);
+  if (email.markedToDelete) return email;
+
+  email.markedToDelete = true;
+  email.archived = false;
+  return await updateEmail(email);
 }
 
 export async function deleteForever(email: Email): Promise<void> {
-    if(email.markedToDelete === true){
-        await deleteEmail(email);
-    } 
+  if (email.markedToDelete) {
+    await deleteEmail(email);
+  }
 }
 
 export async function markForDeletionById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await markForDeletion(email);
+  const email = await getEmailById(id);
+  return await markForDeletion(email);
 }
 
 export async function unmarkForDeletion(email: Email): Promise<Email> {
-    if(email.markedToDelete === false) return email;
-    email.markedToDelete = false;
-    email.archived = false;
-    return await updateEmail(email);
+  if (!email.markedToDelete) return email;
+
+  email.markedToDelete = false;
+  email.archived = false;
+
+  return await updateEmail(email);
 }
 
 export async function unmarkForDeletionById(id: number): Promise<Email> {
-    const email = await getEmailById(id);
-    return await unmarkForDeletion(email);
+  const email = await getEmailById(id);
+  return await unmarkForDeletion(email);
 }

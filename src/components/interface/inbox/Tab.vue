@@ -10,7 +10,7 @@
       class="w-6 h-6 mr-6"
       :src="icon"
     >
-    <div>
+    <div data-cy="tab-label">
       {{ title }}
     </div>
   </div>

@@ -6,9 +6,9 @@
       "subject": "#177: Updated Vue.js Roadmap; Vuex v4.0.0-alpha.1 has been released; Kia King Ishii join the core team; Nuxt v2.12 released; Videos from Vue.js Amsterdam 2020 are here!",
       "body": "First of all, lets congratulate Kia King Ishii on joining the Vue.js core team! 🎉 He has been doing an incredible job building vuex-orm and will now focus on working on the next versions of Vuex.\n\nSpeaking of which – Vuex v4.0.0-alpha.1 has just been released! This is the version of Vuex that will work with Vue 3.0 but keep the familiar API you know from the current version.",
       "sentAt": "2020-03-18T18:25:43.511Z",
-      "archived": false,
-      "read": true,
-      "markedToDelete": true
+      "archived": true,
+      "read": false,
+      "markedToDelete": false
     },
     {
       "id": 4,
@@ -24,7 +24,7 @@
       "body": "My response here.",
       "subject": "Talk to Vue Team!",
       "from": "team@vuemastery.com",
-      "archived": true,
+      "archived": false,
       "read": true,
       "sentAt": "2021-10-28T21:57:06.235Z",
       "id": 5,
@@ -71,8 +71,8 @@
       "markedToDelete": false
     },
     {
-      "body": "",
-      "subject": "",
+      "body": "something",
+      "subject": "something goes here",
       "from": "damian@dulisz.com",
       "archived": false,
       "read": true,
@@ -81,8 +81,8 @@
       "markedToDelete": false
     },
     {
-      "body": "",
-      "subject": "",
+      "body": "random body",
+      "subject": "random subject",
       "from": "damian@dulisz.com",
       "archived": false,
       "read": true,
@@ -92,7 +92,7 @@
     },
     {
       "body": "Test reply",
-      "subject": "",
+      "subject": "annoying blank subject",
       "from": "damian@dulisz.com",
       "archived": false,
       "read": true,
@@ -102,22 +102,23 @@
     },
     {
       "body": "Wtf",
-      "subject": "",
+      "subject": "Wtf",
+      "from": "team@vuemastery.com",
       "archived": false,
       "read": true,
       "sentAt": "2021-10-29T23:34:56.326Z",
       "id": 13,
-      "markedToDelete": false
+      "markedToDelete": true
     },
     {
       "body": "Wtf",
-      "subject": "",
+      "subject": "Wtf",
       "from": "damian@dulisz.com",
       "archived": false,
       "read": true,
       "sentAt": "2021-10-29T23:37:01.484Z",
       "id": 14,
-      "markedToDelete": false
+      "markedToDelete": true
     }
   ]
 }

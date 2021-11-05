@@ -49,12 +49,12 @@ describe("Action Bar: Primary Inbox Actions", () => {
     it("All actions present", () => {
         cy.get('[type="checkbox"]').first().click();
         cy.get('[data-cy=label]').then((tabNames) => {
-            const names = Array.from(tabNames, name => name.innerText); 
+            const names = Array.from(tabNames, name => name.innerText);
             expect(names).to.have.lengthOf(5);
         });
 
-        cy.get('[data-cy=action-bar]').children().each((item, index, actionList) => {
-            switch(index) {
+        cy.get('[data-cy=action-bar]').children().each((item, index) => {
+            switch (index) {
                 case 0:
                     expect(item).to.contain("Delete");
                     expect(item).to.not.contain("Delete Forever");

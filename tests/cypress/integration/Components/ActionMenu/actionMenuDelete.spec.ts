@@ -30,7 +30,7 @@ describe("validate delete buttons in action menu when in Trash tab", () => {
     it("Archive all", () => {
         cy.visit("/").get('[data-cy="tab-Archived"]').click()
         cy.get('[type="checkbox"]').first().click();
-        cy.get('[data-cy="archive-button"]').click();
+        cy.get('[data-cy="archive-button"]').eq(0).click();
         cy.get('[type="checkbox"]').should("have.length", 1);
     });
 })
